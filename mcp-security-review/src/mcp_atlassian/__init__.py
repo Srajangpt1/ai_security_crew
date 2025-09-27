@@ -170,8 +170,10 @@ def main(
     oauth_cloud_id: str | None,
     oauth_access_token: str | None,
 ) -> None:
-    """MCP Atlassian Server - Jira and Confluence functionality for MCP
+    """MCP Security Review Server - Chill security reviews while vibe coding
 
+    Perfect for staying in your coding flow while keeping security top of mind.
+    Quickly assess risks, check compliance, and document findings without breaking rhythm.
     Supports both Atlassian Cloud and Jira Server/Data Center deployments.
     Authentication methods supported:
     - Username and API token (Cloud)
