@@ -2,7 +2,7 @@
 
 > **Audience**: LLM-driven engineering agents
 
-This file provides guidance for autonomous coding agents working inside the **MCP Atlassian** repository.
+This file provides guidance for autonomous coding agents working inside the **MCP Security Review** repository.
 
 ---
 
@@ -81,9 +81,9 @@ uv run pytest                        # run full test suite
 
 ```bash
 # Running the server
-uv run mcp-atlassian                 # Start server
-uv run mcp-atlassian --oauth-setup   # OAuth wizard
-uv run mcp-atlassian -v              # Verbose mode
+uv run mcp-security-review                 # Start server
+uv run mcp-security-review --oauth-setup   # OAuth wizard
+uv run mcp-security-review -v              # Verbose mode
 
 # Git workflow
 git checkout -b feature/description   # New feature

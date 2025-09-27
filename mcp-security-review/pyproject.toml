@@ -1,7 +1,7 @@
 [project]
-name = "mcp-atlassian"
+name = "mcp-security-review"
 dynamic = ["version"]
-description = "The Model Context Protocol (MCP) Atlassian integration is an open-source implementation that bridges Atlassian products (Jira and Confluence) with AI language models following Anthropic's MCP specification. This project enables secure, contextual AI interactions with Atlassian tools while maintaining data privacy and security. Key features include:"
+description = "A chill Model Context Protocol (MCP) server for security reviews while vibe coding. Seamlessly assess security risks, check compliance, and document findings in Jira and Confluence without breaking your coding flow. Features OWASP guidelines, risk analysis, and AI-assisted security workflows."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
@@ -36,7 +36,7 @@ requires = ["hatchling", "uv-dynamic-versioning>=0.7.0"]
 build-backend = "hatchling.build"
 
 [project.scripts]
-mcp-atlassian = "mcp_atlassian:main"
+mcp-security-review = "mcp_atlassian:main"
 
 [dependency-groups]
 dev = [

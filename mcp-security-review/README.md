@@ -1,32 +1,20 @@
-# MCP Atlassian
+# MCP For Security Review
 
-![PyPI Version](https://img.shields.io/pypi/v/mcp-atlassian)
-![PyPI - Downloads](https://img.shields.io/pypi/dm/mcp-atlassian)
-![PePy - Total Downloads](https://static.pepy.tech/personalized-badge/mcp-atlassian?period=total&units=international_system&left_color=grey&right_color=blue&left_text=Total%20Downloads)
-[![Run Tests](https://github.com/sooperset/mcp-atlassian/actions/workflows/tests.yml/badge.svg)](https://github.com/sooperset/mcp-atlassian/actions/workflows/tests.yml)
-![License](https://img.shields.io/github/license/sooperset/mcp-atlassian)
+[![Run Tests](https://github.com/ai-security-crew/mcp-security-review/actions/workflows/tests.yml/badge.svg)](https://github.com/ai-security-crew/mcp-security-review/actions/workflows/tests.yml)
+![License](https://img.shields.io/github/license/ai-security-crew/mcp-security-review)
 
-Model Context Protocol (MCP) server for Atlassian products (Confluence and Jira). This integration supports both Confluence & Jira Cloud and Server/Data Center deployments.
+A chill Model Context Protocol (MCP) server for security reviews while vibe coding. Perfect for when you're in the flow and need to quickly assess security risks, check compliance, or document findings in Jira and Confluence without breaking your coding rhythm. Supports both Cloud and Server/Data Center deployments.
 
-## Example Usage
+## Security Review Workflows
 
-Ask your AI assistant to:
+Keep the vibe going while staying secure:
 
-- **📝 Automatic Jira Updates** - "Update Jira from our meeting notes"
-- **🔍 AI-Powered Confluence Search** - "Find our OKR guide in Confluence and summarize it"
-- **🐛 Smart Jira Issue Filtering** - "Show me urgent bugs in PROJ project from last week"
-- **📄 Content Creation & Management** - "Create a tech design doc for XYZ feature"
-- **🔒 Security Assessment** - "Assess PROJ-123 for security requirements before code generation"
+- **Security Assessment** - "Assess PROJ-123 for security requirements and generate secure coding guidelines"
+- **Vulnerability Tracking** - "Find all high-priority security issues in the SEC project from last month"
+- **Security Documentation** - "Create a security assessment report for the authentication feature"
+- **Compliance Reviews** - "Search for OWASP compliance documentation in our security space"
+- **Risk Analysis** - "Analyze security risks in tickets labeled 'security-critical'"
 
-### Feature Demo
-
-https://github.com/user-attachments/assets/35303504-14c6-4ae4-913b-7c25ea511c3e
-
-<details> <summary>Confluence Demo</summary>
-
-https://github.com/user-attachments/assets/7fe9c488-ad0c-4876-9b54-120b666bb785
-
-</details>
 
 ### Compatibility
 
@@ -39,9 +27,9 @@ https://github.com/user-attachments/assets/7fe9c488-ad0c-4876-9b54-120b666bb785
 
 ## Quick Start Guide
 
-### 🔐 1. Authentication Setup
+### 1. Authentication Setup
 
-MCP Atlassian supports three authentication methods:
+MCP Security Review supports three authentication methods:
 
 #### A. API Token Authentication (Cloud) - **Recommended**
 
@@ -69,7 +57,7 @@ MCP Atlassian supports three authentication methods:
    docker run --rm -i \
      -p 8080:8080 \
      -v "${HOME}/.mcp-atlassian:/home/app/.mcp-atlassian" \
-     ghcr.io/sooperset/mcp-atlassian:latest --oauth-setup -v
+     ghcr.io/ai-security-crew/mcp-security-review:latest --oauth-setup -v
    ```
 6. Follow prompts for `Client ID`, `Secret`, `URI`, and `Scope`
 7. Complete browser authorization
@@ -110,18 +98,18 @@ This option is useful in scenarios where OAuth credential management is centrali
 > [!TIP]
 > **Multi-Cloud OAuth Support**: If you're building a multi-tenant application where users provide their own OAuth tokens, see the [Multi-Cloud OAuth Support](#multi-cloud-oauth-support) section for minimal configuration setup.
 
-### 📦 2. Installation
+### 2. Installation
 
-MCP Atlassian is distributed as a Docker image. This is the recommended way to run the server, especially for IDE integration. Ensure you have Docker installed.
+MCP Security Review is distributed as a Docker image. This is the recommended way to run the server, especially for IDE integration. Ensure you have Docker installed.
 
 ```bash
 # Pull Pre-built Image
-docker pull ghcr.io/sooperset/mcp-atlassian:latest
+docker pull ghcr.io/ai-security-crew/mcp-security-review:latest
 ```
 
-## 🛠️ IDE Integration
+## IDE Integration
 
-MCP Atlassian is designed to be used with AI assistants through IDE integration.
+MCP Security Review integrates seamlessly with your favorite AI assistants, so you can stay in your coding flow while keeping security top of mind.
 
 > [!TIP]
 > **For Claude Desktop**: Locate and edit the configuration file directly:
@@ -169,7 +157,7 @@ There are two main approaches to configure the Docker container:
         "-e", "JIRA_URL",
         "-e", "JIRA_USERNAME",
         "-e", "JIRA_API_TOKEN",
-        "ghcr.io/sooperset/mcp-atlassian:latest"
+        "ghcr.io/ai-security-crew/mcp-security-review:latest"
       ],
       "env": {
         "CONFLUENCE_URL": "https://your-company.atlassian.net/wiki",
@@ -198,7 +186,7 @@ There are two main approaches to configure the Docker container:
         "-i",
         "--env-file",
         "/path/to/your/mcp-atlassian.env",
-        "ghcr.io/sooperset/mcp-atlassian:latest"
+        "ghcr.io/ai-security-crew/mcp-security-review:latest"
       ]
     }
   }
@@ -226,7 +214,7 @@ For Server/Data Center deployments, use direct variable passing:
         "-e", "JIRA_URL",
         "-e", "JIRA_PERSONAL_TOKEN",
         "-e", "JIRA_SSL_VERIFY",
-        "ghcr.io/sooperset/mcp-atlassian:latest"
+        "ghcr.io/ai-security-crew/mcp-security-review:latest"
       ],
       "env": {
         "CONFLUENCE_URL": "https://confluence.your-company.com",
@@ -273,7 +261,7 @@ This configuration is for when you use the server's built-in OAuth client and ha
         "-e", "ATLASSIAN_OAUTH_REDIRECT_URI",
         "-e", "ATLASSIAN_OAUTH_SCOPE",
         "-e", "ATLASSIAN_OAUTH_CLOUD_ID",
-        "ghcr.io/sooperset/mcp-atlassian:latest"
+        "ghcr.io/ai-security-crew/mcp-security-review:latest"
       ],
       "env": {
         "JIRA_URL": "https://your-company.atlassian.net",
@@ -313,7 +301,7 @@ This configuration is for when you are providing your own externally managed OAu
         "-e", "CONFLUENCE_URL",
         "-e", "ATLASSIAN_OAUTH_CLOUD_ID",
         "-e", "ATLASSIAN_OAUTH_ACCESS_TOKEN",
-        "ghcr.io/sooperset/mcp-atlassian:latest"
+        "ghcr.io/ai-security-crew/mcp-security-review:latest"
       ],
       "env": {
         "JIRA_URL": "https://your-company.atlassian.net",
@@ -358,7 +346,7 @@ Add the relevant proxy variables to the `args` (using `-e`) and `env` sections o
         "-e", "HTTP_PROXY",
         "-e", "HTTPS_PROXY",
         "-e", "NO_PROXY",
-        "ghcr.io/sooperset/mcp-atlassian:latest"
+        "ghcr.io/ai-security-crew/mcp-security-review:latest"
       ],
       "env": {
         "... existing Confluence/Jira vars": "...",
@@ -398,7 +386,7 @@ Custom headers are configured using environment variables with comma-separated k
         "-e", "JIRA_USERNAME",
         "-e", "JIRA_API_TOKEN",
         "-e", "JIRA_CUSTOM_HEADERS",
-        "ghcr.io/sooperset/mcp-atlassian:latest"
+        "ghcr.io/ai-security-crew/mcp-security-review:latest"
       ],
       "env": {
         "CONFLUENCE_URL": "https://your-company.atlassian.net/wiki",
@@ -435,7 +423,7 @@ MCP Atlassian supports multi-cloud OAuth scenarios where each user connects to t
 1. Enable minimal OAuth mode (no client credentials required):
    ```bash
    docker run -e ATLASSIAN_OAUTH_ENABLE=true -p 9000:9000 \
-     ghcr.io/sooperset/mcp-atlassian:latest \
+     ghcr.io/ai-security-crew/mcp-security-review:latest \
      --transport streamable-http --port 9000
    ```
 
@@ -500,7 +488,7 @@ asyncio.run(main())
         "-e", "CONFLUENCE_URL",
         "-e", "CONFLUENCE_USERNAME",
         "-e", "CONFLUENCE_API_TOKEN",
-        "ghcr.io/sooperset/mcp-atlassian:latest"
+        "ghcr.io/ai-security-crew/mcp-security-review:latest"
       ],
       "env": {
         "CONFLUENCE_URL": "https://your-company.atlassian.net/wiki",
@@ -524,7 +512,7 @@ For Confluence Server/DC, use:
         "-i",
         "-e", "CONFLUENCE_URL",
         "-e", "CONFLUENCE_PERSONAL_TOKEN",
-        "ghcr.io/sooperset/mcp-atlassian:latest"
+        "ghcr.io/ai-security-crew/mcp-security-review:latest"
       ],
       "env": {
         "CONFLUENCE_URL": "https://confluence.your-company.com",
@@ -549,7 +537,7 @@ For Confluence Server/DC, use:
         "-e", "JIRA_URL",
         "-e", "JIRA_USERNAME",
         "-e", "JIRA_API_TOKEN",
-        "ghcr.io/sooperset/mcp-atlassian:latest"
+        "ghcr.io/ai-security-crew/mcp-security-review:latest"
       ],
       "env": {
         "JIRA_URL": "https://your-company.atlassian.net",
@@ -573,7 +561,7 @@ For Jira Server/DC, use:
         "-i",
         "-e", "JIRA_URL",
         "-e", "JIRA_PERSONAL_TOKEN",
-        "ghcr.io/sooperset/mcp-atlassian:latest"
+        "ghcr.io/ai-security-crew/mcp-security-review:latest"
       ],
       "env": {
         "JIRA_URL": "https://jira.your-company.com",
@@ -608,13 +596,13 @@ Both transport types support single-user and multi-user authentication:
     # For SSE transport
     docker run --rm -p 9000:9000 \
       --env-file /path/to/your/.env \
-      ghcr.io/sooperset/mcp-atlassian:latest \
+      ghcr.io/ai-security-crew/mcp-security-review:latest \
       --transport sse --port 9000 -vv
 
     # OR for streamable-http transport
     docker run --rm -p 9000:9000 \
       --env-file /path/to/your/.env \
-      ghcr.io/sooperset/mcp-atlassian:latest \
+      ghcr.io/ai-security-crew/mcp-security-review:latest \
       --transport streamable-http --port 9000 -vv
     ```
 
@@ -652,14 +640,14 @@ Here's a complete example of setting up multi-user authentication with streamabl
    docker run --rm -i \
      -p 8080:8080 \
      -v "${HOME}/.mcp-atlassian:/home/app/.mcp-atlassian" \
-     ghcr.io/sooperset/mcp-atlassian:latest --oauth-setup -v
+     ghcr.io/ai-security-crew/mcp-security-review:latest --oauth-setup -v
    ```
 
 2. Start the server with streamable-HTTP transport:
    ```bash
    docker run --rm -p 9000:9000 \
      --env-file /path/to/your/.env \
-     ghcr.io/sooperset/mcp-atlassian:latest \
+     ghcr.io/ai-security-crew/mcp-security-review:latest \
      --transport streamable-http --port 9000 -vv
    ```
 
@@ -719,66 +707,40 @@ Here's a complete example of setting up multi-user authentication with streamabl
 
 </details>
 
-## Tools
+## Security-Focused Tools
 
-### Key Tools
+### Core Security Tools
 
-#### Jira Tools
+#### Security Assessment
+- `assess_ticket_security`: Comprehensive security assessment of Jira tickets with risk analysis and OWASP guidelines
 
-- `jira_get_issue`: Get details of a specific issue
-- `jira_search`: Search issues using JQL
-- `jira_create_issue`: Create a new issue
-- `jira_update_issue`: Update an existing issue
-- `jira_transition_issue`: Transition an issue to a new status
-- `jira_add_comment`: Add a comment to an issue
+#### Jira Security Tools
 
-#### Confluence Tools
+- `get_issue`: Get detailed security ticket information
+- `search`: Search security issues using JQL queries
+- `create_issue`: Create security-related tickets
+- `add_comment`: Document security findings and recommendations
+- `get_user_profile`: Understand team member responsibilities
+- `get_all_projects`: Identify projects requiring security review
+- `get_transitions`: Understand security workflow states
+- `link_to_epic`: Link security issues to security epics
 
-- `confluence_search`: Search Confluence content using CQL
-- `confluence_get_page`: Get content of a specific page
-- `confluence_create_page`: Create a new page
-- `confluence_update_page`: Update an existing page
+#### Confluence Security Tools
 
-<details> <summary>View All Tools</summary>
+- `search`: Find security documentation and policies
+- `get_page`: Retrieve security documentation and runbooks
+- `get_page_children`: Navigate security documentation hierarchies
+- `create_page`: Create security assessment reports
+- `update_page`: Maintain security documentation
+- `add_comment`: Security review discussions
 
-| Operation | Jira Tools                          | Confluence Tools               |
-|-----------|-------------------------------------|--------------------------------|
-| **Read**  | `jira_search`                       | `confluence_search`            |
-|           | `jira_get_issue`                    | `confluence_get_page`          |
-|           | `jira_get_all_projects`             | `confluence_get_page_children` |
-|           | `jira_get_project_issues`           | `confluence_get_comments`      |
-|           | `jira_get_worklog`                  | `confluence_get_labels`        |
-|           | `jira_get_transitions`              | `confluence_search_user`       |
-|           | `jira_search_fields`                |                                |
-|           | `jira_get_agile_boards`             |                                |
-|           | `jira_get_board_issues`             |                                |
-|           | `jira_get_sprints_from_board`       |                                |
-|           | `jira_get_sprint_issues`            |                                |
-|           | `jira_get_issue_link_types`         |                                |
-|           | `jira_batch_get_changelogs`*        |                                |
-|           | `jira_get_user_profile`             |                                |
-|           | `jira_download_attachments`         |                                |
-|           | `jira_get_project_versions`         |                                |
-| **Write** | `jira_create_issue`                 | `confluence_create_page`       |
-|           | `jira_update_issue`                 | `confluence_update_page`       |
-|           | `jira_delete_issue`                 | `confluence_delete_page`       |
-|           | `jira_batch_create_issues`          | `confluence_add_label`         |
-|           | `jira_add_comment`                  | `confluence_add_comment`       |
-|           | `jira_transition_issue`             |                                |
-|           | `jira_add_worklog`                  |                                |
-|           | `jira_link_to_epic`                 |                                |
-|           | `jira_create_sprint`                |                                |
-|           | `jira_update_sprint`                |                                |
-|           | `jira_create_issue_link`            |                                |
-|           | `jira_remove_issue_link`            |                                |
-|           | `jira_create_version`               |                                |
-|           | `jira_batch_create_versions`        |                                |
+### Security Tool Configuration
 
-</details>
+For the best vibe coding experience, enable just the essential security tools:
 
-*Tool only available on Jira Cloud
-
-</details>
+```bash
+ENABLED_TOOLS="assess_ticket_security,get_issue,search,add_comment,create_issue,get_user_profile,get_all_projects,get_transitions,link_to_epic,confluence_search,confluence_get_page,confluence_get_page_children,confluence_create_page,confluence_update_page,confluence_add_comment"
+```
 
 ### Tool Filtering and Access Control
 
@@ -893,7 +855,7 @@ See [Security Assessment Documentation](docs/security-assessment.md) for detaile
 
 ## Contributing
 
-We welcome contributions to MCP Atlassian! If you'd like to contribute:
+We welcome contributions to MCP Security Review! If you'd like to contribute:
 
 1. Check out our [CONTRIBUTING.md](CONTRIBUTING.md) guide for detailed development setup instructions.
 2. Make changes and submit a pull request.
