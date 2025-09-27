@@ -343,59 +343,6 @@ async def get_comments(
     return json.dumps(formatted_comments, indent=2, ensure_ascii=False)
 
 
-@confluence_mcp.tool(tags={"confluence", "read"})
-async def get_labels(
-    ctx: Context,
-    page_id: Annotated[
-        str,
-        Field(
-            description=(
-                "Confluence page ID (numeric ID, can be parsed from URL, "
-                "e.g. from 'https://example.atlassian.net/wiki/spaces/TEAM/pages/123456789/Page+Title' "
-                "-> '123456789')"
-            )
-        ),
-    ],
-) -> str:
-    """Get labels for a specific Confluence page.
-
-    Args:
-        ctx: The FastMCP context.
-        page_id: Confluence page ID.
-
-    Returns:
-        JSON string representing a list of label objects.
-    """
-    confluence_fetcher = await get_confluence_fetcher(ctx)
-    labels = confluence_fetcher.get_page_labels(page_id)
-    formatted_labels = [label.to_simplified_dict() for label in labels]
-    return json.dumps(formatted_labels, indent=2, ensure_ascii=False)
-
-
-@confluence_mcp.tool(tags={"confluence", "write"})
-@check_write_access
-async def add_label(
-    ctx: Context,
-    page_id: Annotated[str, Field(description="The ID of the page to update")],
-    name: Annotated[str, Field(description="The name of the label")],
-) -> str:
-    """Add label to an existing Confluence page.
-
-    Args:
-        ctx: The FastMCP context.
-        page_id: The ID of the page to update.
-        name: The name of the label.
-
-    Returns:
-        JSON string representing the updated list of label objects for the page.
-
-    Raises:
-        ValueError: If in read-only mode or Confluence client is unavailable.
-    """
-    confluence_fetcher = await get_confluence_fetcher(ctx)
-    labels = confluence_fetcher.add_page_label(page_id, name)
-    formatted_labels = [label.to_simplified_dict() for label in labels]
-    return json.dumps(formatted_labels, indent=2, ensure_ascii=False)
 
 
 @confluence_mcp.tool(tags={"confluence", "write"})
@@ -584,46 +531,6 @@ async def update_page(
     )
 
 
-@confluence_mcp.tool(tags={"confluence", "write"})
-@check_write_access
-async def delete_page(
-    ctx: Context,
-    page_id: Annotated[str, Field(description="The ID of the page to delete")],
-) -> str:
-    """Delete an existing Confluence page.
-
-    Args:
-        ctx: The FastMCP context.
-        page_id: The ID of the page to delete.
-
-    Returns:
-        JSON string indicating success or failure.
-
-    Raises:
-        ValueError: If Confluence client is not configured or available.
-    """
-    confluence_fetcher = await get_confluence_fetcher(ctx)
-    try:
-        result = confluence_fetcher.delete_page(page_id=page_id)
-        if result:
-            response = {
-                "success": True,
-                "message": f"Page {page_id} deleted successfully",
-            }
-        else:
-            response = {
-                "success": False,
-                "message": f"Unable to delete page {page_id}. API request completed but deletion unsuccessful.",
-            }
-    except Exception as e:
-        logger.error(f"Error deleting Confluence page {page_id}: {str(e)}")
-        response = {
-            "success": False,
-            "message": f"Error deleting page {page_id}",
-            "error": str(e),
-        }
-
-    return json.dumps(response, indent=2, ensure_ascii=False)
 
 
 @confluence_mcp.tool(tags={"confluence", "write"})
@@ -676,71 +583,3 @@ async def add_comment(
     return json.dumps(response, indent=2, ensure_ascii=False)
 
 
-@confluence_mcp.tool(tags={"confluence", "read"})
-async def search_user(
-    ctx: Context,
-    query: Annotated[
-        str,
-        Field(
-            description=(
-                "Search query - a CQL query string for user search. "
-                "Examples of CQL:\n"
-                "- Basic user lookup by full name: 'user.fullname ~ \"First Last\"'\n"
-                'Note: Special identifiers need proper quoting in CQL: personal space keys (e.g., "~username"), '
-                "reserved words, numeric IDs, and identifiers with special characters."
-            )
-        ),
-    ],
-    limit: Annotated[
-        int,
-        Field(
-            description="Maximum number of results (1-50)",
-            default=10,
-            ge=1,
-            le=50,
-        ),
-    ] = 10,
-) -> str:
-    """Search Confluence users using CQL.
-
-    Args:
-        ctx: The FastMCP context.
-        query: Search query - a CQL query string for user search.
-        limit: Maximum number of results (1-50).
-
-    Returns:
-        JSON string representing a list of simplified Confluence user search result objects.
-    """
-    confluence_fetcher = await get_confluence_fetcher(ctx)
-
-    # If the query doesn't look like CQL, wrap it as a user fullname search
-    if query and not any(
-        x in query for x in ["=", "~", ">", "<", " AND ", " OR ", "user."]
-    ):
-        # Simple search term - search by fullname
-        query = f'user.fullname ~ "{query}"'
-        logger.info(f"Converting simple search term to user CQL: {query}")
-
-    try:
-        user_results = confluence_fetcher.search_user(query, limit=limit)
-        search_results = [user.to_simplified_dict() for user in user_results]
-        return json.dumps(search_results, indent=2, ensure_ascii=False)
-    except MCPAtlassianAuthenticationError as e:
-        logger.error(f"Authentication error during user search: {e}", exc_info=False)
-        return json.dumps(
-            {
-                "error": "Authentication failed. Please check your credentials.",
-                "details": str(e),
-            },
-            indent=2,
-            ensure_ascii=False,
-        )
-    except Exception as e:
-        logger.error(f"Error searching users: {str(e)}")
-        return json.dumps(
-            {
-                "error": f"An unexpected error occurred while searching for users: {str(e)}"
-            },
-            indent=2,
-            ensure_ascii=False,
-        )
