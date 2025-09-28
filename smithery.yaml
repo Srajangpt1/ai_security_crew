@@ -1,4 +1,4 @@
-# Smithery.ai configuration for mcp-atlassian
+# Smithery.ai configuration for mcp-security-review
 startCommand:
   type: stdio # Specifies the server communicates over standard input/output
   configSchema:
@@ -69,7 +69,7 @@ startCommand:
     |-
     (config) => {
       // The command matches the ENTRYPOINT in the Dockerfile
-      const command = 'mcp-atlassian';
+      const command = 'mcp-security-review';
       const args = []; // No arguments needed as config is via ENV
 
       // Map the config schema properties to the environment variables

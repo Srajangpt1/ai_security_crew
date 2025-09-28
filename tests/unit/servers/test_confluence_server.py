@@ -11,12 +11,12 @@ from fastmcp import Client, FastMCP
 from fastmcp.client import FastMCPTransport
 from starlette.requests import Request
 
-from src.mcp_atlassian.confluence import ConfluenceFetcher
-from src.mcp_atlassian.confluence.config import ConfluenceConfig
-from src.mcp_atlassian.models.confluence.page import ConfluencePage
-from src.mcp_atlassian.servers.context import MainAppContext
-from src.mcp_atlassian.servers.main import AtlassianMCP
-from src.mcp_atlassian.utils.oauth import OAuthConfig
+from src.mcp_security_review.confluence import ConfluenceFetcher
+from src.mcp_security_review.confluence.config import ConfluenceConfig
+from src.mcp_security_review.models.confluence.page import ConfluencePage
+from src.mcp_security_review.servers.context import MainAppContext
+from src.mcp_security_review.servers.main import AtlassianMCP
+from src.mcp_security_review.utils.oauth import OAuthConfig
 
 logger = logging.getLogger(__name__)
 
@@ -117,7 +117,7 @@ def test_confluence_mcp(mock_confluence_fetcher, mock_base_confluence_config):
     """Create a test FastMCP instance with standard configuration."""
 
     # Import and register tool functions (as they are in confluence.py)
-    from src.mcp_atlassian.servers.confluence import (
+    from src.mcp_security_review.servers.confluence import (
         add_comment,
         add_label,
         create_page,
@@ -170,7 +170,7 @@ def no_fetcher_test_confluence_mcp(mock_base_confluence_config):
     """Create a test FastMCP instance that simulates missing Confluence fetcher."""
 
     # Import and register tool functions (as they are in confluence.py)
-    from src.mcp_atlassian.servers.confluence import (
+    from src.mcp_security_review.servers.confluence import (
         add_comment,
         add_label,
         create_page,

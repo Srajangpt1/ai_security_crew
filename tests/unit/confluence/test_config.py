@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 import pytest
 
-from mcp_atlassian.confluence.config import ConfluenceConfig
+from mcp_security_review.providers.atlassian.confluence.config import ConfluenceConfig
 
 
 def test_from_env_success():
@@ -163,7 +163,7 @@ def test_from_env_proxy_settings():
 
 def test_is_cloud_oauth_with_cloud_id():
     """Test that is_cloud returns True for OAuth with cloud_id regardless of URL."""
-    from mcp_atlassian.utils.oauth import BYOAccessTokenOAuthConfig
+    from mcp_security_review.utils.oauth import BYOAccessTokenOAuthConfig
 
     # OAuth with cloud_id and no URL - should be Cloud
     oauth_config = BYOAccessTokenOAuthConfig(

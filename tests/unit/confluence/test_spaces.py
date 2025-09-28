@@ -6,7 +6,7 @@ import pytest
 import requests
 from fixtures.confluence_mocks import MOCK_SPACES_RESPONSE
 
-from mcp_atlassian.confluence.spaces import SpacesMixin
+from mcp_security_review.providers.atlassian.confluence.spaces import SpacesMixin
 
 
 class TestSpacesMixin:
@@ -17,7 +17,7 @@ class TestSpacesMixin:
         """Create a SpacesMixin instance for testing."""
         # SpacesMixin inherits from ConfluenceClient, so we need to create it properly
         with patch(
-            "mcp_atlassian.confluence.spaces.ConfluenceClient.__init__"
+            "mcp_security_review.confluence.spaces.ConfluenceClient.__init__"
         ) as mock_init:
             mock_init.return_value = None
             mixin = SpacesMixin()

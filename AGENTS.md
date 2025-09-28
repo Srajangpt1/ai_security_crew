@@ -10,11 +10,11 @@ This file provides guidance for autonomous coding agents working inside the **MC
 
 | Path | Purpose |
 | --- | --- |
-| `src/mcp_atlassian/` | Library source code (Python ≥ 3.10) |
-| `  ├─ jira/` | Jira client, mixins, and operations |
-| `  ├─ confluence/` | Confluence client, mixins, and operations |
-| `  ├─ models/` | Pydantic data models for API responses |
+| `src/mcp_security_review/` | Library source code (Python ≥ 3.10) |
+| `  ├─ providers/atlassian/` | Atlassian service providers (Jira, Confluence) |
+| `  ├─ models/atlassian/` | Pydantic data models for Atlassian APIs |
 | `  ├─ servers/` | FastMCP server implementations |
+| `  ├─ security/` | Security assessment and guidelines |
 | `  └─ utils/` | Shared utilities (auth, logging, SSL) |
 | `tests/` | Pytest test suite with fixtures |
 | `scripts/` | OAuth setup and testing scripts |
@@ -36,7 +36,7 @@ uv run pytest                        # run full test suite
 
 ## Core MCP patterns
 
-**Tool naming**: `{service}_{action}` (e.g., `jira_create_issue`)
+**Tool naming**: `{provider}_{service}_{action}` (e.g., `atlassian_jira_create_issue`)
 
 **Architecture**:
 - **Mixins**: Functionality split into focused mixins extending base clients

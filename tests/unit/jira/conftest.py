@@ -11,8 +11,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from mcp_atlassian.jira.client import JiraClient
-from mcp_atlassian.jira.config import JiraConfig
+from mcp_security_review.providers.atlassian.jira.client import JiraClient
+from mcp_security_review.providers.atlassian.jira.config import JiraConfig
 from tests.utils.factories import AuthConfigFactory, JiraIssueFactory
 from tests.utils.mocks import MockAtlassianClient
 
@@ -412,7 +412,7 @@ def jira_fetcher(mock_config, mock_atlassian_jira):
     Returns:
         JiraFetcher: Configured fetcher instance
     """
-    from mcp_atlassian.jira import JiraFetcher
+    from mcp_security_review.providers.atlassian.jira import JiraFetcher
 
     with patch("atlassian.Jira") as mock_jira_class:
         mock_jira_class.return_value = mock_atlassian_jira

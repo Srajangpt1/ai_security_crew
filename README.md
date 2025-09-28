@@ -56,7 +56,7 @@ MCP Security Review supports three authentication methods:
    ```bash
    docker run --rm -i \
      -p 8080:8080 \
-     -v "${HOME}/.mcp-atlassian:/home/app/.mcp-atlassian" \
+     -v "${HOME}/.mcp-security-review:/home/app/.mcp-security-review" \
      ghcr.io/ai-security-crew/mcp-security-review:latest --oauth-setup -v
    ```
 6. Follow prompts for `Client ID`, `Secret`, `URI`, and `Scope`
@@ -74,7 +74,7 @@ MCP Security Review supports three authentication methods:
 <details>
 <summary>Alternative: Using a Pre-existing OAuth Access Token (BYOT)</summary>
 
-If you are running mcp-atlassian part of a larger system that manages Atlassian OAuth 2.0 access tokens externally (e.g., through a central identity provider or another application), you can provide an access token directly to this MCP server. This method bypasses the interactive setup wizard and the server's internal token management (including refresh capabilities).
+If you are running mcp-security-review part of a larger system that manages Atlassian OAuth 2.0 access tokens externally (e.g., through a central identity provider or another application), you can provide an access token directly to this MCP server. This method bypasses the interactive setup wizard and the server's internal token management (including refresh capabilities).
 
 **Requirements:**
 - A valid Atlassian OAuth 2.0 Access Token with the necessary scopes for the intended operations.
@@ -89,7 +89,7 @@ To use this method, set the following environment variables (or use the correspo
 - **Token Lifecycle Management:** When using BYOT, the MCP server **does not** handle token refresh. The responsibility for obtaining, refreshing (before expiry), and revoking the access token lies entirely with you or the external system providing the token.
 - **Unused Variables:** The standard OAuth client variables (`ATLASSIAN_OAUTH_CLIENT_ID`, `ATLASSIAN_OAUTH_CLIENT_SECRET`, `ATLASSIAN_OAUTH_REDIRECT_URI`, `ATLASSIAN_OAUTH_SCOPE`) are **not** used and can be omitted when configuring for BYOT.
 - **No Setup Wizard:** The `--oauth-setup` wizard is not applicable and should not be used for this approach.
-- **No Token Cache Volume:** The Docker volume mount for token storage (e.g., `-v "${HOME}/.mcp-atlassian:/home/app/.mcp-atlassian"`) is also not necessary if you are exclusively using the BYOT method, as no tokens are stored or managed by this server.
+- **No Token Cache Volume:** The Docker volume mount for token storage (e.g., `-v "${HOME}/.mcp-security-review:/home/app/.mcp-security-review"`) is also not necessary if you are exclusively using the BYOT method, as no tokens are stored or managed by this server.
 - **Scope:** The provided access token must already have the necessary permissions (scopes) for the Jira/Confluence operations you intend to perform.
 
 This option is useful in scenarios where OAuth credential management is centralized or handled by other infrastructure components.
@@ -136,7 +136,7 @@ There are two main approaches to configure the Docker container:
 > - `MCP_LOGGING_STDOUT`: Set to "true" to log to stdout instead of stderr
 > - `ENABLED_TOOLS`: Comma-separated list of tool names to enable (e.g., "confluence_search,jira_get_issue")
 >
-> See the [.env.example](https://github.com/sooperset/mcp-atlassian/blob/main/.env.example) file for all available options.
+> See the [.env.example](https://github.com/ai-security-crew/mcp-security-review/blob/main/.env.example) file for all available options.
 
 
 ### 📝 Configuration Examples
@@ -145,7 +145,7 @@ There are two main approaches to configure the Docker container:
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian": {
+    "mcp-security-review": {
       "command": "docker",
       "args": [
         "run",
@@ -178,14 +178,14 @@ There are two main approaches to configure the Docker container:
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian": {
+    "mcp-security-review": {
       "command": "docker",
       "args": [
         "run",
         "--rm",
         "-i",
         "--env-file",
-        "/path/to/your/mcp-atlassian.env",
+        "/path/to/your/mcp-security-review.env",
         "ghcr.io/ai-security-crew/mcp-security-review:latest"
       ]
     }
@@ -202,7 +202,7 @@ For Server/Data Center deployments, use direct variable passing:
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian": {
+    "mcp-security-review": {
       "command": "docker",
       "args": [
         "run",
@@ -238,7 +238,7 @@ For Server/Data Center deployments, use direct variable passing:
 <summary>OAuth 2.0 Configuration (Cloud Only)</summary>
 <a name="oauth-20-configuration-example-cloud-only"></a>
 
-These examples show how to configure `mcp-atlassian` in your IDE (like Cursor or Claude Desktop) when using OAuth 2.0 for Atlassian Cloud.
+These examples show how to configure `mcp-security-review` in your IDE (like Cursor or Claude Desktop) when using OAuth 2.0 for Atlassian Cloud.
 
 **Example for Standard OAuth 2.0 Flow (using Setup Wizard):**
 
@@ -247,13 +247,13 @@ This configuration is for when you use the server's built-in OAuth client and ha
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian": {
+    "mcp-security-review": {
       "command": "docker",
       "args": [
         "run",
         "--rm",
         "-i",
-        "-v", "<path_to_your_home>/.mcp-atlassian:/home/app/.mcp-atlassian",
+        "-v", "<path_to_your_home>/.mcp-security-review:/home/app/.mcp-security-review",
         "-e", "JIRA_URL",
         "-e", "CONFLUENCE_URL",
         "-e", "ATLASSIAN_OAUTH_CLIENT_ID",
@@ -282,7 +282,7 @@ This configuration is for when you use the server's built-in OAuth client and ha
 >   - `ATLASSIAN_OAUTH_CLOUD_ID` is obtained from the `--oauth-setup` wizard output or is known for your instance.
 >   - Other `ATLASSIAN_OAUTH_*` client variables are from your OAuth app in the Atlassian Developer Console.
 >   - `JIRA_URL` and `CONFLUENCE_URL` for your Cloud instances are always required.
->   - The volume mount (`-v .../.mcp-atlassian:/home/app/.mcp-atlassian`) is crucial for persisting the OAuth tokens obtained by the wizard, enabling automatic refresh.
+>   - The volume mount (`-v .../.mcp-security-review:/home/app/.mcp-security-review`) is crucial for persisting the OAuth tokens obtained by the wizard, enabling automatic refresh.
 
 **Example for Pre-existing Access Token (BYOT - Bring Your Own Token):**
 
@@ -291,7 +291,7 @@ This configuration is for when you are providing your own externally managed OAu
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian": {
+    "mcp-security-review": {
       "command": "docker",
       "args": [
         "run",
@@ -318,7 +318,7 @@ This configuration is for when you are providing your own externally managed OAu
 > - For the BYOT Method:
 >   - You primarily need `JIRA_URL`, `CONFLUENCE_URL`, `ATLASSIAN_OAUTH_CLOUD_ID`, and `ATLASSIAN_OAUTH_ACCESS_TOKEN`.
 >   - Standard OAuth client variables (`ATLASSIAN_OAUTH_CLIENT_ID`, `CLIENT_SECRET`, `REDIRECT_URI`, `SCOPE`) are **not** used.
->   - Token lifecycle (e.g., refreshing the token before it expires and restarting mcp-atlassian) is your responsibility, as the server will not refresh BYOT tokens.
+>   - Token lifecycle (e.g., refreshing the token before it expires and restarting mcp-security-review) is your responsibility, as the server will not refresh BYOT tokens.
 
 </details>
 
@@ -336,7 +336,7 @@ Add the relevant proxy variables to the `args` (using `-e`) and `env` sections o
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian": {
+    "mcp-security-review": {
       "command": "docker",
       "args": [
         "run",
@@ -372,7 +372,7 @@ Custom headers are configured using environment variables with comma-separated k
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian": {
+    "mcp-security-review": {
       "command": "docker",
       "args": [
         "run",
@@ -396,7 +396,7 @@ Custom headers are configured using environment variables with comma-separated k
         "JIRA_URL": "https://your-company.atlassian.net",
         "JIRA_USERNAME": "your.email@company.com",
         "JIRA_API_TOKEN": "your_jira_api_token",
-        "JIRA_CUSTOM_HEADERS": "X-Forwarded-User=service-account,X-Company-Service=mcp-atlassian,X-Jira-Client=mcp-integration"
+        "JIRA_CUSTOM_HEADERS": "X-Forwarded-User=service-account,X-Company-Service=mcp-security-review,X-Jira-Client=mcp-integration"
       }
     }
   }
@@ -479,7 +479,7 @@ asyncio.run(main())
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian": {
+    "mcp-security-review": {
       "command": "docker",
       "args": [
         "run",
@@ -504,7 +504,7 @@ For Confluence Server/DC, use:
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian": {
+    "mcp-security-review": {
       "command": "docker",
       "args": [
         "run",
@@ -528,7 +528,7 @@ For Confluence Server/DC, use:
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian": {
+    "mcp-security-review": {
       "command": "docker",
       "args": [
         "run",
@@ -553,7 +553,7 @@ For Jira Server/DC, use:
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian": {
+    "mcp-security-review": {
       "command": "docker",
       "args": [
         "run",
@@ -612,7 +612,7 @@ Both transport types support single-user and multi-user authentication:
     ```json
     {
       "mcpServers": {
-        "mcp-atlassian-http": {
+        "mcp-security-review-http": {
           "url": "http://localhost:9000/sse"
         }
       }
@@ -623,7 +623,7 @@ Both transport types support single-user and multi-user authentication:
     ```json
     {
       "mcpServers": {
-        "mcp-atlassian-service": {
+        "mcp-security-review-service": {
           "url": "http://localhost:9000/mcp"
         }
       }
@@ -639,7 +639,7 @@ Here's a complete example of setting up multi-user authentication with streamabl
    ```bash
    docker run --rm -i \
      -p 8080:8080 \
-     -v "${HOME}/.mcp-atlassian:/home/app/.mcp-atlassian" \
+     -v "${HOME}/.mcp-security-review:/home/app/.mcp-security-review" \
      ghcr.io/ai-security-crew/mcp-security-review:latest --oauth-setup -v
    ```
 
@@ -662,7 +662,7 @@ Here's a complete example of setting up multi-user authentication with streamabl
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian-service": {
+    "mcp-security-review-service": {
       "url": "http://localhost:9000/mcp",
       "headers": {
         "Authorization": "Bearer <USER_OAUTH_ACCESS_TOKEN>"
@@ -676,7 +676,7 @@ Here's a complete example of setting up multi-user authentication with streamabl
 ```json
 {
   "mcpServers": {
-    "mcp-atlassian-service": {
+    "mcp-security-review-service": {
       "url": "http://localhost:9000/mcp",
       "headers": {
         "Authorization": "Token <USER_PERSONAL_ACCESS_TOKEN>"
@@ -810,10 +810,10 @@ To verify custom headers are being applied correctly:
 
 ```bash
 # Using MCP Inspector for testing
-npx @modelcontextprotocol/inspector uvx mcp-atlassian ...
+npx @modelcontextprotocol/inspector uvx mcp-security-review ...
 
 # For local development version
-npx @modelcontextprotocol/inspector uv --directory /path/to/your/mcp-atlassian run mcp-atlassian ...
+npx @modelcontextprotocol/inspector uv --directory /path/to/your/mcp-security-review run mcp-security-review ...
 
 # View logs
 # macOS

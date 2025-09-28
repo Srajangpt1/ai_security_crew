@@ -4,8 +4,8 @@ from unittest.mock import MagicMock, mock_open, patch
 
 import pytest
 
-from mcp_atlassian.jira import JiraFetcher
-from mcp_atlassian.jira.attachments import AttachmentsMixin
+from mcp_security_review.providers.atlassian.jira import JiraFetcher
+from mcp_security_review.providers.atlassian.jira.attachments import AttachmentsMixin
 
 # Test scenarios for AttachmentsMixin
 #
@@ -228,7 +228,7 @@ class TestAttachmentsMixin:
             ) as mock_download,
             patch("pathlib.Path.mkdir") as mock_mkdir,
             patch(
-                "mcp_atlassian.models.jira.JiraAttachment.from_api_response",
+                "mcp_security_review.models.jira.JiraAttachment.from_api_response",
                 side_effect=[mock_attachment1, mock_attachment2],
             ),
         ):
@@ -276,7 +276,7 @@ class TestAttachmentsMixin:
             ) as mock_download,
             patch("pathlib.Path.mkdir") as mock_mkdir,
             patch(
-                "mcp_atlassian.models.jira.JiraAttachment.from_api_response",
+                "mcp_security_review.models.jira.JiraAttachment.from_api_response",
                 return_value=mock_attachment,
             ),
             patch("os.path.isabs") as mock_isabs,
@@ -383,7 +383,7 @@ class TestAttachmentsMixin:
             ) as mock_download,
             patch("pathlib.Path.mkdir") as mock_mkdir,
             patch(
-                "mcp_atlassian.models.jira.JiraAttachment.from_api_response",
+                "mcp_security_review.models.jira.JiraAttachment.from_api_response",
                 side_effect=[mock_attachment1, mock_attachment2],
             ),
         ):
@@ -427,7 +427,7 @@ class TestAttachmentsMixin:
         with (
             patch("pathlib.Path.mkdir") as mock_mkdir,
             patch(
-                "mcp_atlassian.models.jira.JiraAttachment.from_api_response",
+                "mcp_security_review.models.jira.JiraAttachment.from_api_response",
                 return_value=mock_attachment,
             ),
         ):

@@ -5,9 +5,9 @@ from unittest.mock import ANY, MagicMock
 import pytest
 import requests
 
-from mcp_atlassian.jira import JiraFetcher
-from mcp_atlassian.jira.search import SearchMixin
-from mcp_atlassian.models.jira import JiraIssue, JiraSearchResult
+from mcp_security_review.providers.atlassian.jira import JiraFetcher
+from mcp_security_review.providers.atlassian.jira.search import SearchMixin
+from mcp_security_review.models.atlassian.jira import JiraIssue, JiraSearchResult
 
 
 class TestSearchMixin:

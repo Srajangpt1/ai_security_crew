@@ -6,8 +6,8 @@ from typing import Any
 
 import pytest
 
-from src.mcp_atlassian.models.base import ApiModel, TimestampMixin
-from src.mcp_atlassian.models.constants import EMPTY_STRING
+from src.mcp_security_review.models.base import ApiModel, TimestampMixin
+from src.mcp_security_review.models.constants import EMPTY_STRING
 
 
 class TestApiModel:

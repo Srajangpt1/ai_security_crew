@@ -16,7 +16,7 @@ I've successfully refactored the security guidelines system from a hardcoded Pyt
 ### File Structure
 
 ```
-src/mcp_atlassian/security/guidelines/
+src/mcp_security_review/security/guidelines/
 ├── __init__.py                    # Module initialization
 ├── base.py                       # SecurityGuideline data class
 ├── loader.py                     # SecurityGuidelinesLoader class
@@ -94,7 +94,7 @@ def secure_function():
 
 1. **Create a new file**:
 ```bash
-touch src/mcp_atlassian/security/guidelines/oauth_security.md
+touch src/mcp_security_review/security/guidelines/oauth_security.md
 ```
 
 2. **Add content**:
@@ -132,7 +132,7 @@ python3 scripts/test_guidelines_standalone.py
 ### Using Guidelines in Code
 
 ```python
-from mcp_atlassian.security.guidelines import SecurityGuidelinesLoader
+from mcp_security_review.security.guidelines import SecurityGuidelinesLoader
 
 # Load guidelines
 loader = SecurityGuidelinesLoader()
@@ -173,7 +173,7 @@ The file-based guidelines system seamlessly integrates with the existing securit
 ### Example Assessment Flow
 
 ```python
-from mcp_atlassian.security import SecurityAssessment
+from mcp_security_review.security import SecurityAssessment
 
 # Create assessment instance
 assessment = SecurityAssessment()

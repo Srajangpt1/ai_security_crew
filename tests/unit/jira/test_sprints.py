@@ -5,9 +5,9 @@ from unittest.mock import MagicMock
 import pytest
 import requests
 
-from mcp_atlassian.jira import JiraConfig
-from mcp_atlassian.jira.sprints import SprintsMixin
-from mcp_atlassian.models.jira import JiraSprint
+from mcp_security_review.providers.atlassian.jira import JiraConfig
+from mcp_security_review.providers.atlassian.jira.sprints import SprintsMixin
+from mcp_security_review.models.atlassian.jira import JiraSprint
 
 
 @pytest.fixture

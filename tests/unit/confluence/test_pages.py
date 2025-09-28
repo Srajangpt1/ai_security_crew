@@ -4,8 +4,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from mcp_atlassian.confluence.pages import PagesMixin
-from mcp_atlassian.models.confluence import ConfluencePage
+from mcp_security_review.providers.atlassian.confluence.pages import PagesMixin
+from mcp_security_review.models.atlassian.confluence import ConfluencePage
 
 
 class TestPagesMixin:
@@ -16,7 +16,7 @@ class TestPagesMixin:
         """Create a PagesMixin instance for testing."""
         # PagesMixin inherits from ConfluenceClient, so we need to create it properly
         with patch(
-            "mcp_atlassian.confluence.pages.ConfluenceClient.__init__"
+            "mcp_security_review.confluence.pages.ConfluenceClient.__init__"
         ) as mock_init:
             mock_init.return_value = None
             mixin = PagesMixin()
@@ -854,7 +854,7 @@ class TestPagesOAuthMixin:
         """Create a PagesMixin instance for OAuth testing."""
         # PagesMixin inherits from ConfluenceClient, so we need to create it properly
         with patch(
-            "mcp_atlassian.confluence.pages.ConfluenceClient.__init__"
+            "mcp_security_review.confluence.pages.ConfluenceClient.__init__"
         ) as mock_init:
             mock_init.return_value = None
             mixin = PagesMixin()
@@ -874,7 +874,7 @@ class TestPagesOAuthMixin:
 
         # Mock the v2 adapter
         with patch(
-            "mcp_atlassian.confluence.pages.ConfluenceV2Adapter"
+            "mcp_security_review.confluence.pages.ConfluenceV2Adapter"
         ) as mock_v2_adapter_class:
             mock_v2_adapter = MagicMock()
             mock_v2_adapter_class.return_value = mock_v2_adapter
@@ -924,7 +924,7 @@ class TestPagesOAuthMixin:
 
         # Mock the v2 adapter
         with patch(
-            "mcp_atlassian.confluence.pages.ConfluenceV2Adapter"
+            "mcp_security_review.confluence.pages.ConfluenceV2Adapter"
         ) as mock_v2_adapter_class:
             mock_v2_adapter = MagicMock()
             mock_v2_adapter_class.return_value = mock_v2_adapter
@@ -983,7 +983,7 @@ class TestPagesOAuthMixin:
 
         # Mock the v2 adapter
         with patch(
-            "mcp_atlassian.confluence.pages.ConfluenceV2Adapter"
+            "mcp_security_review.confluence.pages.ConfluenceV2Adapter"
         ) as mock_v2_adapter_class:
             mock_v2_adapter = MagicMock()
             mock_v2_adapter_class.return_value = mock_v2_adapter
@@ -1036,7 +1036,7 @@ class TestPagesOAuthMixin:
 
         # Mock the v2 adapter
         with patch(
-            "mcp_atlassian.confluence.pages.ConfluenceV2Adapter"
+            "mcp_security_review.confluence.pages.ConfluenceV2Adapter"
         ) as mock_v2_adapter_class:
             mock_v2_adapter = MagicMock()
             mock_v2_adapter_class.return_value = mock_v2_adapter
@@ -1091,7 +1091,7 @@ class TestPagesOAuthMixin:
 
         # Mock the v2 adapter
         with patch(
-            "mcp_atlassian.confluence.pages.ConfluenceV2Adapter"
+            "mcp_security_review.confluence.pages.ConfluenceV2Adapter"
         ) as mock_v2_adapter_class:
             mock_v2_adapter = MagicMock()
             mock_v2_adapter_class.return_value = mock_v2_adapter

@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, patch
 from requests.adapters import HTTPAdapter
 from requests.sessions import Session
 
-from mcp_atlassian.utils.ssl import SSLIgnoreAdapter, configure_ssl_verification
+from mcp_security_review.utils.ssl import SSLIgnoreAdapter, configure_ssl_verification
 
 
 def test_ssl_ignore_adapter_cert_verify():
@@ -45,7 +45,7 @@ def test_ssl_ignore_adapter_init_poolmanager():
 
         # Patch the PoolManager constructor
         with patch(
-            "mcp_atlassian.utils.ssl.PoolManager", return_value=mock_pool_manager
+            "mcp_security_review.utils.ssl.PoolManager", return_value=mock_pool_manager
         ) as mock_pool_manager_cls:
             # Act
             adapter.init_poolmanager(5, 10, block=True)
@@ -73,8 +73,8 @@ def test_configure_ssl_verification_disabled():
     ssl_verify = False
 
     # Mock the logger to avoid issues with real logging
-    with patch("mcp_atlassian.utils.ssl.logger") as mock_logger:
-        with patch("mcp_atlassian.utils.ssl.SSLIgnoreAdapter") as mock_adapter_class:
+    with patch("mcp_security_review.utils.ssl.logger") as mock_logger:
+        with patch("mcp_security_review.utils.ssl.SSLIgnoreAdapter") as mock_adapter_class:
             mock_adapter = MagicMock()
             mock_adapter_class.return_value = mock_adapter
 
@@ -97,7 +97,7 @@ def test_configure_ssl_verification_enabled():
     session = MagicMock()  # Use MagicMock instead of actual Session
     ssl_verify = True
 
-    with patch("mcp_atlassian.utils.ssl.SSLIgnoreAdapter") as mock_adapter_class:
+    with patch("mcp_security_review.utils.ssl.SSLIgnoreAdapter") as mock_adapter_class:
         # Act
         configure_ssl_verification(service_name, url, session, ssl_verify)
 
@@ -129,7 +129,7 @@ def test_configure_ssl_verification_disabled_with_real_session():
     original_adapters_count = len(session.adapters)
 
     # Mock the logger to avoid issues with real logging
-    with patch("mcp_atlassian.utils.ssl.logger") as mock_logger:
+    with patch("mcp_security_review.utils.ssl.logger") as mock_logger:
         # Configure with SSL verification disabled
         configure_ssl_verification(
             service_name="Test",

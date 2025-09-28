@@ -36,7 +36,7 @@ requires = ["hatchling", "uv-dynamic-versioning>=0.7.0"]
 build-backend = "hatchling.build"
 
 [project.scripts]
-mcp-security-review = "mcp_atlassian:main"
+mcp-security-review = "mcp_security_review:main"
 
 [dependency-groups]
 dev = [
@@ -89,7 +89,7 @@ dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 [tool.ruff.lint.per-file-ignores]
 "tests/**/*.py" = ["S", "ANN", "B017"]
 "tests/fixtures/*.py" = ["E501"]
-"src/mcp_atlassian/server.py" = ["E501"]
+"src/mcp_security_review/server.py" = ["E501"]
 
 [tool.ruff.format]
 quote-style = "double"
@@ -131,7 +131,7 @@ module = "markdownify.*"
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-module = "src.mcp_atlassian.*"
+module = "src.mcp_security_review.*"
 disallow_untyped_defs = false
 
 [tool.hatch.version]

@@ -1,7 +1,7 @@
 """Tests for SecurityAnalyzer class."""
 
 import pytest
-from mcp_atlassian.security.analyzer import SecurityAnalyzer, SecurityContext
+from mcp_security_review.security.analyzer import SecurityAnalyzer, SecurityContext
 
 
 class TestSecurityAnalyzer:

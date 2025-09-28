@@ -2,7 +2,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from mcp_atlassian.utils.decorators import check_write_access
+from mcp_security_review.utils.decorators import check_write_access
 
 
 class DummyContext:

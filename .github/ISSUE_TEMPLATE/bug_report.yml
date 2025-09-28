@@ -1,5 +1,5 @@
 name: "\U0001F41B Bug Report"
-description: Create a report to help us improve mcp-atlassian
+description: Create a report to help us improve mcp-security-review
 title: "[Bug]: "
 labels: ["bug"]
 body:
@@ -13,9 +13,9 @@ body:
       label: Prerequisites
       description: Please confirm the following before submitting the issue.
       options:
-        - label: I have searched the [existing issues](https://github.com/sooperset/mcp-atlassian/issues) to make sure this bug has not already been reported.
+        - label: I have searched the [existing issues](https://github.com/ai-security-crew/mcp-security-review/issues) to make sure this bug has not already been reported.
           required: true
-        - label: I have checked the [README](https://github.com/sooperset/mcp-atlassian/blob/main/README.md) for relevant information.
+        - label: I have checked the [README](https://github.com/ai-security-crew/mcp-security-review/blob/main/README.md) for relevant information.
           required: true
   - type: textarea
     id: description
@@ -57,8 +57,8 @@ body:
   - type: input
     id: version
     attributes:
-      label: mcp-atlassian Version
-      description: Which version of `mcp-atlassian` are you using? (Check `pip show mcp-atlassian` or `pyproject.toml`)
+      label: mcp-security-review Version
+      description: Which version of `mcp-security-review` are you using? (Check `pip show mcp-security-review` or `pyproject.toml`)
       placeholder: "e.g., 0.6.5"
     validations:
       required: true
@@ -66,9 +66,9 @@ body:
     id: installation
     attributes:
       label: Installation Method
-      description: How did you install `mcp-atlassian`?
+      description: How did you install `mcp-security-review`?
       options:
-        - From PyPI (pip install mcp-atlassian / uv add mcp-atlassian)
+        - From PyPI (pip install mcp-security-review / uv add mcp-security-review)
         - From source (git clone)
         - Docker
         - Other

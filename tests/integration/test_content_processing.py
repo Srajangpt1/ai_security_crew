@@ -9,8 +9,8 @@ from typing import Any
 
 import pytest
 
-from mcp_atlassian.preprocessing.confluence import ConfluencePreprocessor
-from mcp_atlassian.preprocessing.jira import JiraPreprocessor
+from mcp_security_review.preprocessing.confluence import ConfluencePreprocessor
+from mcp_security_review.preprocessing.jira import JiraPreprocessor
 
 
 class MockConfluenceClient:

@@ -1,7 +1,7 @@
 import io
 import logging
 
-from mcp_atlassian.utils.logging import setup_logging
+from mcp_security_review.utils.logging import setup_logging
 
 
 def test_setup_logging_default_level():
@@ -53,7 +53,7 @@ def test_setup_logging_removes_existing_handlers():
 def test_setup_logging_logger_name():
     """Test that setup_logging creates logger with correct name"""
     logger = setup_logging()
-    assert logger.name == "mcp-atlassian"
+    assert logger.name == "mcp-security-review"
 
 
 def test_setup_logging_logging_stream():

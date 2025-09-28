@@ -39,9 +39,9 @@ class TestMainTransportSelection:
 
         This is a regression test for issues #519 and #524.
         """
-        with patch("mcp_atlassian.servers.main.AtlassianMCP", return_value=mock_server):
+        with patch("mcp_security_review.servers.main.AtlassianMCP", return_value=mock_server):
             with patch.dict("os.environ", {"TRANSPORT": transport}):
-                with patch("sys.argv", ["mcp-atlassian"]):
+                with patch("sys.argv", ["mcp-security-review"]):
                     try:
                         main()
                     except SystemExit:
@@ -60,10 +60,10 @@ class TestMainTransportSelection:
 
     def test_cli_overrides_env_transport(self, mock_server, mock_asyncio_run):
         """Test that CLI transport argument overrides environment variable."""
-        with patch("mcp_atlassian.servers.main.AtlassianMCP", return_value=mock_server):
+        with patch("mcp_security_review.servers.main.AtlassianMCP", return_value=mock_server):
             with patch.dict("os.environ", {"TRANSPORT": "sse"}):
                 # Simulate CLI args with --transport stdio
-                with patch("sys.argv", ["mcp-atlassian", "--transport", "stdio"]):
+                with patch("sys.argv", ["mcp-security-review", "--transport", "stdio"]):
                     try:
                         main()
                     except SystemExit:
@@ -76,12 +76,12 @@ class TestMainTransportSelection:
 
     def test_signal_handlers_always_setup(self, mock_server):
         """Test that signal handlers are set up regardless of transport."""
-        with patch("mcp_atlassian.servers.main.AtlassianMCP", return_value=mock_server):
+        with patch("mcp_security_review.servers.main.AtlassianMCP", return_value=mock_server):
             with patch("asyncio.run"):
                 # Patch where it's imported in the main module
-                with patch("mcp_atlassian.setup_signal_handlers") as mock_setup:
+                with patch("mcp_security_review.setup_signal_handlers") as mock_setup:
                     with patch.dict("os.environ", {"TRANSPORT": "stdio"}):
-                        with patch("sys.argv", ["mcp-atlassian"]):
+                        with patch("sys.argv", ["mcp-security-review"]):
                             try:
                                 main()
                             except SystemExit:
@@ -100,13 +100,13 @@ class TestMainTransportSelection:
 
         mock_server.run_async = failing_run_async
 
-        with patch("mcp_atlassian.servers.main.AtlassianMCP", return_value=mock_server):
+        with patch("mcp_security_review.servers.main.AtlassianMCP", return_value=mock_server):
             with patch("asyncio.run") as mock_run:
                 # Simulate the exception propagating through asyncio.run
                 mock_run.side_effect = error
 
                 with patch.dict("os.environ", {"TRANSPORT": "stdio"}):
-                    with patch("sys.argv", ["mcp-atlassian"]):
+                    with patch("sys.argv", ["mcp-security-review"]):
                         # The main function logs the error and exits with code 1
                         with patch("sys.exit") as mock_exit:
                             main()

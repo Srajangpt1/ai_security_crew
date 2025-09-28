@@ -6,15 +6,15 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from mcp_atlassian.confluence import ConfluenceConfig, ConfluenceFetcher
-from mcp_atlassian.jira import JiraConfig, JiraFetcher
-from mcp_atlassian.servers.context import MainAppContext
-from mcp_atlassian.servers.dependencies import (
+from mcp_security_review.providers.atlassian.confluence import ConfluenceConfig, ConfluenceFetcher
+from mcp_security_review.providers.atlassian.jira import JiraConfig, JiraFetcher
+from mcp_security_review.servers.context import MainAppContext
+from mcp_security_review.servers.dependencies import (
     _create_user_config_for_fetcher,
     get_confluence_fetcher,
     get_jira_fetcher,
 )
-from mcp_atlassian.utils.oauth import OAuthConfig
+from mcp_security_review.utils.oauth import OAuthConfig
 from tests.utils.assertions import assert_mock_called_with_partial
 from tests.utils.factories import AuthConfigFactory
 from tests.utils.mocks import MockFastMCP
@@ -421,8 +421,8 @@ def _create_mock_fetcher(fetcher_class, validation_return=None, validation_error
 class TestGetJiraFetcher:
     """Tests for get_jira_fetcher function."""
 
-    @patch("mcp_atlassian.servers.dependencies.get_http_request")
-    @patch("mcp_atlassian.servers.dependencies.JiraFetcher")
+    @patch("mcp_security_review.servers.dependencies.get_http_request")
+    @patch("mcp_security_review.servers.dependencies.JiraFetcher")
     async def test_cached_fetcher_returned(
         self, mock_jira_fetcher_class, mock_get_http_request, mock_context, mock_request
     ):
@@ -437,8 +437,8 @@ class TestGetJiraFetcher:
         mock_jira_fetcher_class.assert_not_called()
 
     @pytest.mark.parametrize("scenario_key", ["oauth", "pat"])
-    @patch("mcp_atlassian.servers.dependencies.get_http_request")
-    @patch("mcp_atlassian.servers.dependencies.JiraFetcher")
+    @patch("mcp_security_review.servers.dependencies.get_http_request")
+    @patch("mcp_security_review.servers.dependencies.JiraFetcher")
     async def test_user_specific_fetcher_creation(
         self,
         mock_jira_fetcher_class,
@@ -483,8 +483,8 @@ class TestGetJiraFetcher:
         elif scenario["auth_type"] == "pat":
             assert called_config.personal_token == scenario["token"]
 
-    @patch("mcp_atlassian.servers.dependencies.get_http_request")
-    @patch("mcp_atlassian.servers.dependencies.JiraFetcher")
+    @patch("mcp_security_review.servers.dependencies.get_http_request")
+    @patch("mcp_security_review.servers.dependencies.JiraFetcher")
     async def test_global_fallback_scenarios(
         self,
         mock_jira_fetcher_class,
@@ -539,8 +539,8 @@ class TestGetJiraFetcher:
             ),
         ],
     )
-    @patch("mcp_atlassian.servers.dependencies.get_http_request")
-    @patch("mcp_atlassian.servers.dependencies.JiraFetcher")
+    @patch("mcp_security_review.servers.dependencies.get_http_request")
+    @patch("mcp_security_review.servers.dependencies.JiraFetcher")
     async def test_error_scenarios(
         self,
         mock_jira_fetcher_class,
@@ -591,8 +591,8 @@ class TestGetJiraFetcher:
 class TestGetConfluenceFetcher:
     """Tests for get_confluence_fetcher function."""
 
-    @patch("mcp_atlassian.servers.dependencies.get_http_request")
-    @patch("mcp_atlassian.servers.dependencies.ConfluenceFetcher")
+    @patch("mcp_security_review.servers.dependencies.get_http_request")
+    @patch("mcp_security_review.servers.dependencies.ConfluenceFetcher")
     async def test_cached_fetcher_returned(
         self,
         mock_confluence_fetcher_class,
@@ -611,8 +611,8 @@ class TestGetConfluenceFetcher:
         mock_confluence_fetcher_class.assert_not_called()
 
     @pytest.mark.parametrize("scenario_key", ["oauth", "pat"])
-    @patch("mcp_atlassian.servers.dependencies.get_http_request")
-    @patch("mcp_atlassian.servers.dependencies.ConfluenceFetcher")
+    @patch("mcp_security_review.servers.dependencies.get_http_request")
+    @patch("mcp_security_review.servers.dependencies.ConfluenceFetcher")
     async def test_user_specific_fetcher_creation(
         self,
         mock_confluence_fetcher_class,
@@ -657,8 +657,8 @@ class TestGetConfluenceFetcher:
         elif scenario["auth_type"] == "pat":
             assert called_config.personal_token == scenario["token"]
 
-    @patch("mcp_atlassian.servers.dependencies.get_http_request")
-    @patch("mcp_atlassian.servers.dependencies.ConfluenceFetcher")
+    @patch("mcp_security_review.servers.dependencies.get_http_request")
+    @patch("mcp_security_review.servers.dependencies.ConfluenceFetcher")
     async def test_global_fallback_scenarios(
         self,
         mock_confluence_fetcher_class,
@@ -708,8 +708,8 @@ class TestGetConfluenceFetcher:
             ("preserve_existing", "existing@example.com"),
         ],
     )
-    @patch("mcp_atlassian.servers.dependencies.get_http_request")
-    @patch("mcp_atlassian.servers.dependencies.ConfluenceFetcher")
+    @patch("mcp_security_review.servers.dependencies.get_http_request")
+    @patch("mcp_security_review.servers.dependencies.ConfluenceFetcher")
     async def test_email_derivation_behavior(
         self,
         mock_confluence_fetcher_class,
@@ -767,8 +767,8 @@ class TestGetConfluenceFetcher:
             ),
         ],
     )
-    @patch("mcp_atlassian.servers.dependencies.get_http_request")
-    @patch("mcp_atlassian.servers.dependencies.ConfluenceFetcher")
+    @patch("mcp_security_review.servers.dependencies.get_http_request")
+    @patch("mcp_security_review.servers.dependencies.ConfluenceFetcher")
     async def test_error_scenarios(
         self,
         mock_confluence_fetcher_class,

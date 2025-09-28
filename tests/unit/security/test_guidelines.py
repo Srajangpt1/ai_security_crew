@@ -1,7 +1,7 @@
 """Tests for SecurityGuidelines class."""
 
 import pytest
-from mcp_atlassian.security.guidelines import SecurityGuidelines, SecurityGuideline
+from mcp_security_review.security.guidelines import SecurityGuidelines, SecurityGuideline
 
 
 class TestSecurityGuidelines:

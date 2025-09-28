@@ -5,8 +5,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from mcp_atlassian.jira import JiraFetcher
-from mcp_atlassian.jira.fields import FieldsMixin
+from mcp_security_review.providers.atlassian.jira import JiraFetcher
+from mcp_security_review.providers.atlassian.jira.fields import FieldsMixin
 
 
 class TestFieldsMixin:
@@ -394,7 +394,7 @@ class TestFieldsMixin:
     # for server/DC.
     #
     # See also:
-    # https://github.com/sooperset/mcp-atlassian/blob/651c271e8aa76b469e9c67535669d93267ad5da6/src/mcp_atlassian/jira/fields.py#L279-L297
+    # https://github.com/ai-security-crew/mcp-security-review/blob/651c271e8aa76b469e9c67535669d93267ad5da6/src/mcp_security_review/providers/atlassian/jira/fields.py#L279-L297
 
     # def test_format_field_value_user_field_no_account_id(
     #     self, fields_mixin: FieldsMixin, mock_fields
