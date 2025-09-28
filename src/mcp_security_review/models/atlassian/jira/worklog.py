@@ -7,8 +7,8 @@ This module provides Pydantic models for Jira worklogs (time tracking entries).
 import logging
 from typing import Any
 
-from ..base import ApiModel, TimestampMixin
-from ..constants import (
+from mcp_security_review.models.base import ApiModel, TimestampMixin
+from mcp_security_review.models.constants import (
     EMPTY_STRING,
     JIRA_DEFAULT_ID,
 )

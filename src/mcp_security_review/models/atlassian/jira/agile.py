@@ -8,8 +8,8 @@ such as boards and sprints.
 import logging
 from typing import Any
 
-from ..base import ApiModel
-from ..constants import (
+from mcp_security_review.models.base import ApiModel
+from mcp_security_review.models.constants import (
     EMPTY_STRING,
     JIRA_DEFAULT_ID,
     UNKNOWN,

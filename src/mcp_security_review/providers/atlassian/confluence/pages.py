@@ -5,8 +5,8 @@ import logging
 import requests
 from requests.exceptions import HTTPError
 
-from ..exceptions import MCPAtlassianAuthenticationError
-from ..models.confluence import ConfluencePage
+from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
+from mcp_security_review.models.atlassian.confluence import ConfluencePage
 from .client import ConfluenceClient
 from .v2_adapter import ConfluenceV2Adapter
 

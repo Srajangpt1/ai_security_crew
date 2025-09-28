@@ -2,7 +2,7 @@
 
 import logging
 
-from ..models.confluence import ConfluenceLabel
+from mcp_security_review.models.atlassian.confluence import ConfluenceLabel
 from .client import ConfluenceClient
 
 logger = logging.getLogger("mcp-security-review")

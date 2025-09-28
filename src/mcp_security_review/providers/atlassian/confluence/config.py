@@ -5,13 +5,13 @@ import os
 from dataclasses import dataclass
 from typing import Literal
 
-from ..utils.env import get_custom_headers, is_env_ssl_verify
-from ..utils.oauth import (
+from mcp_security_review.utils.env import get_custom_headers, is_env_ssl_verify
+from mcp_security_review.utils.oauth import (
     BYOAccessTokenOAuthConfig,
     OAuthConfig,
     get_oauth_config_from_env,
 )
-from ..utils.urls import is_atlassian_cloud_url
+from mcp_security_review.utils.urls import is_atlassian_cloud_url
 
 
 @dataclass

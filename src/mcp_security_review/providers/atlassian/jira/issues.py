@@ -6,10 +6,10 @@ from typing import Any
 
 from requests.exceptions import HTTPError
 
-from ..exceptions import MCPAtlassianAuthenticationError
-from ..models.jira import JiraIssue
-from ..models.jira.common import JiraChangelog
-from ..utils import parse_date
+from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
+from mcp_security_review.models.atlassian.jira import JiraIssue
+from mcp_security_review.models.atlassian.jira.common import JiraChangelog
+from mcp_security_review.utils import parse_date
 from .client import JiraClient
 from .constants import DEFAULT_READ_JIRA_FIELDS
 from .protocols import (

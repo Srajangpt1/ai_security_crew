@@ -5,8 +5,8 @@ import logging
 import requests
 from requests.exceptions import HTTPError
 
-from ..exceptions import MCPAtlassianAuthenticationError
-from ..models.jira import JiraSearchResult
+from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
+from mcp_security_review.models.atlassian.jira import JiraSearchResult
 from .client import JiraClient
 from .constants import DEFAULT_READ_JIRA_FIELDS
 from .protocols import IssueOperationsProto

@@ -3,8 +3,8 @@
 from abc import abstractmethod
 from typing import Any, Protocol, runtime_checkable
 
-from ..models.jira import JiraIssue
-from ..models.jira.search import JiraSearchResult
+from mcp_security_review.models.atlassian.jira import JiraIssue
+from mcp_security_review.models.atlassian.jira.search import JiraSearchResult
 
 
 class AttachmentsOperationsProto(Protocol):

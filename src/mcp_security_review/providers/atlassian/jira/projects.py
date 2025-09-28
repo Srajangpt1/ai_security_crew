@@ -3,9 +3,9 @@
 import logging
 from typing import Any
 
-from ..models import JiraProject
-from ..models.jira.search import JiraSearchResult
-from ..models.jira.version import JiraVersion
+from mcp_security_review.models import JiraProject
+from mcp_security_review.models.atlassian.jira.search import JiraSearchResult
+from mcp_security_review.models.atlassian.jira.version import JiraVersion
 from .client import JiraClient
 from .protocols import SearchOperationsProto
 

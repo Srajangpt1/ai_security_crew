@@ -6,8 +6,8 @@ This module provides Pydantic models for Confluence spaces.
 import logging
 from typing import Any
 
-from ..base import ApiModel
-from ..constants import CONFLUENCE_DEFAULT_ID, EMPTY_STRING, UNKNOWN
+from mcp_security_review.models.base import ApiModel
+from mcp_security_review.models.constants import CONFLUENCE_DEFAULT_ID, EMPTY_STRING, UNKNOWN
 
 logger = logging.getLogger(__name__)
 

@@ -3,7 +3,7 @@
 import logging
 from typing import Any
 
-from ..utils import parse_date
+from mcp_security_review.utils import parse_date
 from .client import JiraClient
 
 logger = logging.getLogger("mcp-jira")

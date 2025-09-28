@@ -8,7 +8,7 @@ from typing import Any
 
 from pydantic import Field, model_validator
 
-from ..base import ApiModel, TimestampMixin
+from mcp_security_review.models.base import ApiModel, TimestampMixin
 
 # Import other necessary models using relative imports
 from .page import ConfluencePage

@@ -7,8 +7,8 @@ This module provides Pydantic models for Jira issue links and link types.
 import logging
 from typing import Any
 
-from ..base import ApiModel
-from ..constants import EMPTY_STRING, JIRA_DEFAULT_ID, UNKNOWN
+from mcp_security_review.models.base import ApiModel
+from mcp_security_review.models.constants import EMPTY_STRING, JIRA_DEFAULT_ID, UNKNOWN
 from .common import JiraIssueType, JiraPriority, JiraStatus
 
 logger = logging.getLogger(__name__)

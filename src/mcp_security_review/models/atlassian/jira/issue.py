@@ -10,8 +10,8 @@ from typing import Any, Literal
 
 from pydantic import Field
 
-from ..base import ApiModel, TimestampMixin
-from ..constants import (
+from mcp_security_review.models.base import ApiModel, TimestampMixin
+from mcp_security_review.models.constants import (
     EMPTY_STRING,
     JIRA_DEFAULT_ID,
     JIRA_DEFAULT_KEY,

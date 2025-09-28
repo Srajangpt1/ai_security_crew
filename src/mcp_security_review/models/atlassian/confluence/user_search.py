@@ -8,7 +8,7 @@ from typing import Any
 
 from pydantic import Field
 
-from ..base import ApiModel, TimestampMixin
+from mcp_security_review.models.base import ApiModel, TimestampMixin
 from .common import ConfluenceUser
 
 logger = logging.getLogger(__name__)

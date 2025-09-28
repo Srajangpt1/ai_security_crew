@@ -5,8 +5,8 @@ from typing import Any
 
 from requests.exceptions import HTTPError
 
-from ..exceptions import MCPAtlassianAuthenticationError
-from ..models import JiraIssue, JiraTransition
+from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
+from mcp_security_review.models import JiraIssue, JiraTransition
 from .client import JiraClient
 from .protocols import IssueOperationsProto, UsersOperationsProto
 

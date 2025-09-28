@@ -1,6 +1,6 @@
 from typing import Any
 
-from ..base import ApiModel
+from mcp_security_review.models.base import ApiModel
 
 
 class JiraVersion(ApiModel):

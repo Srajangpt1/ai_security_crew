@@ -5,7 +5,7 @@ import logging
 import re
 from typing import Any
 
-from ..preprocessing.jira import JiraPreprocessor
+from mcp_security_review.preprocessing.jira import JiraPreprocessor
 from .client import JiraClient
 from .protocols import (
     EpicOperationsProto,

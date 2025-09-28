@@ -13,8 +13,8 @@ from pydantic import Field
 
 from mcp_security_review.utils import parse_date
 
-from ..base import ApiModel, TimestampMixin
-from ..constants import (
+from mcp_security_review.models.base import ApiModel, TimestampMixin
+from mcp_security_review.models.constants import (
     EMPTY_STRING,
     JIRA_DEFAULT_ID,
     NONE_VALUE,

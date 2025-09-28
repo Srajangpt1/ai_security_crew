@@ -5,7 +5,7 @@ from typing import Any
 
 from requests.exceptions import HTTPError
 
-from ..exceptions import MCPAtlassianAuthenticationError
+from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
 from .client import ConfluenceClient
 
 logger = logging.getLogger("mcp-security-review")

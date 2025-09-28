@@ -5,8 +5,8 @@ from typing import Any
 
 from requests.exceptions import HTTPError
 
-from ..exceptions import MCPAtlassianAuthenticationError
-from ..models.jira import JiraIssueLinkType
+from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
+from mcp_security_review.models.atlassian.jira import JiraIssueLinkType
 from .client import JiraClient
 
 logger = logging.getLogger("mcp-jira")

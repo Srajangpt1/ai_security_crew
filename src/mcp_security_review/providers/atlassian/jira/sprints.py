@@ -6,8 +6,8 @@ from typing import Any
 
 import requests
 
-from ..models.jira import JiraSprint
-from ..utils import parse_date
+from mcp_security_review.models.atlassian.jira import JiraSprint
+from mcp_security_review.utils import parse_date
 from .client import JiraClient
 
 logger = logging.getLogger("mcp-jira")

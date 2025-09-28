@@ -3,7 +3,7 @@
 import logging
 from typing import Any
 
-from ..models.jira import JiraIssue
+from mcp_security_review.models.atlassian.jira import JiraIssue
 from .client import JiraClient
 from .protocols import (
     FieldsOperationsProto,

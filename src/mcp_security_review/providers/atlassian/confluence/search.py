@@ -2,13 +2,13 @@
 
 import logging
 
-from ..models.confluence import (
+from mcp_security_review.models.atlassian.confluence import (
     ConfluencePage,
     ConfluenceSearchResult,
     ConfluenceUserSearchResult,
     ConfluenceUserSearchResults,
 )
-from ..utils.decorators import handle_atlassian_api_errors
+from mcp_security_review.utils.decorators import handle_atlassian_api_errors
 from .client import ConfluenceClient
 from .utils import quote_cql_identifier_if_needed
 

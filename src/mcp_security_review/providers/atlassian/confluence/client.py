@@ -6,10 +6,10 @@ import os
 from atlassian import Confluence
 from requests import Session
 
-from ..exceptions import MCPAtlassianAuthenticationError
-from ..utils.logging import get_masked_session_headers, log_config_param, mask_sensitive
-from ..utils.oauth import configure_oauth_session
-from ..utils.ssl import configure_ssl_verification
+from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
+from mcp_security_review.utils.logging import get_masked_session_headers, log_config_param, mask_sensitive
+from mcp_security_review.utils.oauth import configure_oauth_session
+from mcp_security_review.utils.ssl import configure_ssl_verification
 from .config import ConfluenceConfig
 
 # Configure logging
@@ -119,7 +119,7 @@ class ConfluenceClient:
             self._apply_custom_headers()
 
         # Import here to avoid circular imports
-        from ..preprocessing.confluence import ConfluencePreprocessor
+        from mcp_security_review.preprocessing.confluence import ConfluencePreprocessor
 
         self.preprocessor = ConfluencePreprocessor(base_url=self.config.url)
 
