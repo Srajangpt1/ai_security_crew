@@ -20,12 +20,12 @@ def test_init_with_basic_auth():
 
     # Mock the Confluence class, ConfluencePreprocessor, and configure_ssl_verification
     with (
-        patch("mcp_security_review.confluence.client.Confluence") as mock_confluence,
+        patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock_confluence,
         patch(
             "mcp_security_review.preprocessing.confluence.ConfluencePreprocessor"
         ) as mock_preprocessor,
         patch(
-            "mcp_security_review.confluence.client.configure_ssl_verification"
+            "mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification"
         ) as mock_configure_ssl,
     ):
         # Act
@@ -64,12 +64,12 @@ def test_init_with_token_auth():
 
     # Mock the Confluence class, ConfluencePreprocessor, and configure_ssl_verification
     with (
-        patch("mcp_security_review.confluence.client.Confluence") as mock_confluence,
+        patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock_confluence,
         patch(
             "mcp_security_review.preprocessing.confluence.ConfluencePreprocessor"
         ) as mock_preprocessor,
         patch(
-            "mcp_security_review.confluence.client.configure_ssl_verification"
+            "mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification"
         ) as mock_configure_ssl,
     ):
         # Act
@@ -100,11 +100,11 @@ def test_init_from_env():
     # Arrange
     with (
         patch(
-            "mcp_security_review.confluence.config.ConfluenceConfig.from_env"
+            "mcp_security_review.providers.atlassian.confluence.config.ConfluenceConfig.from_env"
         ) as mock_from_env,
-        patch("mcp_security_review.confluence.client.Confluence") as mock_confluence,
+        patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock_confluence,
         patch("mcp_security_review.preprocessing.confluence.ConfluencePreprocessor"),
-        patch("mcp_security_review.confluence.client.configure_ssl_verification"),
+        patch("mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification"),
     ):
         mock_config = MagicMock()
         mock_from_env.return_value = mock_config
@@ -121,12 +121,12 @@ def test_process_html_content():
     """Test the _process_html_content method."""
     # Arrange
     with (
-        patch("mcp_security_review.confluence.client.ConfluenceConfig.from_env"),
-        patch("mcp_security_review.confluence.client.Confluence"),
+        patch("mcp_security_review.providers.atlassian.confluence.client.ConfluenceConfig.from_env"),
+        patch("mcp_security_review.providers.atlassian.confluence.client.Confluence"),
         patch(
             "mcp_security_review.preprocessing.confluence.ConfluencePreprocessor"
         ) as mock_preprocessor_class,
-        patch("mcp_security_review.confluence.client.configure_ssl_verification"),
+        patch("mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification"),
     ):
         mock_preprocessor = mock_preprocessor_class.return_value
         mock_preprocessor.process_html_content.return_value = (
@@ -151,10 +151,10 @@ def test_get_user_details_by_accountid():
     """Test the get_user_details_by_accountid method."""
     # Arrange
     with (
-        patch("mcp_security_review.confluence.client.ConfluenceConfig.from_env"),
-        patch("mcp_security_review.confluence.client.Confluence") as mock_confluence_class,
+        patch("mcp_security_review.providers.atlassian.confluence.client.ConfluenceConfig.from_env"),
+        patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock_confluence_class,
         patch("mcp_security_review.preprocessing.confluence.ConfluencePreprocessor"),
-        patch("mcp_security_review.confluence.client.configure_ssl_verification"),
+        patch("mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification"),
     ):
         mock_confluence = mock_confluence_class.return_value
         mock_confluence.get_user_details_by_accountid.return_value = {
@@ -202,10 +202,10 @@ def test_init_sets_proxies_and_no_proxy(monkeypatch):
     mock_session.proxies = {}  # Use a real dict for proxies
     mock_confluence._session = mock_session
     monkeypatch.setattr(
-        "mcp_security_review.confluence.client.Confluence", lambda **kwargs: mock_confluence
+        "mcp_security_review.providers.atlassian.confluence.client.Confluence", lambda **kwargs: mock_confluence
     )
     monkeypatch.setattr(
-        "mcp_security_review.confluence.client.configure_ssl_verification",
+        "mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification",
         lambda **kwargs: None,
     )
     monkeypatch.setattr(
@@ -241,10 +241,10 @@ def test_init_no_proxies(monkeypatch):
     mock_session.proxies = {}  # Use a real dict for proxies
     mock_confluence._session = mock_session
     monkeypatch.setattr(
-        "mcp_security_review.confluence.client.Confluence", lambda **kwargs: mock_confluence
+        "mcp_security_review.providers.atlassian.confluence.client.Confluence", lambda **kwargs: mock_confluence
     )
     monkeypatch.setattr(
-        "mcp_security_review.confluence.client.configure_ssl_verification",
+        "mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification",
         lambda **kwargs: None,
     )
     monkeypatch.setattr(

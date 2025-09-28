@@ -16,7 +16,7 @@ class TestPagesMixin:
         """Create a PagesMixin instance for testing."""
         # PagesMixin inherits from ConfluenceClient, so we need to create it properly
         with patch(
-            "mcp_security_review.confluence.pages.ConfluenceClient.__init__"
+            "mcp_security_review.providers.atlassian.confluence.pages.ConfluenceClient.__init__"
         ) as mock_init:
             mock_init.return_value = None
             mixin = PagesMixin()
@@ -449,28 +449,6 @@ class TestPagesMixin:
             assert isinstance(result, ConfluencePage)
             assert result.id == page_id
 
-    def test_delete_page_success(self, pages_mixin):
-        """Test successfully deleting a page."""
-        # Arrange
-        page_id = "987654321"
-        pages_mixin.confluence.remove_page.return_value = True
-
-        # Act
-        result = pages_mixin.delete_page(page_id)
-
-        # Assert
-        pages_mixin.confluence.remove_page.assert_called_once_with(page_id=page_id)
-        assert result is True
-
-    def test_delete_page_error(self, pages_mixin):
-        """Test error handling when deleting a page."""
-        # Arrange
-        page_id = "987654321"
-        pages_mixin.confluence.remove_page.side_effect = Exception("API Error")
-
-        # Act/Assert
-        with pytest.raises(Exception, match="Failed to delete page"):
-            pages_mixin.delete_page(page_id)
 
     def test_get_page_children_success(self, pages_mixin):
         """Test successfully getting child pages."""
@@ -854,7 +832,7 @@ class TestPagesOAuthMixin:
         """Create a PagesMixin instance for OAuth testing."""
         # PagesMixin inherits from ConfluenceClient, so we need to create it properly
         with patch(
-            "mcp_security_review.confluence.pages.ConfluenceClient.__init__"
+            "mcp_security_review.providers.atlassian.confluence.pages.ConfluenceClient.__init__"
         ) as mock_init:
             mock_init.return_value = None
             mixin = PagesMixin()
@@ -874,7 +852,7 @@ class TestPagesOAuthMixin:
 
         # Mock the v2 adapter
         with patch(
-            "mcp_security_review.confluence.pages.ConfluenceV2Adapter"
+            "mcp_security_review.providers.atlassian.confluence.pages.ConfluenceV2Adapter"
         ) as mock_v2_adapter_class:
             mock_v2_adapter = MagicMock()
             mock_v2_adapter_class.return_value = mock_v2_adapter
@@ -924,7 +902,7 @@ class TestPagesOAuthMixin:
 
         # Mock the v2 adapter
         with patch(
-            "mcp_security_review.confluence.pages.ConfluenceV2Adapter"
+            "mcp_security_review.providers.atlassian.confluence.pages.ConfluenceV2Adapter"
         ) as mock_v2_adapter_class:
             mock_v2_adapter = MagicMock()
             mock_v2_adapter_class.return_value = mock_v2_adapter
@@ -983,7 +961,7 @@ class TestPagesOAuthMixin:
 
         # Mock the v2 adapter
         with patch(
-            "mcp_security_review.confluence.pages.ConfluenceV2Adapter"
+            "mcp_security_review.providers.atlassian.confluence.pages.ConfluenceV2Adapter"
         ) as mock_v2_adapter_class:
             mock_v2_adapter = MagicMock()
             mock_v2_adapter_class.return_value = mock_v2_adapter
@@ -1036,7 +1014,7 @@ class TestPagesOAuthMixin:
 
         # Mock the v2 adapter
         with patch(
-            "mcp_security_review.confluence.pages.ConfluenceV2Adapter"
+            "mcp_security_review.providers.atlassian.confluence.pages.ConfluenceV2Adapter"
         ) as mock_v2_adapter_class:
             mock_v2_adapter = MagicMock()
             mock_v2_adapter_class.return_value = mock_v2_adapter
@@ -1084,27 +1062,3 @@ class TestPagesOAuthMixin:
             assert result.space.key == "PROJ"
             assert result.version.number == 3
 
-    def test_delete_page_oauth_uses_v2_api(self, oauth_pages_mixin):
-        """Test that OAuth authentication uses v2 API for deleting pages."""
-        # Arrange
-        page_id = "oauth_delete_123"
-
-        # Mock the v2 adapter
-        with patch(
-            "mcp_security_review.confluence.pages.ConfluenceV2Adapter"
-        ) as mock_v2_adapter_class:
-            mock_v2_adapter = MagicMock()
-            mock_v2_adapter_class.return_value = mock_v2_adapter
-            mock_v2_adapter.delete_page.return_value = True
-
-            # Act
-            result = oauth_pages_mixin.delete_page(page_id)
-
-            # Assert that v2 API was used instead of v1
-            mock_v2_adapter.delete_page.assert_called_once_with(page_id=page_id)
-
-            # Verify v1 API was NOT called
-            oauth_pages_mixin.confluence.remove_page.assert_not_called()
-
-            # Verify result
-            assert result is True

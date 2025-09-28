@@ -87,11 +87,11 @@ class TestConfluenceClientCustomHeaders:
         mock_confluence._session = mock_session
 
         monkeypatch.setattr(
-            "mcp_security_review.confluence.client.Confluence",
+            "mcp_security_review.providers.atlassian.confluence.client.Confluence",
             lambda **kwargs: mock_confluence,
         )
         monkeypatch.setattr(
-            "mcp_security_review.confluence.client.configure_ssl_verification",
+            "mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification",
             lambda **kwargs: None,
         )
         monkeypatch.setattr(
@@ -121,11 +121,11 @@ class TestConfluenceClientCustomHeaders:
         mock_confluence._session = mock_session
 
         monkeypatch.setattr(
-            "mcp_security_review.confluence.client.Confluence",
+            "mcp_security_review.providers.atlassian.confluence.client.Confluence",
             lambda **kwargs: mock_confluence,
         )
         monkeypatch.setattr(
-            "mcp_security_review.confluence.client.configure_ssl_verification",
+            "mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification",
             lambda **kwargs: None,
         )
         monkeypatch.setattr(

@@ -510,7 +510,7 @@ class TestUsersMixin:
         users_mixin.config.is_cloud = True
 
         with patch(
-            "src.mcp_atlassian.jira.users.JiraUser.from_api_response"
+            "mcp_security_review.providers.atlassian.jira.users.JiraUser.from_api_response"
         ) as mock_from_api_response:
             mock_user_instance = MagicMock()
             mock_from_api_response.return_value = mock_user_instance
@@ -533,7 +533,7 @@ class TestUsersMixin:
         users_mixin.config.is_cloud = False
 
         with patch(
-            "src.mcp_atlassian.jira.users.JiraUser.from_api_response"
+            "mcp_security_review.providers.atlassian.jira.users.JiraUser.from_api_response"
         ) as mock_from_api_response:
             mock_user_instance = MagicMock()
             mock_from_api_response.return_value = mock_user_instance
@@ -557,7 +557,7 @@ class TestUsersMixin:
             return_value="5b10ac8d82e05b22cc7d4ef5"
         )
         with patch(
-            "src.mcp_atlassian.jira.users.JiraUser.from_api_response"
+            "mcp_security_review.providers.atlassian.jira.users.JiraUser.from_api_response"
         ) as mock_from_api_response:
             mock_user_instance = MagicMock()
             mock_from_api_response.return_value = mock_user_instance

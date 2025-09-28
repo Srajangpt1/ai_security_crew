@@ -20,7 +20,7 @@ from mcp_security_review.providers.atlassian.jira import JiraFetcher
 from mcp_security_review.providers.atlassian.jira.config import JiraConfig
 from mcp_security_review.servers.context import MainAppContext
 from mcp_security_review.servers.main import (
-    AtlassianMCP,
+    SecurityReviewMCP,
     UserTokenMiddleware,
     health_check,
     main_lifespan,
@@ -100,11 +100,11 @@ class TestMCPProtocolIntegration:
             # Mock the configuration loading
             with (
                 patch(
-                    "mcp_security_review.jira.config.JiraConfig.from_env",
+                    "mcp_security_review.providers.atlassian.jira.config.JiraConfig.from_env",
                     return_value=mock_jira_config,
                 ),
                 patch(
-                    "mcp_security_review.confluence.config.ConfluenceConfig.from_env",
+                    "mcp_security_review.providers.atlassian.confluence.config.ConfluenceConfig.from_env",
                     return_value=mock_confluence_config,
                 ),
             ):
@@ -675,10 +675,10 @@ class TestMCPProtocolIntegration:
         with MockEnvironment.basic_auth_env():
             with (
                 patch(
-                    "mcp_security_review.jira.config.JiraConfig.from_env"
+                    "mcp_security_review.providers.atlassian.jira.config.JiraConfig.from_env"
                 ) as mock_jira_config,
                 patch(
-                    "mcp_security_review.confluence.config.ConfluenceConfig.from_env"
+                    "mcp_security_review.providers.atlassian.confluence.config.ConfluenceConfig.from_env"
                 ) as mock_conf_config,
             ):
                 # Configure mocks
@@ -710,10 +710,10 @@ class TestMCPProtocolIntegration:
         with patch.dict(os.environ, env_vars, clear=False):
             with (
                 patch(
-                    "mcp_security_review.jira.config.JiraConfig.from_env"
+                    "mcp_security_review.providers.atlassian.jira.config.JiraConfig.from_env"
                 ) as mock_jira_config,
                 patch(
-                    "mcp_security_review.confluence.config.ConfluenceConfig.from_env"
+                    "mcp_security_review.providers.atlassian.confluence.config.ConfluenceConfig.from_env"
                 ) as mock_conf_config,
             ):
                 # Configure mocks
@@ -736,7 +736,7 @@ class TestMCPProtocolIntegration:
         with MockEnvironment.basic_auth_env():
             with patch.dict(os.environ, {"READ_ONLY_MODE": "true"}):
                 with patch(
-                    "mcp_security_review.jira.config.JiraConfig.from_env"
+                    "mcp_security_review.providers.atlassian.jira.config.JiraConfig.from_env"
                 ) as mock_jira_config:
                     # Configure mock
                     jira_config = MagicMock()
@@ -759,7 +759,7 @@ class TestMCPProtocolIntegration:
                 },
             ):
                 with patch(
-                    "mcp_security_review.jira.config.JiraConfig.from_env"
+                    "mcp_security_review.providers.atlassian.jira.config.JiraConfig.from_env"
                 ) as mock_jira_config:
                     # Configure mock
                     jira_config = MagicMock()

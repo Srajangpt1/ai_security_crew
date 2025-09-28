@@ -592,7 +592,7 @@ class TestIssuesMixin:
 
         # Mock the prepare_epic_fields method from EpicsMixin
         with patch(
-            "mcp_security_review.jira.epics.EpicsMixin.prepare_epic_fields", autospec=True
+            "mcp_security_review.providers.atlassian.jira.epics.EpicsMixin.prepare_epic_fields", autospec=True
         ) as mock_prepare_epic:
             # Set up the mock to store epic values in kwargs
             # Note: First argument is self because EpicsMixin.prepare_epic_fields is called as a class method

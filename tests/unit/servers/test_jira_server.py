@@ -12,11 +12,11 @@ from fastmcp.client import FastMCPTransport
 from fastmcp.exceptions import ToolError
 from starlette.requests import Request
 
-from src.mcp_security_review.jira import JiraFetcher
-from src.mcp_security_review.jira.config import JiraConfig
-from src.mcp_security_review.servers.context import MainAppContext
-from src.mcp_security_review.servers.main import AtlassianMCP
-from src.mcp_security_review.utils.oauth import OAuthConfig
+from mcp_security_review.providers.atlassian.jira import JiraFetcher
+from mcp_security_review.providers.atlassian.jira.config import JiraConfig
+from mcp_security_review.servers.context import MainAppContext
+from mcp_security_review.servers.main import SecurityReviewMCP
+from mcp_security_review.utils.oauth import OAuthConfig
 from tests.fixtures.jira_mocks import (
     MOCK_JIRA_COMMENTS_SIMPLIFIED,
     MOCK_JIRA_ISSUE_RESPONSE_SIMPLIFIED,
@@ -219,7 +219,7 @@ def mock_jira_fetcher():
         ]
     }
 
-    from src.mcp_security_review.models.jira.common import JiraUser
+    from mcp_security_review.models.atlassian.jira.common import JiraUser
 
     mock_user = MagicMock(spec=JiraUser)
     mock_user.to_simplified_dict.return_value = {
@@ -270,54 +270,33 @@ def test_jira_mcp(mock_jira_fetcher, mock_base_jira_config):
         finally:
             pass
 
-    test_mcp = AtlassianMCP(
+    test_mcp = SecurityReviewMCP(
         "TestJira", description="Test Jira MCP Server", lifespan=test_lifespan
     )
-    from src.mcp_security_review.servers.jira import (
+    from mcp_security_review.servers.jira import (
         add_comment,
-        add_worklog,
         batch_create_issues,
-        batch_create_versions,
         batch_get_changelogs,
         create_issue,
-        create_issue_link,
         delete_issue,
         download_attachments,
-        get_agile_boards,
         get_all_projects,
-        get_board_issues,
         get_issue,
         get_link_types,
-        get_project_issues,
-        get_project_versions,
-        get_sprint_issues,
-        get_sprints_from_board,
         get_transitions,
         get_user_profile,
-        get_worklog,
         link_to_epic,
-        remove_issue_link,
         search,
-        search_fields,
         transition_issue,
         update_issue,
-        update_sprint,
     )
 
     jira_sub_mcp = FastMCP(name="TestJiraSubMCP")
     jira_sub_mcp.tool()(get_issue)
     jira_sub_mcp.tool()(search)
-    jira_sub_mcp.tool()(search_fields)
-    jira_sub_mcp.tool()(get_project_issues)
-    jira_sub_mcp.tool()(get_project_versions)
     jira_sub_mcp.tool()(get_all_projects)
     jira_sub_mcp.tool()(get_transitions)
-    jira_sub_mcp.tool()(get_worklog)
     jira_sub_mcp.tool()(download_attachments)
-    jira_sub_mcp.tool()(get_agile_boards)
-    jira_sub_mcp.tool()(get_board_issues)
-    jira_sub_mcp.tool()(get_sprints_from_board)
-    jira_sub_mcp.tool()(get_sprint_issues)
     jira_sub_mcp.tool()(get_link_types)
     jira_sub_mcp.tool()(get_user_profile)
     jira_sub_mcp.tool()(create_issue)
@@ -326,13 +305,8 @@ def test_jira_mcp(mock_jira_fetcher, mock_base_jira_config):
     jira_sub_mcp.tool()(update_issue)
     jira_sub_mcp.tool()(delete_issue)
     jira_sub_mcp.tool()(add_comment)
-    jira_sub_mcp.tool()(add_worklog)
     jira_sub_mcp.tool()(link_to_epic)
-    jira_sub_mcp.tool()(create_issue_link)
-    jira_sub_mcp.tool()(remove_issue_link)
     jira_sub_mcp.tool()(transition_issue)
-    jira_sub_mcp.tool()(update_sprint)
-    jira_sub_mcp.tool()(batch_create_versions)
     test_mcp.mount("jira", jira_sub_mcp)
     return test_mcp
 
@@ -350,12 +324,12 @@ def no_fetcher_test_jira_mcp(mock_base_jira_config):
         finally:
             pass
 
-    test_mcp = AtlassianMCP(
+    test_mcp = SecurityReviewMCP(
         "NoFetcherTestJira",
         description="No Fetcher Test Jira MCP Server",
         lifespan=no_fetcher_test_lifespan,
     )
-    from src.mcp_security_review.servers.jira import get_issue
+    from mcp_security_review.servers.jira import get_issue
 
     jira_sub_mcp = FastMCP(name="NoFetcherTestJiraSubMCP")
     jira_sub_mcp.tool()(get_issue)
@@ -380,11 +354,11 @@ async def jira_client(test_jira_mcp, mock_jira_fetcher, mock_request):
     """Create a FastMCP client with mocked Jira fetcher and request state."""
     with (
         patch(
-            "src.mcp_atlassian.servers.jira.get_jira_fetcher",
+            "mcp_security_review.servers.jira.get_jira_fetcher",
             AsyncMock(return_value=mock_jira_fetcher),
         ),
         patch(
-            "src.mcp_atlassian.servers.dependencies.get_http_request",
+            "mcp_security_review.servers.dependencies.get_http_request",
             return_value=mock_request,
         ),
     ):
@@ -600,11 +574,11 @@ async def test_no_fetcher_get_issue(no_fetcher_client_fixture, mock_request):
 
     with (
         patch(
-            "src.mcp_atlassian.servers.jira.get_jira_fetcher",
+            "mcp_security_review.servers.jira.get_jira_fetcher",
             AsyncMock(side_effect=mock_get_fetcher_error),
         ),
         patch(
-            "src.mcp_atlassian.servers.dependencies.get_http_request",
+            "mcp_security_review.servers.dependencies.get_http_request",
             return_value=mock_request,
         ),
     ):
@@ -636,17 +610,17 @@ async def test_get_issue_with_user_specific_fetcher_in_state(
     expected_fields_list = ["summary", "status", "issuetype"]
 
     # Import the real get_jira_fetcher to test its interaction with request.state
-    from src.mcp_security_review.servers.dependencies import (
+    from mcp_security_review.servers.dependencies import (
         get_jira_fetcher as get_jira_fetcher_real,
     )
 
     with (
         patch(
-            "src.mcp_atlassian.servers.dependencies.get_http_request",
+            "mcp_security_review.servers.dependencies.get_http_request",
             return_value=_mock_request_with_fetcher_in_state,
         ) as mock_get_http,
         patch(
-            "src.mcp_atlassian.servers.jira.get_jira_fetcher",
+            "mcp_security_review.servers.jira.get_jira_fetcher",
             side_effect=AsyncMock(wraps=get_jira_fetcher_real),
         ),
     ):
@@ -669,45 +643,6 @@ async def test_get_issue_with_user_specific_fetcher_in_state(
     assert result_data["key"] == "USER-STATE-1"
 
 
-@pytest.mark.anyio
-async def test_get_project_versions_tool(jira_client, mock_jira_fetcher):
-    """Test the jira_get_project_versions tool returns simplified version list."""
-    # Prepare mock raw versions
-    raw_versions = [
-        {
-            "id": "100",
-            "name": "v1.0",
-            "description": "First",
-            "released": True,
-            "archived": False,
-        },
-        {
-            "id": "101",
-            "name": "v2.0",
-            "startDate": "2025-01-01",
-            "releaseDate": "2025-02-01",
-            "released": False,
-            "archived": False,
-        },
-    ]
-    mock_jira_fetcher.get_project_versions.return_value = raw_versions
-
-    response = await jira_client.call_tool(
-        "jira_get_project_versions",
-        {"project_key": "TEST"},
-    )
-    assert isinstance(response, list)
-    assert len(response) == 1  # FastMCP wraps as list of messages
-    msg = response[0]
-    assert msg.type == "text"
-    import json
-
-    data = json.loads(msg.text)
-    assert isinstance(data, list)
-    # Check fields in simplified dict
-    assert data[0]["id"] == "100"
-    assert data[0]["name"] == "v1.0"
-    assert data[0]["description"] == "First"
 
 
 @pytest.mark.anyio
@@ -1066,85 +1001,3 @@ async def test_get_all_projects_tool_configuration_error_handling(
     assert "Configuration Error" in data["error"]
 
 
-@pytest.mark.anyio
-async def test_batch_create_versions_all_success(jira_client, mock_jira_fetcher):
-    """Test batch creation of Jira versions where all succeed."""
-    versions = [
-        {
-            "name": "v1.0",
-            "startDate": "2025-01-01",
-            "releaseDate": "2025-02-01",
-            "description": "First release",
-        },
-        {"name": "v2.0", "description": "Second release"},
-    ]
-    # Patch create_project_version to always succeed
-    mock_jira_fetcher.create_project_version.side_effect = lambda **kwargs: {
-        "id": f"{kwargs['name']}-id",
-        **kwargs,
-    }
-    response = await jira_client.call_tool(
-        "jira_batch_create_versions",
-        {"project_key": "TEST", "versions": json.dumps(versions)},
-    )
-    assert len(response) == 1
-    content = json.loads(response[0].text)
-    assert all(item["success"] for item in content)
-    assert content[0]["version"]["name"] == "v1.0"
-    assert content[1]["version"]["name"] == "v2.0"
-
-
-@pytest.mark.anyio
-async def test_batch_create_versions_partial_failure(jira_client, mock_jira_fetcher):
-    """Test batch creation of Jira versions with some failures."""
-
-    def side_effect(
-        project_key, name, start_date=None, release_date=None, description=None
-    ):
-        if name == "bad":
-            raise Exception("Simulated failure")
-        return {"id": f"{name}-id", "name": name}
-
-    mock_jira_fetcher.create_project_version.side_effect = side_effect
-    versions = [
-        {"name": "good1"},
-        {"name": "bad"},
-        {"name": "good2"},
-    ]
-    response = await jira_client.call_tool(
-        "jira_batch_create_versions",
-        {"project_key": "TEST", "versions": json.dumps(versions)},
-    )
-    content = json.loads(response[0].text)
-    assert content[0]["success"] is True
-    assert content[1]["success"] is False
-    assert "Simulated failure" in content[1]["error"]
-    assert content[2]["success"] is True
-
-
-@pytest.mark.anyio
-async def test_batch_create_versions_all_failure(jira_client, mock_jira_fetcher):
-    """Test batch creation of Jira versions where all fail."""
-    mock_jira_fetcher.create_project_version.side_effect = Exception("API down")
-    versions = [
-        {"name": "fail1"},
-        {"name": "fail2"},
-    ]
-    response = await jira_client.call_tool(
-        "jira_batch_create_versions",
-        {"project_key": "TEST", "versions": json.dumps(versions)},
-    )
-    content = json.loads(response[0].text)
-    assert all(not item["success"] for item in content)
-    assert all("API down" in item["error"] for item in content)
-
-
-@pytest.mark.anyio
-async def test_batch_create_versions_empty(jira_client, mock_jira_fetcher):
-    """Test batch creation of Jira versions with empty input."""
-    response = await jira_client.call_tool(
-        "jira_batch_create_versions",
-        {"project_key": "TEST", "versions": json.dumps([])},
-    )
-    content = json.loads(response[0].text)
-    assert content == []

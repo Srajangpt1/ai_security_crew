@@ -16,7 +16,7 @@ class TestCommentsMixin:
         """Create a CommentsMixin instance for testing."""
         # CommentsMixin inherits from ConfluenceClient, so we need to create it properly
         with patch(
-            "mcp_security_review.confluence.comments.ConfluenceClient.__init__"
+            "mcp_security_review.providers.atlassian.confluence.comments.ConfluenceClient.__init__"
         ) as mock_init:
             mock_init.return_value = None
             mixin = CommentsMixin()

@@ -61,8 +61,8 @@ class TestJiraSecurityTool:
         from mcp_security_review.servers.dependencies import get_jira_fetcher
         
         # Mock the dependencies
-        with patch('mcp_atlassian.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
-             patch('mcp_atlassian.servers.jira.SecurityAssessment', return_value=mock_security_assessment):
+        with patch('mcp_security_review.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
+             patch('mcp_security_review.servers.jira.SecurityAssessment', return_value=mock_security_assessment):
             
             # Mock the context
             mock_ctx = AsyncMock()
@@ -101,8 +101,8 @@ class TestJiraSecurityTool:
         """Test security assessment without detailed guidelines."""
         from mcp_security_review.servers.jira import assess_ticket_security
         
-        with patch('mcp_atlassian.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
-             patch('mcp_atlassian.servers.jira.SecurityAssessment', return_value=mock_security_assessment):
+        with patch('mcp_security_review.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
+             patch('mcp_security_review.servers.jira.SecurityAssessment', return_value=mock_security_assessment):
             
             mock_ctx = AsyncMock()
             
@@ -120,8 +120,8 @@ class TestJiraSecurityTool:
         """Test security assessment without prompt injection."""
         from mcp_security_review.servers.jira import assess_ticket_security
         
-        with patch('mcp_atlassian.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
-             patch('mcp_atlassian.servers.jira.SecurityAssessment', return_value=mock_security_assessment):
+        with patch('mcp_security_review.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
+             patch('mcp_security_review.servers.jira.SecurityAssessment', return_value=mock_security_assessment):
             
             mock_ctx = AsyncMock()
             
@@ -142,7 +142,7 @@ class TestJiraSecurityTool:
         # Make the fetcher raise an exception
         mock_jira_fetcher.get_issue.side_effect = Exception("Issue not found")
         
-        with patch('mcp_atlassian.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher):
+        with patch('mcp_security_review.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher):
             
             mock_ctx = AsyncMock()
             
@@ -193,8 +193,8 @@ class TestJiraSecurityTool:
         mock_assessment = MagicMock()
         mock_assessment.assess_ticket.return_value = critical_requirements
         
-        with patch('mcp_atlassian.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
-             patch('mcp_atlassian.servers.jira.SecurityAssessment', return_value=mock_assessment):
+        with patch('mcp_security_review.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
+             patch('mcp_security_review.servers.jira.SecurityAssessment', return_value=mock_assessment):
             
             mock_ctx = AsyncMock()
             
@@ -227,8 +227,8 @@ class TestJiraSecurityTool:
         mock_assessment = MagicMock()
         mock_assessment.assess_ticket.return_value = low_risk_requirements
         
-        with patch('mcp_atlassian.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
-             patch('mcp_atlassian.servers.jira.SecurityAssessment', return_value=mock_assessment):
+        with patch('mcp_security_review.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
+             patch('mcp_security_review.servers.jira.SecurityAssessment', return_value=mock_assessment):
             
             mock_ctx = AsyncMock()
             

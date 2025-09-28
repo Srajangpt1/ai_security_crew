@@ -117,7 +117,7 @@ class TestOAuthTokenRefreshFlow:
 class TestBasicAuthValidation:
     """Test basic authentication validation against real endpoints."""
 
-    @patch("mcp_security_review.jira.client.Jira")
+    @patch("mcp_security_review.providers.atlassian.jira.client.Jira")
     def test_jira_basic_auth_success(self, mock_jira_class):
         """Test successful Jira basic authentication."""
         with MockEnvironment.basic_auth_env() as auth_env:
@@ -138,7 +138,7 @@ class TestBasicAuthValidation:
                 verify_ssl=True,
             )
 
-    @patch("mcp_security_review.confluence.client.Confluence")
+    @patch("mcp_security_review.providers.atlassian.confluence.client.Confluence")
     def test_confluence_basic_auth_success(self, mock_confluence_class):
         """Test successful Confluence basic authentication."""
         with MockEnvironment.basic_auth_env() as auth_env:
@@ -170,7 +170,7 @@ class TestBasicAuthValidation:
                     "JIRA_API_TOKEN": "invalid-token",
                 },
             ):
-                with patch("mcp_security_review.jira.client.Jira") as mock_jira_class:
+                with patch("mcp_security_review.providers.atlassian.jira.client.Jira") as mock_jira_class:
                     # Make Jira constructor raise authentication error
                     mock_jira_class.side_effect = HTTPError("401 Unauthorized")
 
@@ -183,7 +183,7 @@ class TestBasicAuthValidation:
 class TestPATTokenValidation:
     """Test Personal Access Token (PAT) validation and precedence."""
 
-    @patch("mcp_security_review.jira.client.Jira")
+    @patch("mcp_security_review.providers.atlassian.jira.client.Jira")
     def test_jira_pat_token_success(self, mock_jira_class):
         """Test successful Jira PAT authentication."""
         # Clear existing auth env vars first
@@ -211,7 +211,7 @@ class TestPATTokenValidation:
                     verify_ssl=True,
                 )
 
-    @patch("mcp_security_review.confluence.client.Confluence")
+    @patch("mcp_security_review.providers.atlassian.confluence.client.Confluence")
     def test_confluence_pat_token_success(self, mock_confluence_class):
         """Test successful Confluence PAT authentication."""
         # Clear existing auth env vars first
@@ -514,8 +514,8 @@ class TestMixedAuthenticationScenarios:
 class TestJiraConfluenceAuthFlows:
     """Test authentication flows for both Jira and Confluence services."""
 
-    @patch("mcp_security_review.confluence.client.Confluence")
-    @patch("mcp_security_review.jira.client.Jira")
+    @patch("mcp_security_review.providers.atlassian.confluence.client.Confluence")
+    @patch("mcp_security_review.providers.atlassian.jira.client.Jira")
     def test_shared_oauth_config_both_services(
         self, mock_jira_class, mock_confluence_class
     ):
@@ -628,7 +628,7 @@ class TestJiraConfluenceAuthFlows:
                 assert config.ssl_verify is False
                 assert config.https_proxy == "http://proxy.company.com:8080"
 
-                with patch("mcp_security_review.jira.client.Jira") as mock_jira:
+                with patch("mcp_security_review.providers.atlassian.jira.client.Jira") as mock_jira:
                     client = JiraClient(config)
                     # Verify SSL verification was disabled
                     mock_jira.assert_called_with(

@@ -84,10 +84,10 @@ class TestJiraClientCustomHeaders:
         mock_jira._session = mock_session
 
         monkeypatch.setattr(
-            "mcp_security_review.jira.client.Jira", lambda **kwargs: mock_jira
+            "mcp_security_review.providers.atlassian.jira.client.Jira", lambda **kwargs: mock_jira
         )
         monkeypatch.setattr(
-            "mcp_security_review.jira.client.configure_ssl_verification",
+            "mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification",
             lambda **kwargs: None,
         )
 
@@ -113,10 +113,10 @@ class TestJiraClientCustomHeaders:
         mock_jira._session = mock_session
 
         monkeypatch.setattr(
-            "mcp_security_review.jira.client.Jira", lambda **kwargs: mock_jira
+            "mcp_security_review.providers.atlassian.jira.client.Jira", lambda **kwargs: mock_jira
         )
         monkeypatch.setattr(
-            "mcp_security_review.jira.client.configure_ssl_verification",
+            "mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification",
             lambda **kwargs: None,
         )
 
