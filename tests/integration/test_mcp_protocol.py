@@ -14,12 +14,12 @@ from starlette.middleware import Middleware
 from starlette.responses import JSONResponse
 from starlette.testclient import TestClient
 
-from mcp_atlassian.confluence import ConfluenceFetcher
-from mcp_atlassian.confluence.config import ConfluenceConfig
-from mcp_atlassian.jira import JiraFetcher
-from mcp_atlassian.jira.config import JiraConfig
-from mcp_atlassian.servers.context import MainAppContext
-from mcp_atlassian.servers.main import (
+from mcp_security_review.providers.atlassian.confluence import ConfluenceFetcher
+from mcp_security_review.providers.atlassian.confluence.config import ConfluenceConfig
+from mcp_security_review.providers.atlassian.jira import JiraFetcher
+from mcp_security_review.providers.atlassian.jira.config import JiraConfig
+from mcp_security_review.servers.context import MainAppContext
+from mcp_security_review.servers.main import (
     AtlassianMCP,
     UserTokenMiddleware,
     health_check,
@@ -100,11 +100,11 @@ class TestMCPProtocolIntegration:
             # Mock the configuration loading
             with (
                 patch(
-                    "mcp_atlassian.jira.config.JiraConfig.from_env",
+                    "mcp_security_review.jira.config.JiraConfig.from_env",
                     return_value=mock_jira_config,
                 ),
                 patch(
-                    "mcp_atlassian.confluence.config.ConfluenceConfig.from_env",
+                    "mcp_security_review.confluence.config.ConfluenceConfig.from_env",
                     return_value=mock_confluence_config,
                 ),
             ):
@@ -675,10 +675,10 @@ class TestMCPProtocolIntegration:
         with MockEnvironment.basic_auth_env():
             with (
                 patch(
-                    "mcp_atlassian.jira.config.JiraConfig.from_env"
+                    "mcp_security_review.jira.config.JiraConfig.from_env"
                 ) as mock_jira_config,
                 patch(
-                    "mcp_atlassian.confluence.config.ConfluenceConfig.from_env"
+                    "mcp_security_review.confluence.config.ConfluenceConfig.from_env"
                 ) as mock_conf_config,
             ):
                 # Configure mocks
@@ -710,10 +710,10 @@ class TestMCPProtocolIntegration:
         with patch.dict(os.environ, env_vars, clear=False):
             with (
                 patch(
-                    "mcp_atlassian.jira.config.JiraConfig.from_env"
+                    "mcp_security_review.jira.config.JiraConfig.from_env"
                 ) as mock_jira_config,
                 patch(
-                    "mcp_atlassian.confluence.config.ConfluenceConfig.from_env"
+                    "mcp_security_review.confluence.config.ConfluenceConfig.from_env"
                 ) as mock_conf_config,
             ):
                 # Configure mocks
@@ -736,7 +736,7 @@ class TestMCPProtocolIntegration:
         with MockEnvironment.basic_auth_env():
             with patch.dict(os.environ, {"READ_ONLY_MODE": "true"}):
                 with patch(
-                    "mcp_atlassian.jira.config.JiraConfig.from_env"
+                    "mcp_security_review.jira.config.JiraConfig.from_env"
                 ) as mock_jira_config:
                     # Configure mock
                     jira_config = MagicMock()
@@ -759,7 +759,7 @@ class TestMCPProtocolIntegration:
                 },
             ):
                 with patch(
-                    "mcp_atlassian.jira.config.JiraConfig.from_env"
+                    "mcp_security_review.jira.config.JiraConfig.from_env"
                 ) as mock_jira_config:
                     # Configure mock
                     jira_config = MagicMock()
@@ -899,7 +899,7 @@ class TestMCPProtocolIntegration:
 
     async def test_tool_execution_with_authentication_error(self, atlassian_mcp_server):
         """Test tool execution when authentication fails."""
-        from mcp_atlassian.exceptions import MCPAtlassianAuthenticationError
+        from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
 
         # Mock a tool that raises authentication error
         async def mock_failing_tool(ctx: Context):

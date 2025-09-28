@@ -3,8 +3,8 @@
 import os
 from unittest.mock import MagicMock, patch
 
-from mcp_atlassian.confluence.client import ConfluenceClient
-from mcp_atlassian.confluence.config import ConfluenceConfig
+from mcp_security_review.providers.atlassian.confluence.client import ConfluenceClient
+from mcp_security_review.providers.atlassian.confluence.config import ConfluenceConfig
 
 
 class TestConfluenceConfigCustomHeaders:
@@ -87,15 +87,15 @@ class TestConfluenceClientCustomHeaders:
         mock_confluence._session = mock_session
 
         monkeypatch.setattr(
-            "mcp_atlassian.confluence.client.Confluence",
+            "mcp_security_review.confluence.client.Confluence",
             lambda **kwargs: mock_confluence,
         )
         monkeypatch.setattr(
-            "mcp_atlassian.confluence.client.configure_ssl_verification",
+            "mcp_security_review.confluence.client.configure_ssl_verification",
             lambda **kwargs: None,
         )
         monkeypatch.setattr(
-            "mcp_atlassian.preprocessing.confluence.ConfluencePreprocessor",
+            "mcp_security_review.preprocessing.confluence.ConfluencePreprocessor",
             lambda **kwargs: MagicMock(),
         )
 
@@ -121,15 +121,15 @@ class TestConfluenceClientCustomHeaders:
         mock_confluence._session = mock_session
 
         monkeypatch.setattr(
-            "mcp_atlassian.confluence.client.Confluence",
+            "mcp_security_review.confluence.client.Confluence",
             lambda **kwargs: mock_confluence,
         )
         monkeypatch.setattr(
-            "mcp_atlassian.confluence.client.configure_ssl_verification",
+            "mcp_security_review.confluence.client.configure_ssl_verification",
             lambda **kwargs: None,
         )
         monkeypatch.setattr(
-            "mcp_atlassian.preprocessing.confluence.ConfluencePreprocessor",
+            "mcp_security_review.preprocessing.confluence.ConfluencePreprocessor",
             lambda **kwargs: MagicMock(),
         )
 

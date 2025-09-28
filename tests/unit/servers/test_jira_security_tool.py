@@ -4,7 +4,7 @@ import json
 import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from mcp_atlassian.security import SecurityRequirements
+from mcp_security_review.security import SecurityRequirements
 
 
 class TestJiraSecurityTool:
@@ -57,8 +57,8 @@ class TestJiraSecurityTool:
     @pytest.mark.asyncio
     async def test_assess_ticket_security_success(self, mock_jira_fetcher, mock_security_assessment) -> None:
         """Test successful security assessment."""
-        from mcp_atlassian.servers.jira import assess_ticket_security
-        from mcp_atlassian.servers.dependencies import get_jira_fetcher
+        from mcp_security_review.servers.jira import assess_ticket_security
+        from mcp_security_review.servers.dependencies import get_jira_fetcher
         
         # Mock the dependencies
         with patch('mcp_atlassian.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
@@ -99,7 +99,7 @@ class TestJiraSecurityTool:
     @pytest.mark.asyncio
     async def test_assess_ticket_security_without_guidelines(self, mock_jira_fetcher, mock_security_assessment) -> None:
         """Test security assessment without detailed guidelines."""
-        from mcp_atlassian.servers.jira import assess_ticket_security
+        from mcp_security_review.servers.jira import assess_ticket_security
         
         with patch('mcp_atlassian.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
              patch('mcp_atlassian.servers.jira.SecurityAssessment', return_value=mock_security_assessment):
@@ -118,7 +118,7 @@ class TestJiraSecurityTool:
     @pytest.mark.asyncio
     async def test_assess_ticket_security_without_prompt_injection(self, mock_jira_fetcher, mock_security_assessment) -> None:
         """Test security assessment without prompt injection."""
-        from mcp_atlassian.servers.jira import assess_ticket_security
+        from mcp_security_review.servers.jira import assess_ticket_security
         
         with patch('mcp_atlassian.servers.jira.get_jira_fetcher', return_value=mock_jira_fetcher), \
              patch('mcp_atlassian.servers.jira.SecurityAssessment', return_value=mock_security_assessment):
@@ -137,7 +137,7 @@ class TestJiraSecurityTool:
     @pytest.mark.asyncio
     async def test_assess_ticket_security_error(self, mock_jira_fetcher) -> None:
         """Test security assessment with error."""
-        from mcp_atlassian.servers.jira import assess_ticket_security
+        from mcp_security_review.servers.jira import assess_ticket_security
         
         # Make the fetcher raise an exception
         mock_jira_fetcher.get_issue.side_effect = Exception("Issue not found")
@@ -168,7 +168,7 @@ class TestJiraSecurityTool:
     @pytest.mark.asyncio
     async def test_assess_ticket_security_critical_risk(self, mock_jira_fetcher) -> None:
         """Test security assessment for critical risk ticket."""
-        from mcp_atlassian.servers.jira import assess_ticket_security
+        from mcp_security_review.servers.jira import assess_ticket_security
         
         # Mock critical risk requirements
         critical_requirements = SecurityRequirements(
@@ -212,7 +212,7 @@ class TestJiraSecurityTool:
     @pytest.mark.asyncio
     async def test_assess_ticket_security_low_risk(self, mock_jira_fetcher) -> None:
         """Test security assessment for low risk ticket."""
-        from mcp_atlassian.servers.jira import assess_ticket_security
+        from mcp_security_review.servers.jira import assess_ticket_security
         
         # Mock low risk requirements
         low_risk_requirements = SecurityRequirements(

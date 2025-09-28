@@ -11,10 +11,10 @@ import uuid
 
 import pytest
 
-from mcp_atlassian.confluence import ConfluenceFetcher
-from mcp_atlassian.confluence.config import ConfluenceConfig
-from mcp_atlassian.jira import JiraFetcher
-from mcp_atlassian.jira.config import JiraConfig
+from mcp_security_review.providers.atlassian.confluence import ConfluenceFetcher
+from mcp_security_review.providers.atlassian.confluence.config import ConfluenceConfig
+from mcp_security_review.providers.atlassian.jira import JiraFetcher
+from mcp_security_review.providers.atlassian.jira.config import JiraConfig
 from tests.utils.base import BaseAuthTest
 
 

@@ -7,8 +7,8 @@ Thank you for your interest in contributing to MCP Atlassian! This document prov
 1. Make sure you have Python 3.10+ installed
 1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/)
 1. Fork the repository
-1. Clone your fork: `git clone https://github.com/YOUR-USERNAME/mcp-atlassian.git`
-1. Add the upstream remote: `git remote add upstream https://github.com/sooperset/mcp-atlassian.git`
+1. Clone your fork: `git clone https://github.com/YOUR-USERNAME/mcp-security-review.git`
+1. Add the upstream remote: `git remote add upstream https://github.com/ai-security-crew/mcp-security-review.git`
 1. Install dependencies:
 
     ```sh
@@ -44,8 +44,8 @@ Thank you for your interest in contributing to MCP Atlassian! This document prov
 
 ## Development Setup with local VSCode devcontainer
 
-1. Clone your fork: `git clone https://github.com/YOUR-USERNAME/mcp-atlassian.git`
-1. Add the upstream remote: `git remote add upstream https://github.com/sooperset/mcp-atlassian.git`
+1. Clone your fork: `git clone https://github.com/YOUR-USERNAME/mcp-security-review.git`
+1. Add the upstream remote: `git remote add upstream https://github.com/ai-security-crew/mcp-security-review.git`
 1. Open the project with VSCode and open with devcontainer
 1. Add this bit of config to your `.vscode/settings.json`:
 

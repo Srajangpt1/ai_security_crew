@@ -4,7 +4,7 @@ import logging
 
 import pytest
 
-from mcp_atlassian.utils.environment import get_available_services
+from mcp_security_review.utils.environment import get_available_services
 from tests.utils.assertions import assert_log_contains
 from tests.utils.mocks import MockEnvironment
 
@@ -12,7 +12,7 @@ from tests.utils.mocks import MockEnvironment
 @pytest.fixture(autouse=True)
 def setup_logger():
     """Ensure logger is set to INFO level for capturing log messages."""
-    logger = logging.getLogger("mcp-atlassian.utils.environment")
+    logger = logging.getLogger("mcp-security-review.utils.environment")
     original_level = logger.level
     logger.setLevel(logging.INFO)
     yield

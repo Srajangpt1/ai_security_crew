@@ -3,8 +3,8 @@
 import os
 from unittest.mock import MagicMock, patch
 
-from mcp_atlassian.jira.client import JiraClient
-from mcp_atlassian.jira.config import JiraConfig
+from mcp_security_review.providers.atlassian.jira.client import JiraClient
+from mcp_security_review.providers.atlassian.jira.config import JiraConfig
 
 
 class TestJiraConfigCustomHeaders:
@@ -84,10 +84,10 @@ class TestJiraClientCustomHeaders:
         mock_jira._session = mock_session
 
         monkeypatch.setattr(
-            "mcp_atlassian.jira.client.Jira", lambda **kwargs: mock_jira
+            "mcp_security_review.jira.client.Jira", lambda **kwargs: mock_jira
         )
         monkeypatch.setattr(
-            "mcp_atlassian.jira.client.configure_ssl_verification",
+            "mcp_security_review.jira.client.configure_ssl_verification",
             lambda **kwargs: None,
         )
 
@@ -113,10 +113,10 @@ class TestJiraClientCustomHeaders:
         mock_jira._session = mock_session
 
         monkeypatch.setattr(
-            "mcp_atlassian.jira.client.Jira", lambda **kwargs: mock_jira
+            "mcp_security_review.jira.client.Jira", lambda **kwargs: mock_jira
         )
         monkeypatch.setattr(
-            "mcp_atlassian.jira.client.configure_ssl_verification",
+            "mcp_security_review.jira.client.configure_ssl_verification",
             lambda **kwargs: None,
         )
 

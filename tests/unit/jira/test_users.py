@@ -5,8 +5,8 @@ from unittest.mock import MagicMock, patch
 import pytest
 import requests
 
-from mcp_atlassian.jira.config import JiraConfig
-from mcp_atlassian.jira.users import UsersMixin
+from mcp_security_review.providers.atlassian.jira.config import JiraConfig
+from mcp_security_review.providers.atlassian.jira.users import UsersMixin
 
 
 class TestUsersMixin:
@@ -601,7 +601,7 @@ class TestUsersMixin:
         mock_response.status_code = 403
         http_error = requests.exceptions.HTTPError(response=mock_response)
         users_mixin.jira.user = MagicMock(side_effect=http_error)
-        from mcp_atlassian.exceptions import MCPAtlassianAuthenticationError
+        from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
 
         with pytest.raises(
             MCPAtlassianAuthenticationError,

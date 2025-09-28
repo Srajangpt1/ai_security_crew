@@ -7,7 +7,7 @@ and the simplified dictionary conversion for API responses.
 
 import pytest
 
-from src.mcp_atlassian.models import (
+from src.mcp_security_review.models import (
     ConfluenceAttachment,
     ConfluenceComment,
     ConfluenceLabel,
@@ -17,11 +17,11 @@ from src.mcp_atlassian.models import (
     ConfluenceUser,
     ConfluenceVersion,
 )
-from src.mcp_atlassian.models.constants import EMPTY_STRING
+from src.mcp_security_review.models.constants import EMPTY_STRING
 
 # Optional: Import real API client for optional real-data testing
 try:
-    from src.mcp_atlassian.confluence.client import ConfluenceClient  # noqa: F401
+    from src.mcp_security_review.confluence.client import ConfluenceClient  # noqa: F401
 except ImportError:
     pass
 
@@ -597,9 +597,9 @@ class TestRealConfluenceData:
 
         try:
             # Initialize the Confluence client
-            from src.mcp_atlassian.confluence.client import ConfluenceClient
-            from src.mcp_atlassian.confluence.config import ConfluenceConfig
-            from src.mcp_atlassian.confluence.pages import PagesMixin
+            from src.mcp_security_review.confluence.client import ConfluenceClient
+            from src.mcp_security_review.confluence.config import ConfluenceConfig
+            from src.mcp_security_review.confluence.pages import PagesMixin
 
             # Use the from_env method to create the config
             config = ConfluenceConfig.from_env()
@@ -615,7 +615,7 @@ class TestRealConfluenceData:
             )
 
             # Convert to model
-            from src.mcp_atlassian.models import ConfluencePage
+            from src.mcp_security_review.models import ConfluencePage
 
             page = ConfluencePage.from_api_response(page_data)
 
@@ -633,7 +633,7 @@ class TestRealConfluenceData:
 
             # Get and test comments if available
             try:
-                from src.mcp_atlassian.models import ConfluenceComment
+                from src.mcp_security_review.models import ConfluenceComment
 
                 comments_data = confluence_client.confluence.get_page_comments(
                     page_id=page_id, expand="body.view,version"

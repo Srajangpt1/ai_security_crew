@@ -274,7 +274,7 @@ For questions, issues, or feature requests related to the security assessment to
 
 1. Check the [documentation](README.md)
 2. Review the [test cases](tests/unit/security/)
-3. Open an [issue](https://github.com/sooperset/mcp-atlassian/issues)
+3. Open an [issue](https://github.com/ai-security-crew/mcp-security-review/issues)
 4. Contact the development team
 
 ## Contributing

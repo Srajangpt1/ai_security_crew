@@ -1,7 +1,7 @@
 import pytest
 
-from mcp_atlassian.preprocessing.confluence import ConfluencePreprocessor
-from mcp_atlassian.preprocessing.jira import JiraPreprocessor
+from mcp_security_review.preprocessing.confluence import ConfluencePreprocessor
+from mcp_security_review.preprocessing.jira import JiraPreprocessor
 from tests.fixtures.confluence_mocks import MOCK_COMMENTS_RESPONSE, MOCK_PAGE_RESPONSE
 from tests.fixtures.jira_mocks import MOCK_JIRA_ISSUE_RESPONSE
 
@@ -354,7 +354,7 @@ def test_process_confluence_profile_macro_malformed(preprocessor_with_confluence
 
 def test_process_confluence_profile_macro_fallback():
     """Test fallback when confluence_client is None."""
-    from mcp_atlassian.preprocessing.confluence import ConfluencePreprocessor
+    from mcp_security_review.preprocessing.confluence import ConfluencePreprocessor
 
     html = (
         '<ac:structured-macro ac:name="profile">'
@@ -373,7 +373,7 @@ def test_process_confluence_profile_macro_fallback():
 
 def test_process_user_profile_macro_multiple():
     """Test processing multiple User Profile Macros with account-id and userkey."""
-    from mcp_atlassian.preprocessing.confluence import ConfluencePreprocessor
+    from mcp_security_review.preprocessing.confluence import ConfluencePreprocessor
 
     html = (
         "<p>This page mentions a user via profile macro: "
@@ -418,7 +418,7 @@ def test_process_user_profile_macro_multiple():
 
 def test_markdown_to_confluence_no_automatic_anchors():
     """Test that heading_anchors=False prevents automatic anchor generation (regression for issue #488)."""
-    from mcp_atlassian.preprocessing.confluence import ConfluencePreprocessor
+    from mcp_security_review.preprocessing.confluence import ConfluencePreprocessor
 
     markdown_with_headings = """
 # Main Title
@@ -447,7 +447,7 @@ Final content.
 
 def test_markdown_to_confluence_style_preservation():
     """Test that styled content is preserved during conversion."""
-    from mcp_atlassian.preprocessing.confluence import ConfluencePreprocessor
+    from mcp_security_review.preprocessing.confluence import ConfluencePreprocessor
 
     markdown_with_styles = """
 # Title with **bold** text
@@ -482,7 +482,7 @@ def hello():
 
 def test_markdown_to_confluence_optional_anchor_generation():
     """Test that enable_heading_anchors parameter controls anchor generation."""
-    from mcp_atlassian.preprocessing.confluence import ConfluencePreprocessor
+    from mcp_security_review.preprocessing.confluence import ConfluencePreprocessor
 
     markdown_with_headings = """
 # Main Title

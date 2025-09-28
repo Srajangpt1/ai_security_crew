@@ -11,7 +11,7 @@ from typing import Any
 
 import pytest
 
-from mcp_atlassian.utils.env import is_env_truthy
+from mcp_security_review.utils.env import is_env_truthy
 from tests.fixtures.confluence_mocks import (
     MOCK_COMMENTS_RESPONSE,
     MOCK_CQL_SEARCH_RESPONSE,

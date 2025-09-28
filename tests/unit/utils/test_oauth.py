@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 import requests
 
-from mcp_atlassian.utils.oauth import (
+from mcp_security_review.utils.oauth import (
     KEYRING_SERVICE_NAME,
     TOKEN_EXPIRY_MARGIN,
     BYOAccessTokenOAuthConfig,
@@ -706,8 +706,8 @@ class TestBYOAccessTokenOAuthConfig:
         assert config is None
 
 
-@patch("mcp_atlassian.utils.oauth.BYOAccessTokenOAuthConfig.from_env")
-@patch("mcp_atlassian.utils.oauth.OAuthConfig.from_env")
+@patch("mcp_security_review.utils.oauth.BYOAccessTokenOAuthConfig.from_env")
+@patch("mcp_security_review.utils.oauth.OAuthConfig.from_env")
 def test_get_oauth_config_prefers_byo_when_both_present(
     mock_oauth_from_env, mock_byo_from_env
 ):
@@ -723,8 +723,8 @@ def test_get_oauth_config_prefers_byo_when_both_present(
     mock_oauth_from_env.assert_not_called()  # Standard OAuth should not be called if BYO is found
 
 
-@patch("mcp_atlassian.utils.oauth.BYOAccessTokenOAuthConfig.from_env")
-@patch("mcp_atlassian.utils.oauth.OAuthConfig.from_env")
+@patch("mcp_security_review.utils.oauth.BYOAccessTokenOAuthConfig.from_env")
+@patch("mcp_security_review.utils.oauth.OAuthConfig.from_env")
 def test_get_oauth_config_falls_back_to_standard_oauth_config(
     mock_oauth_from_env, mock_byo_from_env
 ):
@@ -739,8 +739,8 @@ def test_get_oauth_config_falls_back_to_standard_oauth_config(
     mock_oauth_from_env.assert_called_once()
 
 
-@patch("mcp_atlassian.utils.oauth.BYOAccessTokenOAuthConfig.from_env")
-@patch("mcp_atlassian.utils.oauth.OAuthConfig.from_env")
+@patch("mcp_security_review.utils.oauth.BYOAccessTokenOAuthConfig.from_env")
+@patch("mcp_security_review.utils.oauth.OAuthConfig.from_env")
 def test_get_oauth_config_returns_none_if_both_unavailable(
     mock_oauth_from_env, mock_byo_from_env
 ):
@@ -800,7 +800,7 @@ def test_configure_oauth_session_success_with_byo_config():
     assert session.headers["Authorization"] == "Bearer byo-valid-token"
 
 
-@patch("mcp_atlassian.utils.oauth.logger")
+@patch("mcp_security_review.utils.oauth.logger")
 def test_configure_oauth_session_byo_config_empty_token_logs_error(mock_logger):
     """Test configure_oauth_session with BYO config and empty token logs error."""
     session = requests.Session()
@@ -816,7 +816,7 @@ def test_configure_oauth_session_byo_config_empty_token_logs_error(mock_logger):
     )
 
 
-@patch("mcp_atlassian.utils.oauth.logger")
+@patch("mcp_security_review.utils.oauth.logger")
 def test_configure_oauth_session_byo_config_no_refresh_token_direct_use(mock_logger):
     """Test BYO config (with access_token, no refresh_token) uses token directly."""
     session = requests.Session()

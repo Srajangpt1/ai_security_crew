@@ -3,7 +3,7 @@
 import logging
 from unittest.mock import patch
 
-from mcp_atlassian.utils.logging import log_config_param, mask_sensitive
+from mcp_security_review.utils.logging import log_config_param, mask_sensitive
 
 
 class TestMaskSensitive:
@@ -32,19 +32,19 @@ class TestMaskSensitive:
 class TestLogConfigParam:
     """Test the _log_config_param function."""
 
-    @patch("mcp_atlassian.utils.logging.logging.Logger")
+    @patch("mcp_security_review.utils.logging.logging.Logger")
     def test_normal_param(self, mock_logger):
         """Test logging normal parameter."""
         log_config_param(mock_logger, "Jira", "URL", "https://jira.example.com")
         mock_logger.info.assert_called_once_with("Jira URL: https://jira.example.com")
 
-    @patch("mcp_atlassian.utils.logging.logging.Logger")
+    @patch("mcp_security_review.utils.logging.logging.Logger")
     def test_none_param(self, mock_logger):
         """Test logging None parameter."""
         log_config_param(mock_logger, "Jira", "Projects Filter", None)
         mock_logger.info.assert_called_once_with("Jira Projects Filter: Not Provided")
 
-    @patch("mcp_atlassian.utils.logging.logging.Logger")
+    @patch("mcp_security_review.utils.logging.logging.Logger")
     def test_sensitive_param(self, mock_logger):
         """Test logging sensitive parameter."""
         log_config_param(

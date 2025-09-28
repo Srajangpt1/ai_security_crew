@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/mcp-atlassian # Link to your PyPI package
+      url: https://pypi.org/p/mcp-security-review # Link to your PyPI package
     permissions:
       id-token: write # Necessary for PyPI's trusted publishing
 

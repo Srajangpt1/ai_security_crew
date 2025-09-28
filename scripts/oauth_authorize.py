@@ -51,7 +51,7 @@ logging.basicConfig(
 
 logger = logging.getLogger("oauth-authorize")
 logger.setLevel(logging.DEBUG)
-logging.getLogger("mcp-atlassian.oauth").setLevel(logging.DEBUG)
+logging.getLogger("mcp-security-review.oauth").setLevel(logging.DEBUG)
 
 # Global variables for callback handling
 authorization_code = None

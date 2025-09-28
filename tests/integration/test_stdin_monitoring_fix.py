@@ -144,7 +144,7 @@ if __name__ == "__main__":
         This verifies that the lifecycle management doesn't interfere with
         HTTP transport operation.
         """
-        from mcp_atlassian.utils.lifecycle import (
+        from mcp_security_review.utils.lifecycle import (
             ensure_clean_exit,
             setup_signal_handlers,
         )

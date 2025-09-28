@@ -1,6 +1,6 @@
 """Tests for environment variable utility functions."""
 
-from mcp_atlassian.utils.env import (
+from mcp_security_review.utils.env import (
     is_env_extended_truthy,
     is_env_ssl_verify,
     is_env_truthy,

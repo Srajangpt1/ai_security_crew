@@ -10,13 +10,13 @@ import re
 
 import pytest
 
-from src.mcp_atlassian.models.constants import (
+from src.mcp_security_review.models.constants import (
     EMPTY_STRING,
     JIRA_DEFAULT_ID,
     JIRA_DEFAULT_PROJECT,
     UNKNOWN,
 )
-from src.mcp_atlassian.models.jira import (
+from src.mcp_security_review.models.jira import (
     JiraComment,
     JiraIssue,
     JiraIssueLink,
@@ -40,11 +40,11 @@ from src.mcp_atlassian.models.jira import (
 try:
     from atlassian import Jira
 
-    from src.mcp_atlassian.jira import JiraConfig, JiraFetcher
-    from src.mcp_atlassian.jira.issues import IssuesMixin
-    from src.mcp_atlassian.jira.projects import ProjectsMixin
-    from src.mcp_atlassian.jira.transitions import TransitionsMixin
-    from src.mcp_atlassian.jira.worklog import WorklogMixin
+    from src.mcp_security_review.jira import JiraConfig, JiraFetcher
+    from src.mcp_security_review.jira.issues import IssuesMixin
+    from src.mcp_security_review.jira.projects import ProjectsMixin
+    from src.mcp_security_review.jira.transitions import TransitionsMixin
+    from src.mcp_security_review.jira.worklog import WorklogMixin
 
     real_api_available = True
 except ImportError:

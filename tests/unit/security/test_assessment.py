@@ -2,7 +2,7 @@
 
 import json
 import pytest
-from mcp_atlassian.security.assessment import SecurityAssessment, SecurityRequirements
+from mcp_security_review.security.assessment import SecurityAssessment, SecurityRequirements
 
 
 class TestSecurityAssessment:
@@ -119,7 +119,7 @@ class TestSecurityAssessment:
     def test_filter_guidelines_by_categories(self) -> None:
         """Test filtering guidelines by categories."""
         # Create mock guidelines
-        from mcp_atlassian.security.guidelines import SecurityGuideline
+        from mcp_security_review.security.guidelines import SecurityGuideline
         
         guidelines = [
             SecurityGuideline(
@@ -161,7 +161,7 @@ class TestSecurityAssessment:
     
     def test_filter_guidelines_no_categories(self) -> None:
         """Test filtering guidelines with no categories."""
-        from mcp_atlassian.security.guidelines import SecurityGuideline
+        from mcp_security_review.security.guidelines import SecurityGuideline
         
         guidelines = [
             SecurityGuideline(
@@ -194,8 +194,8 @@ class TestSecurityAssessment:
     
     def test_generate_prompt_injection(self) -> None:
         """Test prompt injection generation."""
-        from mcp_atlassian.security.analyzer import SecurityContext
-        from mcp_atlassian.security.guidelines import SecurityGuideline
+        from mcp_security_review.security.analyzer import SecurityContext
+        from mcp_security_review.security.guidelines import SecurityGuideline
         
         security_context = SecurityContext(
             technologies=["python", "django"],
@@ -236,8 +236,8 @@ class TestSecurityAssessment:
     
     def test_generate_summary(self) -> None:
         """Test summary generation."""
-        from mcp_atlassian.security.analyzer import SecurityContext
-        from mcp_atlassian.security.guidelines import SecurityGuideline
+        from mcp_security_review.security.analyzer import SecurityContext
+        from mcp_security_review.security.guidelines import SecurityGuideline
         
         security_context = SecurityContext(
             technologies=["python"],
