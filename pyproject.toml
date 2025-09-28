@@ -97,6 +97,14 @@ indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+norecursedirs = ["agent-review (old)", ".git", ".venv", "venv", "__pycache__", "*.egg-info"]
+
 [tool.mypy]
 python_version = "3.10"
 warn_return_any = true

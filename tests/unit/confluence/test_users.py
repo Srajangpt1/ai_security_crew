@@ -8,7 +8,6 @@ from requests.exceptions import HTTPError
 from mcp_security_review.providers.atlassian.confluence.users import UsersMixin
 from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
 
-
 class TestUsersMixin:
     """Tests for the UsersMixin class."""
 
@@ -17,7 +16,7 @@ class TestUsersMixin:
         """Create a UsersMixin instance for testing."""
         # UsersMixin inherits from ConfluenceClient, so we need to create it properly
         with patch(
-            "mcp_security_review.confluence.users.ConfluenceClient.__init__"
+            "mcp_security_review.providers.atlassian.confluence.users.ConfluenceClient.__init__"
         ) as mock_init:
             mock_init.return_value = None
             mixin = UsersMixin()

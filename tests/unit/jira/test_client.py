@@ -23,9 +23,9 @@ class DeepcopyMock(MagicMock):
 def test_init_with_basic_auth():
     """Test initializing the client with basic auth configuration."""
     with (
-        patch("mcp_security_review.jira.client.Jira") as mock_jira,
+        patch("mcp_security_review.providers.atlassian.jira.client.Jira") as mock_jira,
         patch(
-            "mcp_security_review.jira.client.configure_ssl_verification"
+            "mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification"
         ) as mock_configure_ssl,
     ):
         config = JiraConfig(
@@ -62,9 +62,9 @@ def test_init_with_basic_auth():
 def test_init_with_token_auth():
     """Test initializing the client with token auth configuration."""
     with (
-        patch("mcp_security_review.jira.client.Jira") as mock_jira,
+        patch("mcp_security_review.providers.atlassian.jira.client.Jira") as mock_jira,
         patch(
-            "mcp_security_review.jira.client.configure_ssl_verification"
+            "mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification"
         ) as mock_configure_ssl,
     ):
         config = JiraConfig(
@@ -98,9 +98,9 @@ def test_init_with_token_auth():
 def test_init_from_env():
     """Test initializing the client from environment variables."""
     with (
-        patch("mcp_security_review.jira.config.JiraConfig.from_env") as mock_from_env,
-        patch("mcp_security_review.jira.client.Jira") as mock_jira,
-        patch("mcp_security_review.jira.client.configure_ssl_verification"),
+        patch("mcp_security_review.providers.atlassian.jira.config.JiraConfig.from_env") as mock_from_env,
+        patch("mcp_security_review.providers.atlassian.jira.client.Jira") as mock_jira,
+        patch("mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification"),
     ):
         mock_config = MagicMock()
         mock_config.auth_type = "basic"  # needed for the if condition
@@ -115,8 +115,8 @@ def test_init_from_env():
 def test_clean_text():
     """Test the _clean_text method."""
     with (
-        patch("mcp_security_review.jira.client.Jira"),
-        patch("mcp_security_review.jira.client.configure_ssl_verification"),
+        patch("mcp_security_review.providers.atlassian.jira.client.Jira"),
+        patch("mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification"),
     ):
         client = JiraClient(
             config=JiraConfig(
@@ -141,12 +141,12 @@ def _test_get_paged(method: Literal["get", "post"]):
     """Test the get_paged method."""
     with (
         patch(
-            "mcp_security_review.jira.client.Jira.get", new_callable=DeepcopyMock
+            "mcp_security_review.providers.atlassian.jira.client.Jira.get", new_callable=DeepcopyMock
         ) as mock_get,
         patch(
-            "mcp_security_review.jira.client.Jira.post", new_callable=DeepcopyMock
+            "mcp_security_review.providers.atlassian.jira.client.Jira.post", new_callable=DeepcopyMock
         ) as mock_post,
-        patch("mcp_security_review.jira.client.configure_ssl_verification"),
+        patch("mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification"),
     ):
         config = JiraConfig(
             url="https://test.atlassian.net",
@@ -223,7 +223,7 @@ def test_get_paged_post():
 
 def test_get_paged_without_cloud():
     """Test the get_paged method without cloud."""
-    with patch("mcp_security_review.jira.client.configure_ssl_verification"):
+    with patch("mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification"):
         config = JiraConfig(
             url="https://jira.example.com",
             auth_type="pat",
@@ -244,9 +244,9 @@ def test_init_sets_proxies_and_no_proxy(monkeypatch):
     mock_session = MagicMock()
     mock_session.proxies = {}  # Use a real dict for proxies
     mock_jira._session = mock_session
-    monkeypatch.setattr("mcp_security_review.jira.client.Jira", lambda **kwargs: mock_jira)
+    monkeypatch.setattr("mcp_security_review.providers.atlassian.jira.client.Jira", lambda **kwargs: mock_jira)
     monkeypatch.setattr(
-        "mcp_security_review.jira.client.configure_ssl_verification", lambda **kwargs: None
+        "mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification", lambda **kwargs: None
     )
 
     # Patch environment
@@ -276,9 +276,9 @@ def test_init_no_proxies(monkeypatch):
     mock_session = MagicMock()
     mock_session.proxies = {}  # Use a real dict for proxies
     mock_jira._session = mock_session
-    monkeypatch.setattr("mcp_security_review.jira.client.Jira", lambda **kwargs: mock_jira)
+    monkeypatch.setattr("mcp_security_review.providers.atlassian.jira.client.Jira", lambda **kwargs: mock_jira)
     monkeypatch.setattr(
-        "mcp_security_review.jira.client.configure_ssl_verification", lambda **kwargs: None
+        "mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification", lambda **kwargs: None
     )
 
     config = JiraConfig(

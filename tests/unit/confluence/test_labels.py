@@ -17,7 +17,7 @@ class TestLabelsMixin:
         """Create a LabelsMixin instance for testing."""
         # LabelsMixin inherits from ConfluenceClient, so we need to create it properly
         with patch(
-            "mcp_security_review.confluence.labels.ConfluenceClient.__init__"
+            "mcp_security_review.providers.atlassian.confluence.labels.ConfluenceClient.__init__"
         ) as mock_init:
             mock_init.return_value = None
             mixin = LabelsMixin()

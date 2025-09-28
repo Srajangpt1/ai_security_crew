@@ -14,7 +14,7 @@ from mcp_security_review.servers.dependencies import (
     get_confluence_fetcher,
     get_jira_fetcher,
 )
-from mcp_security_review.servers.main import AtlassianMCP, main_lifespan
+from mcp_security_review.servers.main import SecurityReviewMCP, main_lifespan
 from mcp_security_review.utils.environment import get_available_services
 from mcp_security_review.utils.ssl import configure_ssl_verification
 from tests.utils.factories import (
@@ -155,9 +155,9 @@ class TestSharedAuthentication:
 
             # Mock the fetcher creation
             with (
-                patch("mcp_security_review.jira.JiraFetcher") as mock_jira_fetcher,
+                patch("mcp_security_review.providers.atlassian.jira.JiraFetcher") as mock_jira_fetcher,
                 patch(
-                    "mcp_security_review.confluence.ConfluenceFetcher"
+                    "mcp_security_review.providers.atlassian.confluence.ConfluenceFetcher"
                 ) as mock_confluence_fetcher,
             ):
                 # Mock the current user validation
@@ -193,7 +193,7 @@ class TestCrossServiceErrorHandling:
 
             # Mock Jira to fail during initialization
             with patch(
-                "mcp_security_review.jira.config.JiraConfig.from_env"
+                "mcp_security_review.providers.atlassian.jira.config.JiraConfig.from_env"
             ) as mock_jira_config:
                 mock_jira_config.side_effect = Exception("Jira config failed")
 
@@ -212,7 +212,7 @@ class TestCrossServiceErrorHandling:
 
             # Mock Confluence to fail during initialization
             with patch(
-                "mcp_security_review.confluence.config.ConfluenceConfig.from_env"
+                "mcp_security_review.providers.atlassian.confluence.config.ConfluenceConfig.from_env"
             ) as mock_conf_config:
                 mock_conf_config.side_effect = Exception("Confluence config failed")
 
@@ -339,11 +339,11 @@ class TestConcurrentServiceInitialization:
 
             with (
                 patch(
-                    "mcp_security_review.jira.config.JiraConfig.from_env",
+                    "mcp_security_review.providers.atlassian.jira.config.JiraConfig.from_env",
                     side_effect=mock_jira_init,
                 ),
                 patch(
-                    "mcp_security_review.confluence.config.ConfluenceConfig.from_env",
+                    "mcp_security_review.providers.atlassian.confluence.config.ConfluenceConfig.from_env",
                     side_effect=mock_confluence_init,
                 ),
             ):
@@ -385,9 +385,9 @@ class TestConcurrentServiceInitialization:
                     "mcp_security_review.servers.dependencies.get_http_request",
                     return_value=request,
                 ),
-                patch("mcp_security_review.jira.JiraFetcher") as mock_jira_fetcher,
+                patch("mcp_security_review.providers.atlassian.jira.JiraFetcher") as mock_jira_fetcher,
                 patch(
-                    "mcp_security_review.confluence.ConfluenceFetcher"
+                    "mcp_security_review.providers.atlassian.confluence.ConfluenceFetcher"
                 ) as mock_confluence_fetcher,
             ):
                 # Mock fetcher instances

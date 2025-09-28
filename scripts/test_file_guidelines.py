@@ -7,7 +7,7 @@ from pathlib import Path
 # Add the src directory to the Python path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from mcp_atlassian.security.guidelines import SecurityGuidelinesLoader
+from mcp_security_review.security.guidelines import SecurityGuidelinesLoader
 
 
 def test_guidelines_loader():

@@ -107,7 +107,7 @@ class TestSSLVerificationEnhanced(BaseAuthTest):
         # Mock the Jira class to simulate SSL error
         mock_jira = MagicMock()
         mock_jira.side_effect = SSLError("Certificate verification failed")
-        monkeypatch.setattr("mcp_security_review.jira.client.Jira", mock_jira)
+        monkeypatch.setattr("mcp_security_review.providers.atlassian.jira.client.Jira", mock_jira)
 
         with MockEnvironment.basic_auth_env():
             config = JiraConfig.from_env()

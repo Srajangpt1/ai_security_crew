@@ -37,12 +37,12 @@ class TestConfluenceClientOAuth:
 
         # Mock dependencies
         with (
-            patch("mcp_security_review.confluence.client.Confluence") as mock_confluence,
+            patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock_confluence,
             patch(
-                "mcp_security_review.confluence.client.configure_oauth_session"
+                "mcp_security_review.providers.atlassian.confluence.client.configure_oauth_session"
             ) as mock_configure_oauth,
             patch(
-                "mcp_security_review.confluence.client.configure_ssl_verification"
+                "mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification"
             ) as mock_configure_ssl,
             patch(
                 "mcp_security_review.preprocessing.confluence.ConfluencePreprocessor"
@@ -99,12 +99,12 @@ class TestConfluenceClientOAuth:
 
         # Mock dependencies
         with (
-            patch("mcp_security_review.confluence.client.Confluence") as mock_confluence,
+            patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock_confluence,
             patch(
-                "mcp_security_review.confluence.client.configure_oauth_session"
+                "mcp_security_review.providers.atlassian.confluence.client.configure_oauth_session"
             ) as mock_configure_oauth,
             patch(
-                "mcp_security_review.confluence.client.configure_ssl_verification"
+                "mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification"
             ) as mock_configure_ssl,
             patch(
                 "mcp_security_review.preprocessing.confluence.ConfluencePreprocessor"
@@ -173,7 +173,7 @@ class TestConfluenceClientOAuth:
 
         # Mock dependencies with OAuth configuration failure
         with patch(
-            "mcp_security_review.confluence.client.configure_oauth_session"
+            "mcp_security_review.providers.atlassian.confluence.client.configure_oauth_session"
         ) as mock_configure_oauth:
             # Configure the mock to return failure for OAuth configuration
             mock_configure_oauth.return_value = False
@@ -207,7 +207,7 @@ class TestConfluenceClientOAuth:
         # or session setup fails because token is invalid.
         # The ConfluenceClient itself should raise error due to invalid oauth_config
         with patch(
-            "mcp_security_review.confluence.client.configure_oauth_session"
+            "mcp_security_review.providers.atlassian.confluence.client.configure_oauth_session"
         ) as mock_configure_oauth:
             mock_configure_oauth.return_value = False  # Assume it's called and fails
             with pytest.raises(
@@ -265,7 +265,7 @@ class TestConfluenceClientOAuth:
         # Mock dependencies with OAuth configuration failure
         with (
             patch(
-                "mcp_security_review.confluence.client.configure_oauth_session"
+                "mcp_security_review.providers.atlassian.confluence.client.configure_oauth_session"
             ) as mock_configure_oauth,
             # Patch the methods directly on the instance, not the class
             patch.object(
@@ -318,7 +318,7 @@ class TestConfluenceClientOAuth:
         with (
             patch.dict(os.environ, env_vars, clear=True),  # Clear other env vars
             patch(
-                "mcp_security_review.confluence.config.get_oauth_config_from_env",  # Patch the correct utility
+                "mcp_security_review.providers.atlassian.confluence.config.get_oauth_config_from_env",  # Patch the correct utility
                 return_value=mock_standard_oauth_config,
             ),
             patch.object(
@@ -330,13 +330,13 @@ class TestConfluenceClientOAuth:
             patch.object(
                 mock_standard_oauth_config, "ensure_valid_token", return_value=True
             ) as mock_ensure_valid_env,
-            patch("mcp_security_review.confluence.client.Confluence") as mock_confluence,
+            patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock_confluence,
             patch(
-                "mcp_security_review.confluence.client.configure_oauth_session",
+                "mcp_security_review.providers.atlassian.confluence.client.configure_oauth_session",
                 return_value=True,
             ) as mock_configure_oauth,
             patch(
-                "mcp_security_review.confluence.client.configure_ssl_verification"
+                "mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification"
             ) as mock_configure_ssl,
         ):
             # Initialize client from environment
@@ -375,16 +375,16 @@ class TestConfluenceClientOAuth:
         with (
             patch.dict(os.environ, env_vars, clear=True),
             patch(
-                "mcp_security_review.confluence.config.get_oauth_config_from_env",
+                "mcp_security_review.providers.atlassian.confluence.config.get_oauth_config_from_env",
                 return_value=mock_byo_oauth_config,
             ),
-            patch("mcp_security_review.confluence.client.Confluence") as mock_confluence,
+            patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock_confluence,
             patch(
-                "mcp_security_review.confluence.client.configure_oauth_session",
+                "mcp_security_review.providers.atlassian.confluence.client.configure_oauth_session",
                 return_value=True,
             ) as mock_configure_oauth,
             patch(
-                "mcp_security_review.confluence.client.configure_ssl_verification"
+                "mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification"
             ) as mock_configure_ssl,
         ):
             client = ConfluenceClient()
@@ -409,7 +409,7 @@ class TestConfluenceClientOAuth:
         with (
             patch.dict(os.environ, env_vars, clear=True),
             patch(
-                "mcp_security_review.confluence.config.get_oauth_config_from_env",
+                "mcp_security_review.providers.atlassian.confluence.config.get_oauth_config_from_env",
                 return_value=None,  # Simulate no OAuth config found by the utility
             ),
         ):

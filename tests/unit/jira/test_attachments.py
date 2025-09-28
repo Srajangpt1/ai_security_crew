@@ -228,7 +228,7 @@ class TestAttachmentsMixin:
             ) as mock_download,
             patch("pathlib.Path.mkdir") as mock_mkdir,
             patch(
-                "mcp_security_review.models.jira.JiraAttachment.from_api_response",
+                "mcp_security_review.models.atlassian.jira.JiraAttachment.from_api_response",
                 side_effect=[mock_attachment1, mock_attachment2],
             ),
         ):
@@ -276,7 +276,7 @@ class TestAttachmentsMixin:
             ) as mock_download,
             patch("pathlib.Path.mkdir") as mock_mkdir,
             patch(
-                "mcp_security_review.models.jira.JiraAttachment.from_api_response",
+                "mcp_security_review.models.atlassian.jira.JiraAttachment.from_api_response",
                 return_value=mock_attachment,
             ),
             patch("os.path.isabs") as mock_isabs,
@@ -383,7 +383,7 @@ class TestAttachmentsMixin:
             ) as mock_download,
             patch("pathlib.Path.mkdir") as mock_mkdir,
             patch(
-                "mcp_security_review.models.jira.JiraAttachment.from_api_response",
+                "mcp_security_review.models.atlassian.jira.JiraAttachment.from_api_response",
                 side_effect=[mock_attachment1, mock_attachment2],
             ),
         ):
@@ -427,7 +427,7 @@ class TestAttachmentsMixin:
         with (
             patch("pathlib.Path.mkdir") as mock_mkdir,
             patch(
-                "mcp_security_review.models.jira.JiraAttachment.from_api_response",
+                "mcp_security_review.models.atlassian.jira.JiraAttachment.from_api_response",
                 return_value=mock_attachment,
             ),
         ):

@@ -13,7 +13,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from mcp_atlassian import main
+from mcp_security_review import main
 from mcp_security_review.utils.lifecycle import _shutdown_event
 
 
