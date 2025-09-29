@@ -39,4 +39,4 @@ jobs:
       # Add -v for verbose output, helpful in CI
       # Add basic coverage reporting to terminal logs
       # Skip real API validation tests as they require credentials
-      run: uv run pytest -v -k "not test_real_api_validation" --cov=src/mcp_atlassian --cov-report=term-missing
+      run: uv run pytest -v -k "not test_real_api_validation" --cov=src/mcp_security_review --cov-report=term-missing
