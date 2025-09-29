@@ -1,6 +1,6 @@
-"""Logging utilities for MCP Atlassian.
+"""Logging utilities for MCP Security Review.
 
-This module provides enhanced logging capabilities for MCP Atlassian,
+This module provides enhanced logging capabilities for MCP Security Review,
 including level-dependent stream handling to route logs to the appropriate
 output stream based on their level.
 """
@@ -14,7 +14,7 @@ def setup_logging(
     level: int = logging.WARNING, stream: TextIO = sys.stderr
 ) -> logging.Logger:
     """
-    Configure MCP-Atlassian logging with level-based stream routing.
+    Configure MCP Security Review logging with level-based stream routing.
 
     Args:
         level: The minimum logging level to display (default: WARNING)

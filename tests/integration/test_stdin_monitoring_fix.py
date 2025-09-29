@@ -77,7 +77,7 @@ if __name__ == "__main__":
         main_file = (
             Path(__file__).parent.parent.parent
             / "src"
-            / "mcp_atlassian"
+            / "mcp_security_review"
             / "__init__.py"
         )
         with open(main_file) as f:

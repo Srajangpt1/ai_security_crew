@@ -38,7 +38,7 @@ import webbrowser
 # Add the parent directory to the path so we can import the package
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from src.mcp_atlassian.utils.oauth import OAuthConfig
+from mcp_security_review.utils.oauth import OAuthConfig
 
 # Configure logging (basicConfig should be called only once, ideally at the very start)
 # Adding lineno for better debugging.

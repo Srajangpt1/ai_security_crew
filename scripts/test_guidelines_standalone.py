@@ -34,7 +34,7 @@ class SecurityGuidelinesLoader:
         """Initialize the guidelines loader."""
         if guidelines_dir is None:
             # Default to the guidelines directory relative to this file
-            current_dir = Path(__file__).parent.parent / "src" / "mcp_atlassian" / "security" / "guidelines"
+            current_dir = Path(__file__).parent.parent / "src" / "mcp_security_review" / "security" / "guidelines"
             self.guidelines_dir = current_dir
         else:
             self.guidelines_dir = Path(guidelines_dir)
@@ -406,7 +406,7 @@ def test_guidelines_loader():
     print("✅ File-based guidelines system is working correctly!")
     print()
     print("💡 To add new guidelines:")
-    print("   1. Create a new .md or .txt file in src/mcp_atlassian/security/guidelines/")
+    print("   1. Create a new .md or .txt file in src/mcp_security_review/security/guidelines/")
     print("   2. Include metadata like category, priority, and tags")
     print("   3. The system will automatically load and parse the file")
     print("   4. Use loader.reload_guidelines() to refresh without restarting")
