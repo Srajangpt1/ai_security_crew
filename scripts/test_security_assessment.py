@@ -17,7 +17,7 @@ from mcp_security_review.security import SecurityAssessment
 
 def test_security_assessment() -> None:
     """Test the security assessment functionality."""
-    print("🔒 Testing MCP Atlassian Security Assessment Tool")
+    print("🔒 Testing MCP Security Review Assessment Tool")
     print("=" * 50)
     
     # Create test ticket data
@@ -180,4 +180,4 @@ if __name__ == "__main__":
     test_different_risk_levels()
     
     print("\n🎯 Security Assessment Tool Test Complete!")
-    print("The tool is ready for integration with MCP Atlassian.")
+    print("The tool is ready for integration with MCP Security Review.")

@@ -78,7 +78,7 @@ uv run pytest tests/integration/ --integration
 uv run pytest tests/integration/test_authentication.py --integration
 
 # Run with coverage
-uv run pytest tests/integration/ --integration --cov=src/mcp_atlassian
+uv run pytest tests/integration/ --integration --cov=src/mcp_security_review
 ```
 
 ### Real API Testing

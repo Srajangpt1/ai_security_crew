@@ -23,5 +23,5 @@ Please report security vulnerabilities to [security contact].
    - Never share your client secret publicly
    - Be aware that printing client secrets to console output poses a security risk
    - Console output can be logged, screen-captured, or viewed by others with access to your environment
-   - If client secrets are exposed, regenerate them immediately in your Atlassian developer console
+   - If client secrets are exposed, regenerate them immediately in your Application's Portal
    - Consider using environment variables or secure credential storage instead of direct console output

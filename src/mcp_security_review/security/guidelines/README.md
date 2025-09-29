@@ -88,7 +88,7 @@ The system can automatically detect some metadata from content:
 ### In Code
 
 ```python
-from mcp_atlassian.security.guidelines import SecurityGuidelinesLoader
+from mcp_security_review.security.guidelines import SecurityGuidelinesLoader
 
 # Load guidelines
 loader = SecurityGuidelinesLoader()
@@ -111,7 +111,7 @@ loader.reload_guidelines()
 The guidelines are automatically used by the security assessment tool:
 
 ```python
-from mcp_atlassian.security import SecurityAssessment
+from mcp_security_review.security import SecurityAssessment
 
 assessment = SecurityAssessment()
 requirements = assessment.assess_ticket(ticket_data)

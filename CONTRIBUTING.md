@@ -77,7 +77,7 @@ Thank you for your interest in contributing to MCP Atlassian! This document prov
     uv run pytest
 
     # With coverage
-    uv run pytest --cov=mcp_atlassian
+    uv run pytest --cov=mcp_security_review
     ```
 
 1. Run code quality checks using pre-commit:

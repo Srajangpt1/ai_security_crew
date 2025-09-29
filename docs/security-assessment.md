@@ -1,6 +1,6 @@
 # Security Assessment Tool
 
-The MCP Atlassian Security Assessment Tool provides automated security analysis of Jira tickets and generates security requirements that can be injected into code generation prompts. This ensures that security considerations are built into the development process from the start.
+The MCP Security Review Assessment Tool provides automated security analysis of Jira tickets and generates security requirements that can be injected into code generation prompts. This ensures that security considerations are built into the development process from the start.
 
 ## Overview
 
