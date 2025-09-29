@@ -45,11 +45,11 @@ For OAuth setup, the image ships with a guided `--oauth-setup` wizard. If you al
 
 ### 2. Installation
 
-MCP Security Review is distributed as a Docker image. This is the recommended way to run the server, especially for IDE integration. Ensure you have Docker installed.
+MCP Security Review can be build locally as container image. This is the recommended way to run the server, especially for IDE integration. Ensure you have Docker installed.
 
 ```bash
-# Pull Pre-built Image
-docker pull ghcr.io/ai-security-crew/mcp-security-review:latest
+# Run from the root of the Project
+docker build -t mcp-security-review .
 ```
 
 ## IDE / Configuration (Minimal)
@@ -71,7 +71,7 @@ Example (Cloud tokens):
       "args": ["run","--rm","-i",
         "-e","JIRA_URL","-e","JIRA_USERNAME","-e","JIRA_API_TOKEN",
         "-e","CONFLUENCE_URL","-e","CONFLUENCE_USERNAME","-e","CONFLUENCE_API_TOKEN",
-        "ghcr.io/ai-security-crew/mcp-security-review:latest"
+        "mcp-security-review:latest"
       ]
     }
   }
@@ -100,13 +100,13 @@ Both transport types support single-user and multi-user authentication:
     # For SSE transport
     docker run --rm -p 9000:9000 \
       --env-file /path/to/your/.env \
-      ghcr.io/ai-security-crew/mcp-security-review:latest \
+      mcp-security-review:latest \
       --transport sse --port 9000 -vv
 
     # OR for streamable-http transport
     docker run --rm -p 9000:9000 \
       --env-file /path/to/your/.env \
-      ghcr.io/ai-security-crew/mcp-security-review:latest \
+      mcp-security-review:latest \
       --transport streamable-http --port 9000 -vv
     ```
 
@@ -132,14 +132,14 @@ Here's a complete example of setting up multi-user authentication with streamabl
    docker run --rm -i \
      -p 8080:8080 \
      -v "${HOME}/.mcp-security-review:/home/app/.mcp-security-review" \
-     ghcr.io/ai-security-crew/mcp-security-review:latest --oauth-setup -v
+     mcp-security-review:latest --oauth-setup -v
    ```
 
 2. Start the server with streamable-HTTP transport:
    ```bash
    docker run --rm -p 9000:9000 \
      --env-file /path/to/your/.env \
-     ghcr.io/ai-security-crew/mcp-security-review:latest \
+     mcp-security-review:latest \
      --transport streamable-http --port 9000 -vv
    ```
 
