@@ -20,9 +20,8 @@ class SecurityGuidelinesLoader:
             guidelines_dir: Path to the guidelines directory. If None, uses default location.
         """
         if guidelines_dir is None:
-            # Default to the guidelines directory relative to this file
-            current_dir = Path(__file__).parent
-            self.guidelines_dir = current_dir
+            # Default to the 'docs' subdirectory under guidelines
+            self.guidelines_dir = Path(__file__).parent / "docs"
         else:
             self.guidelines_dir = Path(guidelines_dir)
         

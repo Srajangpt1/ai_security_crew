@@ -750,17 +750,6 @@ async def link_to_epic(
     }
     return json.dumps(result, indent=2, ensure_ascii=False)
 
-
-
-
-
-
-
-
-
-
-
-
 @jira_mcp.tool(tags={"jira", "write"})
 @check_write_access
 async def transition_issue(
@@ -833,13 +822,6 @@ async def transition_issue(
     }
     return json.dumps(result, indent=2, ensure_ascii=False)
 
-
-
-
-
-
-
-
 @jira_mcp.tool(tags={"jira", "read"})
 async def get_all_projects(
     ctx: Context,
@@ -904,11 +886,6 @@ async def get_all_projects(
 
     return json.dumps(projects, indent=2, ensure_ascii=False)
 
-
-
-
-
-
 @jira_mcp.tool(tags={"jira", "read", "security"})
 async def assess_ticket_security(
     ctx: Context,
@@ -934,6 +911,9 @@ async def assess_ticket_security(
     security requirements that can be injected into code generation prompts.
     It identifies technologies, security risks, and provides specific guidelines
     following OWASP and industry best practices.
+
+    💡 TIP: For quick security guidance without a Jira ticket, use 'lightweight_security_review' instead.
+    This tool is best when you have a specific Jira issue that needs thorough security analysis.
 
     Args:
         ctx: The FastMCP context.
@@ -1018,3 +998,4 @@ async def assess_ticket_security(
         }
         
         return json.dumps(error_response, indent=2, ensure_ascii=False)
+
