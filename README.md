@@ -21,12 +21,9 @@ Keep the vibe going while staying secure:
 
 See [Security Assessment Documentation](docs/security-assessment.md) for detailed usage and examples.
 
-There are few template guidelines that can be used, but you can add your 
-guidelines in src/mcp_security_review/security/guidelines folder
+## Security Templates
 
-## 📋 Security Guidelines
-
-- The system includes few **built-in security guidelines** for common scenarios
+- The system includes few **built-in security guidelines** for common scenarios that will be referenced for security review.
 - You can add your own organization-specific guidelines in `src/mcp_security_review/security/guidelines/docs/`. 
 - Guidelines are automatically loaded and integrated into security assessments. 
 - Supports for markdown (`.md`)
