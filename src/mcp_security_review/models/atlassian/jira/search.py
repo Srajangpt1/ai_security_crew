@@ -10,6 +10,7 @@ from typing import Any
 from pydantic import Field, model_validator
 
 from mcp_security_review.models.base import ApiModel
+
 from .issue import JiraIssue
 
 logger = logging.getLogger(__name__)

@@ -11,8 +11,6 @@ from typing import Any
 
 from pydantic import Field
 
-from mcp_security_review.utils import parse_date
-
 from mcp_security_review.models.base import ApiModel, TimestampMixin
 from mcp_security_review.models.constants import (
     EMPTY_STRING,
@@ -21,6 +19,7 @@ from mcp_security_review.models.constants import (
     UNASSIGNED,
     UNKNOWN,
 )
+from mcp_security_review.utils import parse_date
 
 logger = logging.getLogger(__name__)
 

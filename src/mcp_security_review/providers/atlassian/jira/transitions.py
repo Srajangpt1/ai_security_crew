@@ -7,6 +7,7 @@ from requests.exceptions import HTTPError
 
 from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
 from mcp_security_review.models import JiraIssue, JiraTransition
+
 from .client import JiraClient
 from .protocols import IssueOperationsProto, UsersOperationsProto
 

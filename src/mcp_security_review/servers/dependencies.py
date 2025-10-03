@@ -13,7 +13,10 @@ from fastmcp import Context
 from fastmcp.server.dependencies import get_http_request
 from starlette.requests import Request
 
-from mcp_security_review.providers.atlassian.confluence import ConfluenceConfig, ConfluenceFetcher
+from mcp_security_review.providers.atlassian.confluence import (
+    ConfluenceConfig,
+    ConfluenceFetcher,
+)
 from mcp_security_review.providers.atlassian.jira import JiraConfig, JiraFetcher
 from mcp_security_review.servers.context import MainAppContext
 from mcp_security_review.utils.oauth import OAuthConfig
@@ -22,7 +25,9 @@ if TYPE_CHECKING:
     from mcp_security_review.providers.atlassian.confluence.config import (
         ConfluenceConfig as UserConfluenceConfigType,
     )
-    from mcp_security_review.providers.atlassian.jira.config import JiraConfig as UserJiraConfigType
+    from mcp_security_review.providers.atlassian.jira.config import (
+        JiraConfig as UserJiraConfigType,
+    )
 
 logger = logging.getLogger("mcp-security-review.servers.dependencies")
 

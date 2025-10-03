@@ -3,7 +3,9 @@
 Focused tests for Jira constants, validating correct values and business logic.
 """
 
-from mcp_security_review.providers.atlassian.jira.constants import DEFAULT_READ_JIRA_FIELDS
+from mcp_security_review.providers.atlassian.jira.constants import (
+    DEFAULT_READ_JIRA_FIELDS,
+)
 
 
 class TestDefaultReadJiraFields:

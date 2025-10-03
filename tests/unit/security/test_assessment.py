@@ -1,17 +1,20 @@
 """Tests for SecurityAssessment class."""
 
 import json
-import pytest
-from mcp_security_review.security.assessment import SecurityAssessment, SecurityRequirements
+
+from mcp_security_review.security.assessment import (
+    SecurityAssessment,
+    SecurityRequirements,
+)
 
 
 class TestSecurityAssessment:
     """Test cases for SecurityAssessment."""
-    
+
     def setup_method(self) -> None:
         """Set up test fixtures."""
         self.assessment = SecurityAssessment()
-    
+
     def test_assess_ticket_basic(self) -> None:
         """Test basic ticket assessment."""
         ticket_data = {
@@ -19,12 +22,12 @@ class TestSecurityAssessment:
             "description": "Add login functionality with password validation",
             "fields": {
                 "issuetype": {"name": "Story"},
-                "labels": ["authentication", "security"]
-            }
+                "labels": ["authentication", "security"],
+            },
         }
-        
+
         requirements = self.assessment.assess_ticket(ticket_data)
-        
+
         assert isinstance(requirements, SecurityRequirements)
         assert requirements.risk_level in ["low", "medium", "high", "critical"]
         assert isinstance(requirements.security_categories, list)
@@ -34,7 +37,7 @@ class TestSecurityAssessment:
         assert isinstance(requirements.summary, str)
         assert len(requirements.prompt_injection) > 0
         assert len(requirements.summary) > 0
-    
+
     def test_assess_ticket_high_risk(self) -> None:
         """Test assessment of high-risk ticket."""
         ticket_data = {
@@ -47,12 +50,12 @@ class TestSecurityAssessment:
             "fields": {
                 "issuetype": {"name": "Bug"},
                 "priority": {"name": "Critical"},
-                "labels": ["security", "critical", "sql", "authentication"]
-            }
+                "labels": ["security", "critical", "sql", "authentication"],
+            },
         }
-        
+
         requirements = self.assessment.assess_ticket(ticket_data)
-        
+
         assert requirements.risk_level in ["high", "critical"]
         assert "authentication" in requirements.security_categories
         assert "database" in requirements.security_categories
@@ -60,7 +63,7 @@ class TestSecurityAssessment:
         assert len(requirements.guidelines) > 0
         assert "SECURITY REQUIREMENTS" in requirements.prompt_injection
         assert "HIGH SECURITY RISK" in requirements.prompt_injection
-    
+
     def test_assess_ticket_with_comments(self) -> None:
         """Test assessment with ticket comments."""
         ticket_data = {
@@ -68,36 +71,34 @@ class TestSecurityAssessment:
             "description": "Add rate limiting to prevent abuse",
             "comments": [
                 {"body": "Need to implement JWT authentication for API access"},
-                {"body": "Also add input validation to prevent SQL injection"}
+                {"body": "Also add input validation to prevent SQL injection"},
             ],
             "fields": {
                 "issuetype": {"name": "Story"},
-                "labels": ["api", "security", "python"]
-            }
+                "labels": ["api", "security", "python"],
+            },
         }
-        
+
         requirements = self.assessment.assess_ticket(ticket_data)
-        
+
         assert "api_security" in requirements.security_categories
         assert "authentication" in requirements.security_categories
         assert "data_validation" in requirements.security_categories
         # Note: Technology detection may not work as expected in test environment
         assert len(requirements.guidelines) > 0
-    
+
     def test_assess_ticket_minimal_data(self) -> None:
         """Test assessment with minimal ticket data."""
-        ticket_data = {
-            "summary": "Update documentation"
-        }
-        
+        ticket_data = {"summary": "Update documentation"}
+
         requirements = self.assessment.assess_ticket(ticket_data)
-        
+
         assert requirements.risk_level == "low"
         assert len(requirements.security_categories) == 0
         assert len(requirements.technologies) == 0
         assert len(requirements.guidelines) >= 0  # May have some general guidelines
         assert "SECURITY REQUIREMENTS" in requirements.prompt_injection
-    
+
     def test_build_context_text(self) -> None:
         """Test context text building."""
         ticket_data = {
@@ -105,22 +106,22 @@ class TestSecurityAssessment:
             "description": "Test description",
             "fields": {
                 "issuetype": {"name": "Bug"},
-                "labels": ["security", "authentication"]
-            }
+                "labels": ["security", "authentication"],
+            },
         }
-        
+
         context_text = self.assessment._build_context_text(ticket_data)
-        
+
         assert "Test summary" in context_text
         assert "Test description" in context_text
         assert "Issue type: Bug" in context_text
         assert "Labels: security, authentication" in context_text
-    
+
     def test_filter_guidelines_by_categories(self) -> None:
         """Test filtering guidelines by categories."""
         # Create mock guidelines
         from mcp_security_review.security.guidelines import SecurityGuideline
-        
+
         guidelines = [
             SecurityGuideline(
                 category="authentication",
@@ -129,7 +130,7 @@ class TestSecurityAssessment:
                 priority="high",
                 implementation="Test implementation",
                 examples=["Example 1"],
-                references=["Ref 1"]
+                references=["Ref 1"],
             ),
             SecurityGuideline(
                 category="database",
@@ -138,7 +139,7 @@ class TestSecurityAssessment:
                 priority="critical",
                 implementation="Test implementation",
                 examples=["Example 1"],
-                references=["Ref 1"]
+                references=["Ref 1"],
             ),
             SecurityGuideline(
                 category="api_security",
@@ -147,22 +148,24 @@ class TestSecurityAssessment:
                 priority="medium",
                 implementation="Test implementation",
                 examples=["Example 1"],
-                references=["Ref 1"]
-            )
+                references=["Ref 1"],
+            ),
         ]
-        
+
         categories = {"authentication", "database"}
-        
-        filtered = self.assessment._filter_guidelines_by_categories(guidelines, categories)
-        
+
+        filtered = self.assessment._filter_guidelines_by_categories(
+            guidelines, categories
+        )
+
         assert len(filtered) == 2
         filtered_categories = {g.category for g in filtered}
         assert filtered_categories == categories
-    
+
     def test_filter_guidelines_no_categories(self) -> None:
         """Test filtering guidelines with no categories."""
         from mcp_security_review.security.guidelines import SecurityGuideline
-        
+
         guidelines = [
             SecurityGuideline(
                 category="authentication",
@@ -171,7 +174,7 @@ class TestSecurityAssessment:
                 priority="high",
                 implementation="Test implementation",
                 examples=["Example 1"],
-                references=["Ref 1"]
+                references=["Ref 1"],
             ),
             SecurityGuideline(
                 category="database",
@@ -180,32 +183,34 @@ class TestSecurityAssessment:
                 priority="low",
                 implementation="Test implementation",
                 examples=["Example 1"],
-                references=["Ref 1"]
-            )
+                references=["Ref 1"],
+            ),
         ]
-        
+
         categories = set()
-        
-        filtered = self.assessment._filter_guidelines_by_categories(guidelines, categories)
-        
+
+        filtered = self.assessment._filter_guidelines_by_categories(
+            guidelines, categories
+        )
+
         # Should return high priority guidelines
         assert len(filtered) > 0
         assert all(g.priority in ["critical", "high"] for g in filtered)
-    
+
     def test_generate_prompt_injection(self) -> None:
         """Test prompt injection generation."""
         from mcp_security_review.security.analyzer import SecurityContext
         from mcp_security_review.security.guidelines import SecurityGuideline
-        
+
         security_context = SecurityContext(
             technologies=["python", "django"],
             security_keywords={"authentication", "password"},
             risk_level="high",
             security_categories={"authentication", "data_validation"},
             sensitive_data_types={"personal_data"},
-            attack_vectors={"sql_injection"}
+            attack_vectors={"sql_injection"},
         )
-        
+
         guidelines = [
             SecurityGuideline(
                 category="authentication",
@@ -214,12 +219,14 @@ class TestSecurityAssessment:
                 priority="high",
                 implementation="Use bcrypt for password hashing",
                 examples=["Use bcrypt library", "Set minimum password length"],
-                references=["OWASP Password Guidelines"]
+                references=["OWASP Password Guidelines"],
             )
         ]
-        
-        injection = self.assessment._generate_prompt_injection(security_context, guidelines)
-        
+
+        injection = self.assessment._generate_prompt_injection(
+            security_context, guidelines
+        )
+
         assert "🔒 SECURITY REQUIREMENTS:" in injection
         assert "⚠️  HIGH SECURITY RISK DETECTED" in injection
         assert "🛠️  TECHNOLOGY-SPECIFIC SECURITY:" in injection
@@ -233,21 +240,21 @@ class TestSecurityAssessment:
         assert "🔒 SENSITIVE DATA HANDLING:" in injection
         assert "🛡️  ATTACK VECTOR PREVENTION:" in injection
         assert "🔍 GENERAL SECURITY REMINDERS:" in injection
-    
+
     def test_generate_summary(self) -> None:
         """Test summary generation."""
         from mcp_security_review.security.analyzer import SecurityContext
         from mcp_security_review.security.guidelines import SecurityGuideline
-        
+
         security_context = SecurityContext(
             technologies=["python"],
             security_keywords={"authentication"},
             risk_level="medium",
             security_categories={"authentication"},
             sensitive_data_types={"personal_data"},
-            attack_vectors={"sql_injection"}
+            attack_vectors={"sql_injection"},
         )
-        
+
         guidelines = [
             SecurityGuideline(
                 category="authentication",
@@ -256,19 +263,19 @@ class TestSecurityAssessment:
                 priority="high",
                 implementation="Test",
                 examples=[],
-                references=[]
+                references=[],
             )
         ]
-        
+
         summary = self.assessment._generate_summary(security_context, guidelines)
-        
+
         assert "Security Risk Level: MEDIUM" in summary
         assert "Technologies: python" in summary
         assert "Security Categories: Authentication" in summary
         assert "Sensitive Data Types: personal_data" in summary
         assert "Attack Vectors: Sql Injection" in summary
         assert "Security Guidelines Applied: 1" in summary
-    
+
     def test_to_json(self) -> None:
         """Test JSON serialization."""
         requirements = SecurityRequirements(
@@ -277,11 +284,11 @@ class TestSecurityAssessment:
             technologies=["python"],
             guidelines=[],
             prompt_injection="Test injection",
-            summary="Test summary"
+            summary="Test summary",
         )
-        
+
         json_str = self.assessment.to_json(requirements)
-        
+
         assert isinstance(json_str, str)
         data = json.loads(json_str)
         assert data["risk_level"] == "high"
@@ -289,7 +296,7 @@ class TestSecurityAssessment:
         assert data["technologies"] == ["python"]
         assert data["prompt_injection"] == "Test injection"
         assert data["summary"] == "Test summary"
-    
+
     def test_from_json(self) -> None:
         """Test JSON deserialization."""
         json_data = {
@@ -298,12 +305,12 @@ class TestSecurityAssessment:
             "technologies": ["javascript"],
             "guidelines": [],
             "prompt_injection": "Test injection",
-            "summary": "Test summary"
+            "summary": "Test summary",
         }
-        
+
         json_str = json.dumps(json_data)
         requirements = self.assessment.from_json(json_str)
-        
+
         assert isinstance(requirements, SecurityRequirements)
         assert requirements.risk_level == "medium"
         assert requirements.security_categories == ["database"]

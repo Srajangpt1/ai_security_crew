@@ -643,8 +643,6 @@ async def test_get_issue_with_user_specific_fetcher_in_state(
     assert result_data["key"] == "USER-STATE-1"
 
 
-
-
 @pytest.mark.anyio
 async def test_get_all_projects_tool(jira_client, mock_jira_fetcher):
     """Test the jira_get_all_projects tool returns all accessible projects."""
@@ -999,5 +997,3 @@ async def test_get_all_projects_tool_configuration_error_handling(
     data = json.loads(msg.text)
     assert data["success"] is False
     assert "Configuration Error" in data["error"]
-
-

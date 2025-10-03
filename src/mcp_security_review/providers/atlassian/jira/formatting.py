@@ -6,6 +6,7 @@ import re
 from typing import Any
 
 from mcp_security_review.preprocessing.jira import JiraPreprocessor
+
 from .client import JiraClient
 from .protocols import (
     EpicOperationsProto,

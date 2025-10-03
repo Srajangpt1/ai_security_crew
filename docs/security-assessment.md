@@ -28,7 +28,7 @@ result = await assess_ticket_security(ctx, "PROJ-123")
 ```python
 # Customize the assessment output
 result = await assess_ticket_security(
-    ctx, 
+    ctx,
     "PROJ-123",
     include_guidelines=True,      # Include detailed security guidelines
     include_prompt_injection=True # Include formatted prompt injection

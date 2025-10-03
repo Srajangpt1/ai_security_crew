@@ -238,7 +238,9 @@ def mock_atlassian_confluence(
     Returns:
         MagicMock: Fully configured mock Confluence client
     """
-    with patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock:
+    with patch(
+        "mcp_security_review.providers.atlassian.confluence.client.Confluence"
+    ) as mock:
         confluence_instance = mock.return_value
 
         # Use original mock data to maintain backward compatibility for existing tests
@@ -324,7 +326,9 @@ def mock_atlassian_confluence_with_session_data(
     Returns:
         MagicMock: Mock Confluence client with session-scoped data
     """
-    with patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock:
+    with patch(
+        "mcp_security_review.providers.atlassian.confluence.client.Confluence"
+    ) as mock:
         confluence_instance = mock.return_value
 
         # Use session-scoped data for improved performance

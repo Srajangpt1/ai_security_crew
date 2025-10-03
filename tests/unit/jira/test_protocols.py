@@ -3,12 +3,12 @@
 import inspect
 from typing import Any, get_type_hints
 
+from mcp_security_review.models.atlassian.jira import JiraIssue
+from mcp_security_review.models.atlassian.jira.search import JiraSearchResult
 from mcp_security_review.providers.atlassian.jira.protocols import (
     AttachmentsOperationsProto,
     UsersOperationsProto,
 )
-from mcp_security_review.models.atlassian.jira import JiraIssue
-from mcp_security_review.models.atlassian.jira.search import JiraSearchResult
 
 
 class TestProtocolCompliance:

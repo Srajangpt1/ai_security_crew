@@ -24,9 +24,13 @@ def test_jira_client_passes_proxies_to_requests(monkeypatch):
     # Create a proper proxies dictionary that can be updated
     mock_session.proxies = {}
     mock_jira._session = mock_session
-    monkeypatch.setattr("mcp_security_review.providers.atlassian.jira.client.Jira", lambda **kwargs: mock_jira)
     monkeypatch.setattr(
-        "mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification", lambda **kwargs: None
+        "mcp_security_review.providers.atlassian.jira.client.Jira",
+        lambda **kwargs: mock_jira,
+    )
+    monkeypatch.setattr(
+        "mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification",
+        lambda **kwargs: None,
     )
     config = JiraConfig(
         url="https://test.atlassian.net",
@@ -57,7 +61,8 @@ def test_confluence_client_passes_proxies_to_requests(monkeypatch):
     mock_session.proxies = {}
     mock_confluence._session = mock_session
     monkeypatch.setattr(
-        "mcp_security_review.providers.atlassian.confluence.client.Confluence", lambda **kwargs: mock_confluence
+        "mcp_security_review.providers.atlassian.confluence.client.Confluence",
+        lambda **kwargs: mock_confluence,
     )
     monkeypatch.setattr(
         "mcp_security_review.providers.atlassian.confluence.client.configure_ssl_verification",
@@ -93,9 +98,13 @@ def test_jira_client_no_proxy_env(monkeypatch):
     mock_jira = MagicMock()
     mock_session = MagicMock()
     mock_jira._session = mock_session
-    monkeypatch.setattr("mcp_security_review.providers.atlassian.jira.client.Jira", lambda **kwargs: mock_jira)
     monkeypatch.setattr(
-        "mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification", lambda **kwargs: None
+        "mcp_security_review.providers.atlassian.jira.client.Jira",
+        lambda **kwargs: mock_jira,
+    )
+    monkeypatch.setattr(
+        "mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification",
+        lambda **kwargs: None,
     )
     monkeypatch.setenv("NO_PROXY", "")
     config = JiraConfig(
@@ -163,7 +172,8 @@ class TestProxyConfigurationEnhanced(BaseAuthTest):
         mock_session.proxies = {}
         mock_jira._session = mock_session
         monkeypatch.setattr(
-            "mcp_security_review.providers.atlassian.jira.client.Jira", lambda **kwargs: mock_jira
+            "mcp_security_review.providers.atlassian.jira.client.Jira",
+            lambda **kwargs: mock_jira,
         )
         monkeypatch.setattr(
             "mcp_security_review.providers.atlassian.jira.client.configure_ssl_verification",
@@ -210,7 +220,9 @@ class TestProxyConfigurationEnhanced(BaseAuthTest):
         # Mock to simulate proxy connection failure
         mock_jira = MagicMock()
         mock_jira.side_effect = ProxyError("Unable to connect to proxy")
-        monkeypatch.setattr("mcp_security_review.providers.atlassian.jira.client.Jira", mock_jira)
+        monkeypatch.setattr(
+            "mcp_security_review.providers.atlassian.jira.client.Jira", mock_jira
+        )
 
         config = JiraConfig(
             url="https://test.atlassian.net",

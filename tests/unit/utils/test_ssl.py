@@ -74,7 +74,9 @@ def test_configure_ssl_verification_disabled():
 
     # Mock the logger to avoid issues with real logging
     with patch("mcp_security_review.utils.ssl.logger") as mock_logger:
-        with patch("mcp_security_review.utils.ssl.SSLIgnoreAdapter") as mock_adapter_class:
+        with patch(
+            "mcp_security_review.utils.ssl.SSLIgnoreAdapter"
+        ) as mock_adapter_class:
             mock_adapter = MagicMock()
             mock_adapter_class.return_value = mock_adapter
 

@@ -39,7 +39,10 @@ class TestMainTransportSelection:
 
         This is a regression test for issues #519 and #524.
         """
-        with patch("mcp_security_review.servers.main.SecurityReviewMCP", return_value=mock_server):
+        with patch(
+            "mcp_security_review.servers.main.SecurityReviewMCP",
+            return_value=mock_server,
+        ):
             with patch.dict("os.environ", {"TRANSPORT": transport}):
                 with patch("sys.argv", ["mcp-security-review"]):
                     try:
@@ -60,7 +63,10 @@ class TestMainTransportSelection:
 
     def test_cli_overrides_env_transport(self, mock_server, mock_asyncio_run):
         """Test that CLI transport argument overrides environment variable."""
-        with patch("mcp_security_review.servers.main.SecurityReviewMCP", return_value=mock_server):
+        with patch(
+            "mcp_security_review.servers.main.SecurityReviewMCP",
+            return_value=mock_server,
+        ):
             with patch.dict("os.environ", {"TRANSPORT": "sse"}):
                 # Simulate CLI args with --transport stdio
                 with patch("sys.argv", ["mcp-security-review", "--transport", "stdio"]):
@@ -76,7 +82,10 @@ class TestMainTransportSelection:
 
     def test_signal_handlers_always_setup(self, mock_server):
         """Test that signal handlers are set up regardless of transport."""
-        with patch("mcp_security_review.servers.main.SecurityReviewMCP", return_value=mock_server):
+        with patch(
+            "mcp_security_review.servers.main.SecurityReviewMCP",
+            return_value=mock_server,
+        ):
             with patch("asyncio.run"):
                 # Patch where it's imported in the main module
                 with patch("mcp_security_review.setup_signal_handlers") as mock_setup:
@@ -100,7 +109,10 @@ class TestMainTransportSelection:
 
         mock_server.run_async = failing_run_async
 
-        with patch("mcp_security_review.servers.main.SecurityReviewMCP", return_value=mock_server):
+        with patch(
+            "mcp_security_review.servers.main.SecurityReviewMCP",
+            return_value=mock_server,
+        ):
             with patch("asyncio.run") as mock_run:
                 # Simulate the exception propagating through asyncio.run
                 mock_run.side_effect = error

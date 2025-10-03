@@ -38,7 +38,12 @@ def setup_logging(
     root_logger.addHandler(handler)
 
     # Configure specific loggers
-    loggers = ["mcp-security-review", "mcp.server", "mcp.server.lowlevel.server", "mcp-jira"]
+    loggers = [
+        "mcp-security-review",
+        "mcp.server",
+        "mcp.server.lowlevel.server",
+        "mcp-jira",
+    ]
 
     for logger_name in loggers:
         logger = logging.getLogger(logger_name)

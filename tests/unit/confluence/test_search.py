@@ -1,14 +1,14 @@
 """Unit tests for the SearchMixin class."""
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 import requests
-from requests import HTTPError
 
 from mcp_security_review.providers.atlassian.confluence.search import SearchMixin
-from mcp_security_review.providers.atlassian.confluence.utils import quote_cql_identifier_if_needed
-from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
+from mcp_security_review.providers.atlassian.confluence.utils import (
+    quote_cql_identifier_if_needed,
+)
 
 
 class TestSearchMixin:
@@ -267,4 +267,3 @@ class TestSearchMixin:
         # Assert
         assert isinstance(results, list)
         assert len(results) == 0
-

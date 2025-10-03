@@ -28,21 +28,27 @@ from fastmcp import Client
 from fastmcp.client import FastMCPTransport
 from mcp.types import TextContent
 
-from mcp_security_review.providers.atlassian.confluence import ConfluenceFetcher
-from mcp_security_review.providers.atlassian.confluence.comments import CommentsMixin as ConfluenceCommentsMixin
-from mcp_security_review.providers.atlassian.confluence.config import ConfluenceConfig
-from mcp_security_review.providers.atlassian.confluence.labels import LabelsMixin as ConfluenceLabelsMixin
-from mcp_security_review.providers.atlassian.confluence.pages import PagesMixin
-from mcp_security_review.providers.atlassian.confluence.search import SearchMixin as ConfluenceSearchMixin
-from mcp_security_review.providers.atlassian.jira import JiraFetcher
-from mcp_security_review.providers.atlassian.jira.config import JiraConfig
-from mcp_security_review.providers.atlassian.jira.links import LinksMixin
 from mcp_security_review.models.atlassian.confluence import (
     ConfluenceComment,
     ConfluenceLabel,
     ConfluencePage,
 )
 from mcp_security_review.models.atlassian.jira import JiraIssueLinkType
+from mcp_security_review.providers.atlassian.confluence import ConfluenceFetcher
+from mcp_security_review.providers.atlassian.confluence.comments import (
+    CommentsMixin as ConfluenceCommentsMixin,
+)
+from mcp_security_review.providers.atlassian.confluence.config import ConfluenceConfig
+from mcp_security_review.providers.atlassian.confluence.labels import (
+    LabelsMixin as ConfluenceLabelsMixin,
+)
+from mcp_security_review.providers.atlassian.confluence.pages import PagesMixin
+from mcp_security_review.providers.atlassian.confluence.search import (
+    SearchMixin as ConfluenceSearchMixin,
+)
+from mcp_security_review.providers.atlassian.jira import JiraFetcher
+from mcp_security_review.providers.atlassian.jira.config import JiraConfig
+from mcp_security_review.providers.atlassian.jira.links import LinksMixin
 from mcp_security_review.servers import main_mcp
 
 

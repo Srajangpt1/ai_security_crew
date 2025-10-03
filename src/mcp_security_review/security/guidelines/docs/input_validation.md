@@ -46,7 +46,7 @@ def sanitize_html_input(user_input: str) -> str:
     dangerous_tags = ['script', 'iframe', 'object', 'embed']
     for tag in dangerous_tags:
         user_input = re.sub(f'<{tag}[^>]*>.*?</{tag}>', '', user_input, flags=re.IGNORECASE | re.DOTALL)
-    
+
     # Escape remaining HTML
     return escape(user_input)
 
@@ -55,15 +55,15 @@ def validate_file_upload(filename: str, content_type: str, size: int) -> bool:
     allowed_extensions = ['.jpg', '.png', '.pdf', '.txt']
     if not any(filename.lower().endswith(ext) for ext in allowed_extensions):
         return False
-    
+
     # Check content type
     allowed_types = ['image/jpeg', 'image/png', 'application/pdf', 'text/plain']
     if content_type not in allowed_types:
         return False
-    
+
     # Check file size (5MB limit)
     if size > 5 * 1024 * 1024:
         return False
-    
+
     return True
 ```

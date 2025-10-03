@@ -16,6 +16,7 @@ from mcp_security_review.models.constants import (
     JIRA_DEFAULT_ID,
     JIRA_DEFAULT_KEY,
 )
+
 from .comment import JiraComment
 from .common import (
     JiraAttachment,

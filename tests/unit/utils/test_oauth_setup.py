@@ -86,7 +86,9 @@ class TestOAuthFlow:
                 patch(
                     "mcp_security_review.utils.oauth_setup.OAuthConfig"
                 ) as mock_oauth_config,
-                patch("mcp_security_review.utils.oauth_setup.wait_for_callback") as mock_wait,
+                patch(
+                    "mcp_security_review.utils.oauth_setup.wait_for_callback"
+                ) as mock_wait,
                 patch(
                     "mcp_security_review.utils.oauth_setup.start_callback_server"
                 ) as mock_start_server,
@@ -139,7 +141,9 @@ class TestOAuthFlow:
                 patch(
                     "mcp_security_review.utils.oauth_setup.OAuthConfig"
                 ) as mock_oauth_config,
-                patch("mcp_security_review.utils.oauth_setup.wait_for_callback") as mock_wait,
+                patch(
+                    "mcp_security_review.utils.oauth_setup.wait_for_callback"
+                ) as mock_wait,
                 patch(
                     "mcp_security_review.utils.oauth_setup.start_callback_server"
                 ) as mock_start_server,
@@ -215,7 +219,9 @@ class TestOAuthFlow:
                 patch(
                     "mcp_security_review.utils.oauth_setup.OAuthConfig"
                 ) as mock_oauth_config,
-                patch("mcp_security_review.utils.oauth_setup.wait_for_callback") as mock_wait,
+                patch(
+                    "mcp_security_review.utils.oauth_setup.wait_for_callback"
+                ) as mock_wait,
                 patch(
                     "mcp_security_review.utils.oauth_setup.start_callback_server"
                 ) as mock_start_server,
@@ -270,7 +276,8 @@ class TestInteractiveSetup(BaseAuthTest):
             with (
                 patch("builtins.input", side_effect=["", "", "", ""]),
                 patch(
-                    "mcp_security_review.utils.oauth_setup.run_oauth_flow", return_value=True
+                    "mcp_security_review.utils.oauth_setup.run_oauth_flow",
+                    return_value=True,
                 ) as mock_flow,
             ):
                 result = run_oauth_setup()
@@ -306,7 +313,8 @@ class TestInteractiveSetup(BaseAuthTest):
             with (
                 patch("builtins.input", side_effect=input_values),
                 patch(
-                    "mcp_security_review.utils.oauth_setup.run_oauth_flow", return_value=True
+                    "mcp_security_review.utils.oauth_setup.run_oauth_flow",
+                    return_value=True,
                 ) as mock_flow,
             ):
                 result = run_oauth_setup()
@@ -325,7 +333,8 @@ class TestInteractiveSetup(BaseAuthTest):
                     "builtins.input", side_effect=["client-id", "client-secret", "", ""]
                 ),
                 patch(
-                    "mcp_security_review.utils.oauth_setup.run_oauth_flow", return_value=False
+                    "mcp_security_review.utils.oauth_setup.run_oauth_flow",
+                    return_value=False,
                 ),
             ):
                 result = run_oauth_setup()

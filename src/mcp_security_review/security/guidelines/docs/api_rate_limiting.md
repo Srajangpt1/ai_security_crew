@@ -46,13 +46,13 @@ def rate_limit(requests_per_minute=60):
         def wrapper(*args, **kwargs):
             # Get client IP or user ID
             client_id = get_client_identifier()
-            
+
             # Create rate limit key
             key = f"rate_limit:{client_id}:{func.__name__}"
-            
+
             # Check current request count
             current_requests = redis_client.get(key)
-            
+
             if current_requests is None:
                 # First request in the window
                 redis_client.setex(key, 60, 1)
@@ -62,7 +62,7 @@ def rate_limit(requests_per_minute=60):
             else:
                 # Increment request count
                 redis_client.incr(key)
-            
+
             return func(*args, **kwargs)
         return wrapper
     return decorator

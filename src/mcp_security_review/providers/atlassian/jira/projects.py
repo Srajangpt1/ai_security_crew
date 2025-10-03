@@ -6,6 +6,7 @@ from typing import Any
 from mcp_security_review.models import JiraProject
 from mcp_security_review.models.atlassian.jira.search import JiraSearchResult
 from mcp_security_review.models.atlassian.jira.version import JiraVersion
+
 from .client import JiraClient
 from .protocols import SearchOperationsProto
 

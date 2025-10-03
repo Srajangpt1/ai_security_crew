@@ -14,7 +14,6 @@ from mcp_security_review.servers.dependencies import (
     get_confluence_fetcher,
     get_jira_fetcher,
 )
-from mcp_security_review.servers.main import SecurityReviewMCP, main_lifespan
 from mcp_security_review.utils.environment import get_available_services
 from mcp_security_review.utils.ssl import configure_ssl_verification
 from tests.utils.factories import (
@@ -139,7 +138,8 @@ class TestSharedAuthentication:
         request.state.user_atlassian_email = "test@example.com"
 
         with patch(
-            "mcp_security_review.servers.dependencies.get_http_request", return_value=request
+            "mcp_security_review.servers.dependencies.get_http_request",
+            return_value=request,
         ):
             # Create mock context with lifespan data
             ctx = MockFastMCP.create_context()
@@ -155,7 +155,9 @@ class TestSharedAuthentication:
 
             # Mock the fetcher creation
             with (
-                patch("mcp_security_review.providers.atlassian.jira.JiraFetcher") as mock_jira_fetcher,
+                patch(
+                    "mcp_security_review.providers.atlassian.jira.JiraFetcher"
+                ) as mock_jira_fetcher,
                 patch(
                     "mcp_security_review.providers.atlassian.confluence.ConfluenceFetcher"
                 ) as mock_confluence_fetcher,
@@ -189,7 +191,12 @@ class TestCrossServiceErrorHandling:
     async def test_jira_failure_does_not_affect_confluence(self):
         """Test that Jira failure doesn't prevent Confluence from working."""
         with MockEnvironment.basic_auth_env():
-            app = AtlassianMCP("Test MCP")
+            from mcp_security_review.servers.main import (
+                SecurityReviewMCP,
+                main_lifespan,
+            )
+
+            app = SecurityReviewMCP(name="Test MCP", lifespan=main_lifespan)
 
             # Mock Jira to fail during initialization
             with patch(
@@ -208,7 +215,12 @@ class TestCrossServiceErrorHandling:
     async def test_confluence_failure_does_not_affect_jira(self):
         """Test that Confluence failure doesn't prevent Jira from working."""
         with MockEnvironment.basic_auth_env():
-            app = AtlassianMCP("Test MCP")
+            from mcp_security_review.servers.main import (
+                SecurityReviewMCP,
+                main_lifespan,
+            )
+
+            app = SecurityReviewMCP(name="Test MCP", lifespan=main_lifespan)
 
             # Mock Confluence to fail during initialization
             with patch(
@@ -321,7 +333,12 @@ class TestConcurrentServiceInitialization:
     async def test_concurrent_service_startup(self):
         """Test that both services can be initialized concurrently."""
         with MockEnvironment.basic_auth_env():
-            app = AtlassianMCP("Test MCP")
+            from mcp_security_review.servers.main import (
+                SecurityReviewMCP,
+                main_lifespan,
+            )
+
+            app = SecurityReviewMCP(name="Test MCP", lifespan=main_lifespan)
 
             # Track initialization order
             init_order = []
@@ -385,7 +402,9 @@ class TestConcurrentServiceInitialization:
                     "mcp_security_review.servers.dependencies.get_http_request",
                     return_value=request,
                 ),
-                patch("mcp_security_review.providers.atlassian.jira.JiraFetcher") as mock_jira_fetcher,
+                patch(
+                    "mcp_security_review.providers.atlassian.jira.JiraFetcher"
+                ) as mock_jira_fetcher,
                 patch(
                     "mcp_security_review.providers.atlassian.confluence.ConfluenceFetcher"
                 ) as mock_confluence_fetcher,
@@ -513,7 +532,12 @@ class TestServiceAvailabilityDetection:
             },
             clear=True,
         ):
-            app = AtlassianMCP("Test MCP")
+            from mcp_security_review.servers.main import (
+                SecurityReviewMCP,
+                main_lifespan,
+            )
+
+            app = SecurityReviewMCP(name="Test MCP", lifespan=main_lifespan)
 
             async with main_lifespan(app) as lifespan_data:
                 context = lifespan_data["app_lifespan_context"]

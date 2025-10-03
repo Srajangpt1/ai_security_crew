@@ -5,9 +5,9 @@ from unittest.mock import PropertyMock, patch
 
 import pytest
 
+from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
 from mcp_security_review.providers.atlassian.confluence.client import ConfluenceClient
 from mcp_security_review.providers.atlassian.confluence.config import ConfluenceConfig
-from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
 from mcp_security_review.utils.oauth import BYOAccessTokenOAuthConfig, OAuthConfig
 
 
@@ -37,7 +37,9 @@ class TestConfluenceClientOAuth:
 
         # Mock dependencies
         with (
-            patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock_confluence,
+            patch(
+                "mcp_security_review.providers.atlassian.confluence.client.Confluence"
+            ) as mock_confluence,
             patch(
                 "mcp_security_review.providers.atlassian.confluence.client.configure_oauth_session"
             ) as mock_configure_oauth,
@@ -99,7 +101,9 @@ class TestConfluenceClientOAuth:
 
         # Mock dependencies
         with (
-            patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock_confluence,
+            patch(
+                "mcp_security_review.providers.atlassian.confluence.client.Confluence"
+            ) as mock_confluence,
             patch(
                 "mcp_security_review.providers.atlassian.confluence.client.configure_oauth_session"
             ) as mock_configure_oauth,
@@ -330,7 +334,9 @@ class TestConfluenceClientOAuth:
             patch.object(
                 mock_standard_oauth_config, "ensure_valid_token", return_value=True
             ) as mock_ensure_valid_env,
-            patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock_confluence,
+            patch(
+                "mcp_security_review.providers.atlassian.confluence.client.Confluence"
+            ) as mock_confluence,
             patch(
                 "mcp_security_review.providers.atlassian.confluence.client.configure_oauth_session",
                 return_value=True,
@@ -378,7 +384,9 @@ class TestConfluenceClientOAuth:
                 "mcp_security_review.providers.atlassian.confluence.config.get_oauth_config_from_env",
                 return_value=mock_byo_oauth_config,
             ),
-            patch("mcp_security_review.providers.atlassian.confluence.client.Confluence") as mock_confluence,
+            patch(
+                "mcp_security_review.providers.atlassian.confluence.client.Confluence"
+            ) as mock_confluence,
             patch(
                 "mcp_security_review.providers.atlassian.confluence.client.configure_oauth_session",
                 return_value=True,

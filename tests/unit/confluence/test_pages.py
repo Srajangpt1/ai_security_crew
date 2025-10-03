@@ -4,8 +4,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from mcp_security_review.providers.atlassian.confluence.pages import PagesMixin
 from mcp_security_review.models.atlassian.confluence import ConfluencePage
+from mcp_security_review.providers.atlassian.confluence.pages import PagesMixin
 
 
 class TestPagesMixin:
@@ -448,7 +448,6 @@ class TestPagesMixin:
             # Verify result is a ConfluencePage
             assert isinstance(result, ConfluencePage)
             assert result.id == page_id
-
 
     def test_get_page_children_success(self, pages_mixin):
         """Test successfully getting child pages."""
@@ -1061,4 +1060,3 @@ class TestPagesOAuthMixin:
             assert result.content == "Processed OAuth content"
             assert result.space.key == "PROJ"
             assert result.version.number == 3
-

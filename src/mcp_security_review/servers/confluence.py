@@ -7,7 +7,6 @@ from typing import Annotated
 from fastmcp import Context, FastMCP
 from pydantic import BeforeValidator, Field
 
-from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
 from mcp_security_review.servers.dependencies import get_confluence_fetcher
 from mcp_security_review.utils.decorators import (
     check_write_access,
@@ -343,8 +342,6 @@ async def get_comments(
     return json.dumps(formatted_comments, indent=2, ensure_ascii=False)
 
 
-
-
 @confluence_mcp.tool(tags={"confluence", "write"})
 @check_write_access
 async def create_page(
@@ -531,8 +528,6 @@ async def update_page(
     )
 
 
-
-
 @confluence_mcp.tool(tags={"confluence", "write"})
 @check_write_access
 async def add_comment(
@@ -581,5 +576,3 @@ async def add_comment(
         }
 
     return json.dumps(response, indent=2, ensure_ascii=False)
-
-
