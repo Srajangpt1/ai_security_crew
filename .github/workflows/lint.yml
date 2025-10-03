@@ -2,9 +2,9 @@ name: Lint
 
 on:
   pull_request:
-
+    types: [opened, synchronize, reopened]
   push:
-    branches: [ * ]
+    branches: [ main ]
 
 jobs:
   lint:
