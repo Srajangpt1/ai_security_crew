@@ -1,7 +1,7 @@
 # AI Security Crew
 
 [![Run Tests](https://github.com/Srajangpt1/ai_security_crew/actions/workflows/tests.yml/badge.svg)](https://github.com/Srajangpt1/ai_security_crew/actions/workflows/tests.yml)
-![License](https://img.shields.io/github/license/ai-security-crew/mcp-security-review)
+![License](https://img.shields.io/github/license/Srajangpt1/ai_security_crew)
 
 A lightweight MCP server for security reviews across designs, tickets, and docs - built for vibe coding, which injects security requirements prior to code generation, automatically. Perfect for when you're in the flow and need to quickly assess security risks, check compliance, or document findings without breaking your coding rhythm. Currently supports Jira and Confluence.
 
