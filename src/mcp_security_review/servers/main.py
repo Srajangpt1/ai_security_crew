@@ -26,6 +26,7 @@ from mcp_security_review.utils.tools import get_enabled_tools, should_include_to
 
 from .confluence import confluence_mcp
 from .context import MainAppContext
+from .general import general_mcp
 from .jira import jira_mcp
 
 logger = logging.getLogger("mcp-security-review.server.main")
@@ -326,6 +327,7 @@ class UserTokenMiddleware(BaseHTTPMiddleware):
 
 
 main_mcp = SecurityReviewMCP(name="Security Review MCP", lifespan=main_lifespan)
+main_mcp.mount("general", general_mcp)
 main_mcp.mount("jira", jira_mcp)
 main_mcp.mount("confluence", confluence_mcp)
 
