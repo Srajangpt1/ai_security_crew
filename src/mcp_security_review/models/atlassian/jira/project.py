@@ -13,6 +13,7 @@ from mcp_security_review.models.constants import (
     JIRA_DEFAULT_PROJECT,
     UNKNOWN,
 )
+
 from .common import JiraUser
 
 logger = logging.getLogger(__name__)

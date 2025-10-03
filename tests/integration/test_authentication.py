@@ -8,9 +8,9 @@ import pytest
 import requests
 from requests.exceptions import HTTPError
 
+from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
 from mcp_security_review.providers.atlassian.confluence.client import ConfluenceClient
 from mcp_security_review.providers.atlassian.confluence.config import ConfluenceConfig
-from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
 from mcp_security_review.providers.atlassian.jira.client import JiraClient
 from mcp_security_review.providers.atlassian.jira.config import JiraConfig
 from mcp_security_review.utils.oauth import OAuthConfig, configure_oauth_session
@@ -170,7 +170,9 @@ class TestBasicAuthValidation:
                     "JIRA_API_TOKEN": "invalid-token",
                 },
             ):
-                with patch("mcp_security_review.providers.atlassian.jira.client.Jira") as mock_jira_class:
+                with patch(
+                    "mcp_security_review.providers.atlassian.jira.client.Jira"
+                ) as mock_jira_class:
                     # Make Jira constructor raise authentication error
                     mock_jira_class.side_effect = HTTPError("401 Unauthorized")
 
@@ -266,7 +268,8 @@ class TestAuthenticationFailureRecovery:
         with MockEnvironment.clean_env():
             # Mock token loading to return empty (no stored tokens)
             with patch(
-                "mcp_security_review.utils.oauth.OAuthConfig.load_tokens", return_value={}
+                "mcp_security_review.utils.oauth.OAuthConfig.load_tokens",
+                return_value={},
             ):
                 with patch.dict(
                     "os.environ",
@@ -564,7 +567,8 @@ class TestJiraConfluenceAuthFlows:
         with MockEnvironment.clean_env():
             # Mock token loading to return empty (no stored tokens)
             with patch(
-                "mcp_security_review.utils.oauth.OAuthConfig.load_tokens", return_value={}
+                "mcp_security_review.utils.oauth.OAuthConfig.load_tokens",
+                return_value={},
             ):
                 # Test case 1: Only service-specific auth (no OAuth config)
                 with patch.dict(
@@ -628,7 +632,9 @@ class TestJiraConfluenceAuthFlows:
                 assert config.ssl_verify is False
                 assert config.https_proxy == "http://proxy.company.com:8080"
 
-                with patch("mcp_security_review.providers.atlassian.jira.client.Jira") as mock_jira:
+                with patch(
+                    "mcp_security_review.providers.atlassian.jira.client.Jira"
+                ) as mock_jira:
                     client = JiraClient(config)
                     # Verify SSL verification was disabled
                     mock_jira.assert_called_with(

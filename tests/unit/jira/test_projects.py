@@ -5,11 +5,11 @@ from unittest.mock import MagicMock, call, patch
 
 import pytest
 
+from mcp_security_review.models.atlassian.jira.issue import JiraIssue
+from mcp_security_review.models.atlassian.jira.search import JiraSearchResult
 from mcp_security_review.providers.atlassian.jira import JiraFetcher
 from mcp_security_review.providers.atlassian.jira.config import JiraConfig
 from mcp_security_review.providers.atlassian.jira.projects import ProjectsMixin
-from mcp_security_review.models.atlassian.jira.issue import JiraIssue
-from mcp_security_review.models.atlassian.jira.search import JiraSearchResult
 
 
 @pytest.fixture
@@ -262,8 +262,6 @@ def test_get_project_components_non_list_response(projects_mixin: ProjectsMixin)
     result = projects_mixin.get_project_components("PROJ1")
     assert result == []
     projects_mixin.jira.get_project_components.assert_called_once()
-
-
 
 
 def test_get_project_roles(

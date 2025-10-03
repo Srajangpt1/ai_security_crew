@@ -9,8 +9,10 @@ from pydantic import Field
 from requests.exceptions import HTTPError
 
 from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
-from mcp_security_review.providers.atlassian.jira.constants import DEFAULT_READ_JIRA_FIELDS
 from mcp_security_review.models.atlassian.jira.common import JiraUser
+from mcp_security_review.providers.atlassian.jira.constants import (
+    DEFAULT_READ_JIRA_FIELDS,
+)
 from mcp_security_review.security import SecurityAssessment
 from mcp_security_review.servers.dependencies import get_jira_fetcher
 from mcp_security_review.utils.decorators import check_write_access
@@ -251,10 +253,6 @@ async def search(
     return json.dumps(result, indent=2, ensure_ascii=False)
 
 
-
-
-
-
 @jira_mcp.tool(tags={"jira", "read"})
 async def get_transitions(
     ctx: Context,
@@ -273,8 +271,6 @@ async def get_transitions(
     # Underlying method returns list[dict] in the desired format
     transitions = jira.get_available_transitions(issue_key)
     return json.dumps(transitions, indent=2, ensure_ascii=False)
-
-
 
 
 @jira_mcp.tool(tags={"jira", "read"})
@@ -298,10 +294,6 @@ async def download_attachments(
     jira = await get_jira_fetcher(ctx)
     result = jira.download_issue_attachments(issue_key=issue_key, target_dir=target_dir)
     return json.dumps(result, indent=2, ensure_ascii=False)
-
-
-
-
 
 
 @jira_mcp.tool(tags={"jira", "read"})
@@ -750,6 +742,7 @@ async def link_to_epic(
     }
     return json.dumps(result, indent=2, ensure_ascii=False)
 
+
 @jira_mcp.tool(tags={"jira", "write"})
 @check_write_access
 async def transition_issue(
@@ -822,6 +815,7 @@ async def transition_issue(
     }
     return json.dumps(result, indent=2, ensure_ascii=False)
 
+
 @jira_mcp.tool(tags={"jira", "read"})
 async def get_all_projects(
     ctx: Context,
@@ -886,6 +880,7 @@ async def get_all_projects(
 
     return json.dumps(projects, indent=2, ensure_ascii=False)
 
+
 @jira_mcp.tool(tags={"jira", "read", "security"})
 async def assess_ticket_security(
     ctx: Context,
@@ -934,7 +929,7 @@ async def assess_ticket_security(
         ValueError: If the Jira client is not configured or issue not found.
     """
     jira = await get_jira_fetcher(ctx)
-    
+
     try:
         # Get the full issue data
         issue = jira.get_issue(
@@ -943,14 +938,14 @@ async def assess_ticket_security(
             expand="renderedFields,changelog",  # Include rendered content and history
             comment_limit=20,  # Include recent comments
         )
-        
+
         # Convert issue to dict for analysis
         issue_data = issue.to_simplified_dict()
-        
+
         # Perform security assessment
         security_assessment = SecurityAssessment()
         requirements = security_assessment.assess_ticket(issue_data)
-        
+
         # Build response
         response = {
             "success": True,
@@ -960,31 +955,35 @@ async def assess_ticket_security(
                 "security_categories": requirements.security_categories,
                 "technologies": requirements.technologies,
                 "summary": requirements.summary,
-            }
+            },
         }
-        
+
         # Add detailed guidelines if requested
         if include_guidelines:
             response["assessment"]["guidelines"] = requirements.guidelines
-        
+
         # Add prompt injection if requested
         if include_prompt_injection:
             response["assessment"]["prompt_injection"] = requirements.prompt_injection
-        
+
         # Add metadata
         response["metadata"] = {
             "total_guidelines": len(requirements.guidelines),
             "assessment_timestamp": issue_data.get("updated", ""),
-            "issue_type": issue_data.get("fields", {}).get("issuetype", {}).get("name", ""),
-            "issue_status": issue_data.get("fields", {}).get("status", {}).get("name", ""),
+            "issue_type": issue_data.get("fields", {})
+            .get("issuetype", {})
+            .get("name", ""),
+            "issue_status": issue_data.get("fields", {})
+            .get("status", {})
+            .get("name", ""),
         }
-        
+
         return json.dumps(response, indent=2, ensure_ascii=False)
-        
+
     except Exception as e:
         error_message = str(e)
         logger.error(f"Security assessment failed for {issue_key}: {error_message}")
-        
+
         error_response = {
             "success": False,
             "issue_key": issue_key,
@@ -994,8 +993,7 @@ async def assess_ticket_security(
                 "security_categories": [],
                 "technologies": [],
                 "summary": "Assessment failed due to error",
-            }
+            },
         }
-        
-        return json.dumps(error_response, indent=2, ensure_ascii=False)
 
+        return json.dumps(error_response, indent=2, ensure_ascii=False)

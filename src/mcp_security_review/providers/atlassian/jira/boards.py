@@ -6,6 +6,7 @@ from typing import Any
 import requests
 
 from mcp_security_review.models.atlassian.jira import JiraBoard
+
 from .client import JiraClient
 
 logger = logging.getLogger("mcp-jira")

@@ -21,9 +21,11 @@ from mcp_security_review.models.constants import EMPTY_STRING
 
 # Optional: Import real API client for optional real-data testing
 try:
-    from mcp_security_review.providers.atlassian.confluence.client import ConfluenceClient  # noqa: F401
+    from mcp_security_review.providers.atlassian.confluence.client import (
+        ConfluenceClient,
+    )
 except ImportError:
-    pass
+    ConfluenceClient = None
 
 
 class TestConfluenceAttachment:
@@ -596,10 +598,17 @@ class TestRealConfluenceData:
             pytest.skip("Real Confluence data testing is disabled")
 
         try:
+            # Check if ConfluenceClient is available
+            if ConfluenceClient is None:
+                pytest.skip("ConfluenceClient not available")
+
             # Initialize the Confluence client
-            from mcp_security_review.providers.atlassian.confluence.client import ConfluenceClient
-            from mcp_security_review.providers.atlassian.confluence.config import ConfluenceConfig
-            from mcp_security_review.providers.atlassian.confluence.pages import PagesMixin
+            from mcp_security_review.providers.atlassian.confluence.config import (
+                ConfluenceConfig,
+            )
+            from mcp_security_review.providers.atlassian.confluence.pages import (
+                PagesMixin,
+            )
 
             # Use the from_env method to create the config
             config = ConfluenceConfig.from_env()

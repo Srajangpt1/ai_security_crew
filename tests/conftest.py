@@ -6,7 +6,6 @@ across all test modules. It integrates with the new test utilities framework
 to provide efficient, reusable test fixtures.
 """
 
-
 import pytest
 
 from tests.utils.factories import (

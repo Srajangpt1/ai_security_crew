@@ -40,16 +40,16 @@ import qrcode
 def setup_mfa(user_id: str) -> dict:
     # Generate secret key
     secret = pyotp.random_base32()
-    
+
     # Create TOTP object
     totp = pyotp.TOTP(secret)
-    
+
     # Generate QR code URI
     qr_uri = totp.provisioning_uri(
         name=user.email,
         issuer_name="Your App"
     )
-    
+
     return {
         'secret': secret,
         'qr_code': qr_uri

@@ -20,7 +20,6 @@ from mcp_security_review.providers.atlassian.jira import JiraFetcher
 from mcp_security_review.providers.atlassian.jira.config import JiraConfig
 from mcp_security_review.servers.context import MainAppContext
 from mcp_security_review.servers.main import (
-    SecurityReviewMCP,
     UserTokenMiddleware,
     health_check,
     main_lifespan,
@@ -87,8 +86,12 @@ class TestMCPProtocolIntegration:
 
     @pytest.fixture
     async def atlassian_mcp_server(self):
-        """Create an AtlassianMCP server instance for testing."""
-        server = AtlassianMCP(name="Test Atlassian MCP", lifespan=main_lifespan)
+        """Create an SecurityReviewMCP server instance for testing."""
+        from mcp_security_review.servers.main import SecurityReviewMCP, main_lifespan
+
+        server = SecurityReviewMCP(
+            name="Test Security Review MCP", lifespan=main_lifespan
+        )
         # Mount sub-servers (they're already mounted in the actual server)
         return server
 

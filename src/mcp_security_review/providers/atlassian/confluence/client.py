@@ -7,9 +7,14 @@ from atlassian import Confluence
 from requests import Session
 
 from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
-from mcp_security_review.utils.logging import get_masked_session_headers, log_config_param, mask_sensitive
+from mcp_security_review.utils.logging import (
+    get_masked_session_headers,
+    log_config_param,
+    mask_sensitive,
+)
 from mcp_security_review.utils.oauth import configure_oauth_session
 from mcp_security_review.utils.ssl import configure_ssl_verification
+
 from .config import ConfluenceConfig
 
 # Configure logging

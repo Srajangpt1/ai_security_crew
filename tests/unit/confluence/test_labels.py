@@ -5,8 +5,8 @@ from unittest.mock import patch
 import pytest
 import requests
 
-from mcp_security_review.providers.atlassian.confluence.labels import LabelsMixin
 from mcp_security_review.models.atlassian.confluence import ConfluenceLabel
+from mcp_security_review.providers.atlassian.confluence.labels import LabelsMixin
 
 
 class TestLabelsMixin:

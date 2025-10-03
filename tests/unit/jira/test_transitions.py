@@ -4,14 +4,14 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from mcp_security_review.providers.atlassian.jira import JiraFetcher
-from mcp_security_review.providers.atlassian.jira.transitions import TransitionsMixin
 from mcp_security_review.models.atlassian.jira import (
     JiraIssue,
     JiraStatus,
     JiraStatusCategory,
     JiraTransition,
 )
+from mcp_security_review.providers.atlassian.jira import JiraFetcher
+from mcp_security_review.providers.atlassian.jira.transitions import TransitionsMixin
 
 
 class TestTransitionsMixin:

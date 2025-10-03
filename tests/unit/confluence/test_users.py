@@ -5,8 +5,9 @@ from unittest.mock import MagicMock, patch
 import pytest
 from requests.exceptions import HTTPError
 
-from mcp_security_review.providers.atlassian.confluence.users import UsersMixin
 from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
+from mcp_security_review.providers.atlassian.confluence.users import UsersMixin
+
 
 class TestUsersMixin:
     """Tests for the UsersMixin class."""
@@ -396,7 +397,9 @@ class TestUsersMixin:
     def test_users_mixin_inheritance(self, users_mixin):
         """Test that UsersMixin properly inherits from ConfluenceClient."""
         # Verify that UsersMixin is indeed a ConfluenceClient
-        from mcp_security_review.providers.atlassian.confluence.client import ConfluenceClient
+        from mcp_security_review.providers.atlassian.confluence.client import (
+            ConfluenceClient,
+        )
 
         assert isinstance(users_mixin, ConfluenceClient)
 

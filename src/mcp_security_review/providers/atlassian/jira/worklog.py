@@ -6,6 +6,7 @@ from typing import Any
 
 from mcp_security_review.models import JiraWorklog
 from mcp_security_review.utils import parse_date
+
 from .client import JiraClient
 
 logger = logging.getLogger("mcp-jira")

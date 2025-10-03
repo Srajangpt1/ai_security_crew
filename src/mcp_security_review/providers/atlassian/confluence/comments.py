@@ -5,6 +5,7 @@ import logging
 import requests
 
 from mcp_security_review.models.atlassian.confluence import ConfluenceComment
+
 from .client import ConfluenceClient
 
 logger = logging.getLogger("mcp-security-review")

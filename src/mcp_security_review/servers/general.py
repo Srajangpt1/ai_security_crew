@@ -4,25 +4,25 @@ import json
 import logging
 from typing import Annotated
 
-from fastmcp import FastMCP
+from fastmcp import Context, FastMCP
 from pydantic import Field
 
 from mcp_security_review.security import SecurityAssessment
-
-from .context import Context
 
 logger = logging.getLogger("mcp-security-review.servers.general")
 
 general_mcp = FastMCP(
     name="General Security MCP",
-    description="Provider-agnostic security tools for lightweight reviews and assessments."
+    description="Provider-agnostic security tools for lightweight reviews and assessments.",
 )
 
 
 @general_mcp.tool(tags={"security", "review", "lightweight"})
 async def lightweight_security_review(
     ctx: Context,
-    task_description: Annotated[str, Field(description="Description of the coding task or feature to implement")],
+    task_description: Annotated[
+        str, Field(description="Description of the coding task or feature to implement")
+    ],
     technologies: Annotated[
         str,
         Field(
@@ -84,12 +84,12 @@ async def lightweight_security_review(
                 "priority": {"name": "Medium"},
                 "labels": technologies.lower().split(", ") if technologies else [],
             },
-            "comments": []
+            "comments": [],
         }
-        
+
         security_assessment = SecurityAssessment()
         requirements = security_assessment.assess_ticket(synthetic_ticket)
-        
+
         response = {
             "success": True,
             "task_description": task_description,
@@ -105,31 +105,33 @@ async def lightweight_security_review(
                     "Consider security implications at each development step",
                     "Validate all inputs and sanitize outputs",
                     "Follow principle of least privilege",
-                ]
-            }
+                ],
+            },
         }
-        
+
         if include_guidelines:
             response["assessment"]["guidelines"] = requirements.guidelines
-        
+
         if include_prompt_injection:
             prompt_prefix = " PRE-CODING SECURITY REVIEW:\n\n"
             prompt_prefix += "⚡ IMPORTANT: Apply these security considerations BEFORE and DURING coding:\n\n"
-            response["assessment"]["prompt_injection"] = prompt_prefix + requirements.prompt_injection
-        
+            response["assessment"]["prompt_injection"] = (
+                prompt_prefix + requirements.prompt_injection
+            )
+
         response["metadata"] = {
             "total_guidelines": len(requirements.guidelines),
             "review_timestamp": "pre-coding",
             "review_purpose": "lightweight_security_guidance",
             "integration_workflow": "vibe_coding",
         }
-        
+
         return json.dumps(response, indent=2, ensure_ascii=False)
-        
+
     except Exception as e:
         error_message = str(e)
         logger.error(f"Lightweight security review failed: {error_message}")
-        
+
         fallback_response = {
             "success": False,
             "task_description": task_description,
@@ -146,8 +148,8 @@ async def lightweight_security_review(
                     "Log security events appropriately",
                     "Handle errors securely without information disclosure",
                 ],
-                "prompt_injection": "SECURITY REQUIREMENTS:\n\n Apply basic security practices:\n• Input validation\n• Output encoding\n• Secure authentication\n• Error handling\n• Logging and monitoring"
-            }
+                "prompt_injection": "SECURITY REQUIREMENTS:\n\n Apply basic security practices:\n• Input validation\n• Output encoding\n• Secure authentication\n• Error handling\n• Logging and monitoring",
+            },
         }
-        
+
         return json.dumps(fallback_response, indent=2, ensure_ascii=False)

@@ -41,19 +41,19 @@ def validate_password_strength(password: str) -> bool:
     # Check minimum length
     if len(password) < 12:
         return False
-    
+
     # Check for mixed case
     if not (re.search(r'[a-z]', password) and re.search(r'[A-Z]', password)):
         return False
-    
+
     # Check for numbers
     if not re.search(r'\d', password):
         return False
-    
+
     # Check for special characters
     if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
         return False
-    
+
     return True
 
 def hash_password(password: str) -> str:

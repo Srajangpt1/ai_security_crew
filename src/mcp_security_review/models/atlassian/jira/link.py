@@ -9,6 +9,7 @@ from typing import Any
 
 from mcp_security_review.models.base import ApiModel
 from mcp_security_review.models.constants import EMPTY_STRING, JIRA_DEFAULT_ID, UNKNOWN
+
 from .common import JiraIssueType, JiraPriority, JiraStatus
 
 logger = logging.getLogger(__name__)

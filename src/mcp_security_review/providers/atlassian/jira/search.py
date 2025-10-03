@@ -7,6 +7,7 @@ from requests.exceptions import HTTPError
 
 from mcp_security_review.exceptions import MCPAtlassianAuthenticationError
 from mcp_security_review.models.atlassian.jira import JiraSearchResult
+
 from .client import JiraClient
 from .constants import DEFAULT_READ_JIRA_FIELDS
 from .protocols import IssueOperationsProto

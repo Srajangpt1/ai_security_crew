@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from mcp_security_review.models.atlassian.jira import JiraAttachment
+
 from .client import JiraClient
 from .protocols import AttachmentsOperationsProto
 

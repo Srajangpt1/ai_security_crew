@@ -37,7 +37,7 @@ from .jira import (
 __all__ = [
     # Confluence models
     "ConfluenceAttachment",
-    "ConfluenceComment", 
+    "ConfluenceComment",
     "ConfluenceLabel",
     "ConfluencePage",
     "ConfluenceSearchResult",

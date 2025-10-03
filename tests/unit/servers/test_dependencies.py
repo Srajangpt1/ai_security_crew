@@ -6,7 +6,10 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from mcp_security_review.providers.atlassian.confluence import ConfluenceConfig, ConfluenceFetcher
+from mcp_security_review.providers.atlassian.confluence import (
+    ConfluenceConfig,
+    ConfluenceFetcher,
+)
 from mcp_security_review.providers.atlassian.jira import JiraConfig, JiraFetcher
 from mcp_security_review.servers.context import MainAppContext
 from mcp_security_review.servers.dependencies import (

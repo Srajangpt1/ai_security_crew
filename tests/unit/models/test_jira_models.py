@@ -10,12 +10,6 @@ import re
 
 import pytest
 
-from mcp_security_review.models.constants import (
-    EMPTY_STRING,
-    JIRA_DEFAULT_ID,
-    JIRA_DEFAULT_PROJECT,
-    UNKNOWN,
-)
 from mcp_security_review.models.atlassian.jira import (
     JiraComment,
     JiraIssue,
@@ -35,6 +29,12 @@ from mcp_security_review.models.atlassian.jira import (
     JiraUser,
     JiraWorklog,
 )
+from mcp_security_review.models.constants import (
+    EMPTY_STRING,
+    JIRA_DEFAULT_ID,
+    JIRA_DEFAULT_PROJECT,
+    UNKNOWN,
+)
 
 # Optional: Import real API client for optional real-data testing
 try:
@@ -43,7 +43,9 @@ try:
     from mcp_security_review.providers.atlassian.jira import JiraConfig, JiraFetcher
     from mcp_security_review.providers.atlassian.jira.issues import IssuesMixin
     from mcp_security_review.providers.atlassian.jira.projects import ProjectsMixin
-    from mcp_security_review.providers.atlassian.jira.transitions import TransitionsMixin
+    from mcp_security_review.providers.atlassian.jira.transitions import (
+        TransitionsMixin,
+    )
     from mcp_security_review.providers.atlassian.jira.worklog import WorklogMixin
 
     real_api_available = True
