@@ -3,11 +3,8 @@
 ## Description
 
 <!-- What does this PR do? Why is it needed? -->
+
 <!-- Link related issues: Fixes #<issue_number> -->
-
-Fixes: #
-
-## Changes
 
 <!-- Briefly list the key changes made. -->
 
