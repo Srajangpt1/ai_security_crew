@@ -2,7 +2,7 @@
 
 > **Audience**: LLM-driven engineering agents
 
-This file provides guidance for autonomous coding agents working inside the **MCP Security Review** repository.
+This file provides guidance for autonomous coding agents working inside the **AI Security Crew** repository.
 
 ---
 
