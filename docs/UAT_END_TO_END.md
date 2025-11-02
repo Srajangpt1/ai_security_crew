@@ -36,8 +36,8 @@ In your MCP client (Cursor), check that the `mcp-security-review` server is conn
 
 **User Query:**
 ```
-I need to implement user authentication for my web app. 
-I'm using React frontend and Node.js backend with PostgreSQL. 
+I need to implement user authentication for my web app.
+I'm using React frontend and Node.js backend with PostgreSQL.
 Users should be able to login with email/password and we want to support OAuth2 later.
 Can you help me implement this securely?
 ```
@@ -140,7 +140,7 @@ How should I fix this?
 
 **User Query:**
 ```
-I'm building a REST API for a mobile app. 
+I'm building a REST API for a mobile app.
 The API will handle user data, payments, and sensitive information.
 What security measures should I implement?
 ```
@@ -434,7 +434,7 @@ For each scenario, fill out:
 
 5. **Overall Assessment:**
    - ✅ PASS / ❌ FAIL
-   
+
 6. **Notes:**
    [Any observations, issues, or improvements]
 ```
@@ -491,31 +491,31 @@ print("=" * 60)
 for scenario in scenarios:
     print(f"\n📝 Scenario: {scenario['name']}")
     print("-" * 60)
-    
+
     result = assessment.assess_ticket(scenario["ticket"])
-    
+
     print(f"Risk Level: {result.risk_level}")
     print(f"Categories: {result.security_categories}")
     print(f"Guidelines: {len(result.guidelines)}")
-    
+
     # Check if expected categories are present
     expected_cats = set(scenario["expected_categories"])
     actual_cats = set(result.security_categories)
-    
+
     if expected_cats.intersection(actual_cats):
         print("✅ Expected categories found")
     else:
         print(f"⚠️  Expected {expected_cats}, got {actual_cats}")
-    
+
     # Check if expected guidelines are present
     guideline_titles = " ".join([g["title"].lower() for g in result.guidelines])
     found_keywords = []
     for keyword in scenario["expected_guidelines"]:
         if keyword.lower() in guideline_titles:
             found_keywords.append(keyword)
-    
+
     print(f"✅ Found keywords: {found_keywords}")
-    
+
     print(f"\nTop 3 Guidelines:")
     for g in result.guidelines[:3]:
         print(f"  • {g['title']} ({g['priority']})")
@@ -613,4 +613,3 @@ If you encounter issues:
 **Happy Testing! 🎉**
 
 Now go ahead and **ask me those security questions** - let's see if I pick up the OWASP guidelines correctly!
-

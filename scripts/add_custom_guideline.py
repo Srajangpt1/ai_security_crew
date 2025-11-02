@@ -18,7 +18,6 @@ Usage:
 import argparse
 import re
 from pathlib import Path
-from typing import Tuple
 
 
 def extract_keywords(text: str) -> list[str]:
@@ -82,7 +81,7 @@ def extract_keywords(text: str) -> list[str]:
         if keyword in text_lower:
             found_keywords.add(keyword.replace(" ", "_"))
 
-    return sorted(list(found_keywords))[:10]  # Limit to top 10
+    return sorted(found_keywords)[:10]  # Limit to top 10
 
 
 def infer_category(title: str, content: str) -> str:
@@ -124,7 +123,16 @@ def infer_category(title: str, content: str) -> str:
         ),
         # Database
         (
-            ["database", "sql", "nosql", "query", "injection", "orm", "mongodb", "redis"],
+            [
+                "database",
+                "sql",
+                "nosql",
+                "query",
+                "injection",
+                "orm",
+                "mongodb",
+                "redis",
+            ],
             "database",
         ),
         # Cryptography
@@ -249,7 +257,11 @@ def infer_priority(title: str, content: str) -> str:
 
 
 def format_guideline(
-    title: str, content: str, category: str = None, priority: str = None, tags: list[str] = None
+    title: str,
+    content: str,
+    category: str = None,
+    priority: str = None,
+    tags: list[str] = None,
 ) -> str:
     """Format a guideline with metadata header."""
     # Auto-infer if not provided
@@ -265,7 +277,7 @@ def format_guideline(
     # Build metadata header
     metadata = f"""category: {category}
 priority: {priority}
-tags: {', '.join(tags)}
+tags: {", ".join(tags)}
 
 """
 
@@ -418,9 +430,7 @@ def main() -> None:
                 title = file_path.stem.replace("_", " ").title()
 
         tags = args.tags.split(",") if args.tags else None
-        output_path = save_guideline(
-            title, content, args.category, args.priority, tags
-        )
+        output_path = save_guideline(title, content, args.category, args.priority, tags)
         print(f"✅ Guideline saved to: {output_path}")
 
     # Quick mode
@@ -438,4 +448,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

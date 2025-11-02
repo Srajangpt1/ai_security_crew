@@ -216,8 +216,8 @@ String[] featuresToDisable = {
 }
 
 for (String feature : featuresToDisable) {
-    try {    
-        dbf.setFeature(FEATURE, false); 
+    try {
+        dbf.setFeature(FEATURE, false);
     } catch (ParserConfigurationException e) {
         // This should catch a failed setFeature feature
         logger.info("ParserConfigurationException was thrown. The feature '" + feature
@@ -230,9 +230,9 @@ try {
     // Add these as per Timothy Morgan's 2014 paper: "XML Schema, DTD, and Entity Attacks"
     dbf.setXIncludeAware(false);
     dbf.setExpandEntityReferences(false);
-        
+
     // As stated in the documentation, "Feature for Secure Processing (FSP)" is the central mechanism that will
-    // help you safeguard XML processing. It instructs XML processors, such as parsers, validators, 
+    // help you safeguard XML processing. It instructs XML processors, such as parsers, validators,
     // and transformers, to try and process XML securely, and the FSP can be used as an alternative to
     // dbf.setExpandEntityReferences(false); to allow some safe level of Entity Expansion
     // Exists from JDK6.
@@ -456,7 +456,7 @@ try {
     xsr = xif.createXMLStreamReader(new StreamSource(file));
 } catch (XMLStreamException e) {
     throw new RuntimeException(e);
-}  
+}
 Unmarshaller um = jc.createUnmarshaller();
 um.unmarshal(xsr);
 ```
@@ -628,7 +628,7 @@ Set these values to true to disable inline DTDs completely.
 ``` csharp
 XmlTextReader reader = new XmlTextReader(stream);
 // NEEDED because the default is FALSE!!
-reader.ProhibitDtd = true;  
+reader.ProhibitDtd = true;
 ```
 
 #### .NET 4.0 - .NET 4.5.2
@@ -644,7 +644,7 @@ To set this value yourself, it looks like this:
 ``` csharp
 XmlTextReader reader = new XmlTextReader(stream);
 // NEEDED because the default is Parse!!
-reader.DtdProcessing = DtdProcessing.Prohibit;  
+reader.DtdProcessing = DtdProcessing.Prohibit;
 ```
 
 Alternatively, you can set the `DtdProcessing` property to `Ignore`, which will not throw an exception on encountering a `<!DOCTYPE>` element but will simply skip over it and not process it. Finally, you can set `DtdProcessing` to `Parse` if you do want to allow and process inline DTDs.

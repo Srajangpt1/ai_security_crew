@@ -30,7 +30,7 @@ Using `innerHTML` with untrusted data (e.g., from API responses in AJAX) can all
 ###### Vulnerable Example
 
 ```javascript
-    document.getElementById('content').innerHTML = data; 
+    document.getElementById('content').innerHTML = data;
     // DANGER! The server may have returned a payload that executes scripts, for example: <img src=abc onerror=alert('xss!')>.
 ```
 
@@ -75,7 +75,7 @@ document.getElementById('content').textContent = userInput; // Displays plain te
 The `innerText` property sets or gets the visible text content of an element, respecting CSS styling (e.g., ignoring text in `display: none` elements). It also reflects rendered text formatting, such as line breaks or spacing.
 
 ```javascript
-const userInput = 'OWASP'; 
+const userInput = 'OWASP';
 document.getElementById('content').innerText = userInput;
 ```
 

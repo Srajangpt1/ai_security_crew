@@ -24,7 +24,7 @@ Please note, many client side frameworks and libraries offer client side query p
 
 ```java
 String custname = request.getParameter("customerName");
-String query = "SELECT account_balance FROM user_data WHERE user_name = ? ";  
+String query = "SELECT account_balance FROM user_data WHERE user_name = ? ";
 PreparedStatement pstmt = connection.prepareStatement( query );
 pstmt.setString( 1, custname);
 ResultSet results = pstmt.executeQuery( );
@@ -145,7 +145,7 @@ let users = sqlx::query_as!(
         username
     )
     .fetch_all(&pool)
-    .await 
+    .await
     .unwrap();
 
 // Using built-in functions

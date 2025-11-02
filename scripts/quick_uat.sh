@@ -196,7 +196,7 @@ echo "━━━━━━━━━━━━━━━━━━━━━━━━�
 # Test the helper script exists and is executable
 if [ -x scripts/add_custom_guideline.py ]; then
     echo "   ✓ Helper script exists and is executable"
-    
+
     # Test auto-detection functions
     python3 -c "
 import sys
@@ -220,7 +220,7 @@ assert pri in ['critical', 'high'], f'Unexpected priority: {pri}'
 assert len(tags) > 0, 'Should extract tags'
 print('   ✓ Auto-detection working correctly')
 " > /tmp/uat_helper.log 2>&1
-    
+
     if [ $? -eq 0 ]; then
         cat /tmp/uat_helper.log
         test_result 0
@@ -262,4 +262,3 @@ else
     echo
     exit 1
 fi
-

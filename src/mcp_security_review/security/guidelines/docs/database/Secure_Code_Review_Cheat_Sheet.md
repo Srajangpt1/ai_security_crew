@@ -347,7 +347,7 @@ Scope: [Files/Components Reviewed]
 
 Findings Summary:
 - Critical: [Count]
-- High: [Count] 
+- High: [Count]
 - Medium: [Count]
 - Low: [Count]
 - Informational: [Count]

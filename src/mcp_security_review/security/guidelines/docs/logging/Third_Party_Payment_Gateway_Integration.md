@@ -14,19 +14,19 @@ However, insecure integration can lead to severe vulnerabilities—ranging from 
 
 A typical third-party payment flow consists of five core steps:
 
-1. **Cart Preparation**  
+1. **Cart Preparation**
    The user selects items and initiates checkout.
 
-2. **Order Initialization (Merchant Backend → Payment Gateway)**  
+2. **Order Initialization (Merchant Backend → Payment Gateway)**
    The merchant backend creates a transaction or order via API and receives an `order_id` or `payment_url`.
 
-3. **User Redirection to Payment Gateway**  
+3. **User Redirection to Payment Gateway**
    The user is redirected to the gateway-hosted payment page.
 
-4. **Payment Execution (User → Gateway)**  
+4. **Payment Execution (User → Gateway)**
    The user completes or fails the payment.
 
-5. **Return and Verification (Payment Gateway → Merchant)**  
+5. **Return and Verification (Payment Gateway → Merchant)**
    The user is redirected to the merchant site (callback/return URL), and optionally, the gateway sends a server-to-server notification. The merchant verifies the result and proceeds with order fulfillment.
 
 The following sequence diagram explains the steps above.

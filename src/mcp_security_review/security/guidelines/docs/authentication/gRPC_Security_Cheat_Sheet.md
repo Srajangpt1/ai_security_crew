@@ -62,17 +62,17 @@ func authInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServe
     if !ok {
         return nil, status.Errorf(codes.Unauthenticated, "missing metadata")
     }
-    
+
     tokens := md["authorization"]
     if len(tokens) == 0 {
         return nil, status.Errorf(codes.Unauthenticated, "missing authorization token")
     }
-    
+
     token := strings.TrimPrefix(tokens[0], "Bearer ")
     if !validateJWT(token) {
         return nil, status.Errorf(codes.Unauthenticated, "invalid token")
     }
-    
+
     return handler(ctx, req)
 }
 ```
@@ -86,7 +86,7 @@ func validateAPIKey(ctx context.Context) error {
     if !ok {
         return status.Error(codes.Unauthenticated, "missing metadata")
     }
-    
+
     keys := md["x-api-key"]
     if len(keys) == 0 || !isValidAPIKey(keys[0]) {
         return status.Error(codes.Unauthenticated, "invalid API key")
@@ -108,13 +108,13 @@ func authorizeMethod(ctx context.Context, methodName string, userRoles []string)
     if !exists {
         return status.Errorf(codes.PermissionDenied, "method not found")
     }
-    
+
     for _, role := range userRoles {
         if role == requiredRole {
             return nil
         }
     }
-    
+
     return status.Errorf(codes.PermissionDenied, "insufficient permissions")
 }
 ```
@@ -151,10 +151,10 @@ func getUserByEmail(email string) (*User, error) {
     if !isValidEmail(email) {
         return nil, errors.New("invalid email format")
     }
-    
+
     query := "SELECT id, name, email FROM users WHERE email = ?"
     row := db.QueryRow(query, email)
-    
+
     var user User
     err := row.Scan(&user.ID, &user.Name, &user.Email)
     return &user, err
@@ -205,7 +205,7 @@ var store = &RateLimiterStore{
 
 func rateLimitInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
     clientIP := getClientIP(ctx)
-    
+
     store.mu.Lock()
     entry, exists := store.limiters[clientIP]
     if !exists {
@@ -217,11 +217,11 @@ func rateLimitInterceptor(ctx context.Context, req interface{}, info *grpc.Unary
     }
     entry.lastSeen = time.Now()
     store.mu.Unlock()
-    
+
     if !entry.limiter.Allow() {
         return nil, status.Errorf(codes.ResourceExhausted, "rate limit exceeded")
     }
-    
+
     return handler(ctx, req)
 }
 
@@ -229,7 +229,7 @@ func rateLimitInterceptor(ctx context.Context, req interface{}, info *grpc.Unary
 func cleanupOldLimiters() {
     store.mu.Lock()
     defer store.mu.Unlock()
-    
+
     cutoff := time.Now().Add(-time.Hour)
     for ip, entry := range store.limiters {
         if entry.lastSeen.Before(cutoff) {
@@ -252,11 +252,11 @@ func (s *server) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User,
     if deadline, ok := ctx.Deadline(); ok && time.Until(deadline) < 5*time.Second {
         return processGetUser(ctx, req)
     }
-    
+
     // Set defensive timeout to prevent resource exhaustion
     ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
     defer cancel()
-    
+
     return processGetUser(ctx, req)
 }
 ```
@@ -278,7 +278,7 @@ func (s *server) ProcessPayment(ctx context.Context, req *pb.PaymentRequest) (*p
         // Return generic error to client
         return nil, status.Error(codes.InvalidArgument, "invalid payment request")
     }
-    
+
     // Continue processing...
 }
 ```

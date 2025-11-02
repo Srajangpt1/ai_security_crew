@@ -231,7 +231,7 @@ You can easily simulate this problem. Here’s a stock Fastify web application e
      })
      return { hello: 'delayed world' }
     })
-     
+
     const start = async () => {
      try {
        await fastify.listen(PORT, HOST)
@@ -241,7 +241,7 @@ You can easily simulate this problem. Here’s a stock Fastify web application e
        process.exit(1)
      }
     }
-     
+
     start()
 
 Run this application and once it’s running send a simple HTTP request to this endpoint:
@@ -262,7 +262,7 @@ Let’s add our event handler:
 
     async function closeGracefully(signal) {
        console.log(`*^!@4=> Received signal to terminate: ${signal}`)
-     
+
        await fastify.close()
        // await db.close() if we have a db connection in this app
        // await other things we should cleanup nicely
@@ -366,7 +366,7 @@ Here is the update to our Dockerfile that represents our progress so far, but se
     RUN echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc && \
        npm ci --omit=dev && \
        rm -f .npmrc
-     
+
     # --------------> The production image
     FROM node:lts-alpine@sha256:b2da3316acdc2bec442190a1fe10dc094e7ba4121d029cb32075ff59bb27390a
     RUN apk add dumb-init
@@ -460,7 +460,7 @@ Then, the complete Dockerfile, with the updated RUN directive to install npm pac
     WORKDIR /usr/src/app
     COPY package*.json /usr/src/app/
     RUN --mount=type=secret,mode=0644,id=npmrc,target=/usr/src/app/.npmrc npm ci --omit=dev
-     
+
     # --------------> The production image
     FROM node:lts-alpine
     RUN apk add dumb-init

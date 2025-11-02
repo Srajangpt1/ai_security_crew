@@ -15,7 +15,7 @@ In simple scenarios, authorization can happen only at the edge level (API gatewa
 - Pushing all authorization decisions to the API gateway can quickly become hard to manage in complex ecosystems with many roles and access control rules.
 - The API gateway may become a single point of decision that may violate the “defense in depth” principle.
 - Operation teams typically own the API gateway, so development teams cannot directly make authorization changes, slowing down velocity due to additional communication and process overhead.
-  
+
 In most cases, development teams implement authorization in both places – at the edge level at a coarse level of granularity, and at service level. To authenticate an external entity, the edge can use access tokens (referenced token or self-contained token) transmitted via HTTP headers (e.g., “Cookie” or “Authorization”) or use mTLS.
 
 ## Service-level authorization

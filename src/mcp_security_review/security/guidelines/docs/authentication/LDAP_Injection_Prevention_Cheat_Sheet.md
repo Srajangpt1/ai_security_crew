@@ -97,7 +97,7 @@ if (!userSN.matches("[\\w\\s]*")) {
 }
 
 String filter = "(sn = " + userSN + ")";
-// ... remainder of LDAPInjection.searchRecord()... 
+// ... remainder of LDAPInjection.searchRecord()...
 ```
 
 When a database field must include special characters, it is critical to ensure that the authentic data is stored in sanitized form in the

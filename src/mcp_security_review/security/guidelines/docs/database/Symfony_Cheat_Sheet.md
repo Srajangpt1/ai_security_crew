@@ -58,7 +58,7 @@ class PostForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            // ... 
+            // ...
             'csrf_protection' => true,  // enable/disable csrf protection for this form
             'csrf_field_name' => '_csrf_token',
             'csrf_token_id'   => 'post_item', // change arbitrary string used to generate
@@ -103,13 +103,13 @@ class ExampleController extends AbstractController
 {
 
     #[Route('/posts/{id}', methods: ['DELETE'], name: 'delete_post')]
-    public function delete(Post $post, Request $request): Response 
-    { 
+    public function delete(Post $post, Request $request): Response
+    {
         $token = $request->request->get('token')
         if($this->isCsrfTokenValid($token)) {
             // ...
         }
-        
+
         // ...
     }
 }
@@ -133,7 +133,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ExampleController extends AbstractController {
-    
+
     public function getPost(Request $request, EntityManagerInterface $em): Response
     {
         $id = $request->query->get('id');
@@ -194,7 +194,7 @@ use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[AsController]
-class ExampleController 
+class ExampleController
 {
 
     #[Route('/remove_file', methods: ['POST'])]
@@ -225,11 +225,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ExampleController extends AbstractController 
+class ExampleController extends AbstractController
 {
 
     #[Route('/dynamic_redirect', methods: ['GET'])]
-    public function dynamicRedirect(#[MapQueryParameter] string $url): Response 
+    public function dynamicRedirect(#[MapQueryParameter] string $url): Response
     {
         return $this->redirect($url);
     }
@@ -284,7 +284,7 @@ class FileForm extends AbstractType
             ->add('file', FileType::class, [
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k', 
+                        'maxSize' => '1024k',
                         'mimeTypes' => [
                             'application/pdf',
                             'application/x-pdf',
@@ -321,11 +321,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ExampleController extends AbstractController 
+class ExampleController extends AbstractController
 {
 
     #[Route('/download', methods: ['GET'])]
-    public function download(#[MapQueryParameter] string $filename): Response 
+    public function download(#[MapQueryParameter] string $filename): Response
     {
         $storagePath = $this->getParameter('kernel.project_dir') . '/storage';
         $filePath = $storagePath . '/' . $filename;
