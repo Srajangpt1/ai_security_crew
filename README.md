@@ -21,14 +21,36 @@ Keep the vibe going while staying secure:
 
 See [Security Assessment Documentation](docs/security-assessment.md) for detailed usage and examples.
 
-## Security Templates
+## Security Guidelines
 
-- The system includes few **built-in security guidelines** for common scenarios that will be referenced for security review.
-- You can add your own organization-specific guidelines in `src/mcp_security_review/security/guidelines/docs/`. 
-- Guidelines are automatically loaded and integrated into security assessments. 
-- Supports for markdown (`.md`)
+- The system includes **101 OWASP Cheat Sheets** providing comprehensive security guidance
+- You can easily add your own organization-specific guidelines
+- Guidelines are automatically loaded and integrated into security assessments
 
-Your custom guidelines will be automatically categorized, prioritized, and included in relevant security assessments based on the context detected in your tickets or tasks.
+### Adding Custom Guidelines
+
+**Easy way** - Use the helper script (auto-generates metadata):
+```bash
+python3 scripts/add_custom_guideline.py
+```
+
+Just write your guideline content, and the system automatically:
+- ✅ Detects the appropriate category
+- ✅ Assigns priority level
+- ✅ Generates relevant tags
+- ✅ Saves to the correct location
+
+See [docs/ADDING_CUSTOM_GUIDELINES.md](docs/ADDING_CUSTOM_GUIDELINES.md) for detailed instructions.
+
+**Manual way** - Create markdown files in `src/mcp_security_review/security/guidelines/docs/` with metadata:
+```markdown
+category: your_category
+priority: high
+tags: tag1, tag2, tag3
+
+# Your Guideline Title
+...
+```
 
 ## Quick Start Guide
 

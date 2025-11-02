@@ -31,13 +31,14 @@ class SecurityGuidelinesLoader:
     def __init__(self, guidelines_dir: str | None = None) -> None:
         """Initialize the guidelines loader."""
         if guidelines_dir is None:
-            # Default to the guidelines directory relative to this file
+            # Default to the docs subdirectory under guidelines
             current_dir = (
                 Path(__file__).parent.parent
                 / "src"
                 / "mcp_security_review"
                 / "security"
                 / "guidelines"
+                / "docs"
             )
             self.guidelines_dir = current_dir
         else:
@@ -47,26 +48,43 @@ class SecurityGuidelinesLoader:
         self._load_all_guidelines()
 
     def _load_all_guidelines(self) -> None:
-        """Load all guidelines from text/markdown files."""
+        """Load all guidelines from text/markdown files, including subdirectories."""
         self._guidelines_cache.clear()
 
         if not self.guidelines_dir.exists():
             print(f"Guidelines directory does not exist: {self.guidelines_dir}")
             return
 
-        # Load guidelines from text and markdown files
-        for file_path in self.guidelines_dir.glob("*"):
+        # Load guidelines from text and markdown files (recursively search subdirectories)
+        for file_path in self.guidelines_dir.rglob("*.md"):
+            # Skip README files
             if (
-                file_path.is_file()
-                and file_path.suffix.lower() in [".txt", ".md", ".markdown"]
-                and not file_path.name.lower().startswith("readme")
+                file_path.name.lower().startswith("readme")
+                or file_path.name.lower() == "owasp_integration.md"
             ):
+                continue
+
+            if file_path.is_file():
                 try:
                     guideline = self._load_guideline_from_file(file_path)
                     if guideline:
                         self._guidelines_cache.append(guideline)
                 except Exception as e:
                     print(f"Error loading guideline from {file_path}: {e}")
+
+        # Also load .txt and .markdown files
+        for ext in [".txt", ".markdown"]:
+            for file_path in self.guidelines_dir.rglob(f"*{ext}"):
+                if file_path.name.lower().startswith("readme"):
+                    continue
+
+                if file_path.is_file():
+                    try:
+                        guideline = self._load_guideline_from_file(file_path)
+                        if guideline:
+                            self._guidelines_cache.append(guideline)
+                    except Exception as e:
+                        print(f"Error loading guideline from {file_path}: {e}")
 
         print(f"Loaded {len(self._guidelines_cache)} guidelines")
 

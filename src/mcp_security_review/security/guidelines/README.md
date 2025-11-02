@@ -2,18 +2,43 @@
 
 This directory contains security guidelines stored as individual text/markdown files. This approach makes it easy to add, modify, and review security best practices without code changes.
 
+## 🎯 OWASP Integration
+
+We have integrated **101 OWASP Cheat Sheets** from the official [OWASP Cheat Sheet Series](https://github.com/OWASP/CheatSheetSeries). These provide comprehensive, expert-reviewed security guidance across all major security categories.
+
+See [OWASP_INTEGRATION.md](docs/OWASP_INTEGRATION.md) for complete details on:
+- Category taxonomy and distribution
+- OWASP Top 10 2021 coverage
+- Technology-specific cheat sheets
+- Priority assignments
+- Update procedures
+
 ## 📁 File Structure
 
 ```
 guidelines/
-├── README.md                    # This file
-├── jwt_security.md             # JWT token security guidelines
-├── sql_injection_prevention.md # SQL injection prevention
-├── mfa_implementation.md       # Multi-factor authentication
-├── password_security.md        # Password security requirements
-├── input_validation.md         # Input validation and sanitization
-└── ...                         # Add more guideline files here
+├── README.md                        # This file
+├── OWASP_INTEGRATION.md            # OWASP integration documentation
+├── docs/                           # Guidelines directory
+│   ├── authentication/             # 17 OWASP guidelines
+│   ├── authorization/              # 7 OWASP guidelines
+│   ├── database/                   # 17 OWASP guidelines
+│   ├── cryptography/               # 11 OWASP guidelines
+│   ├── web_security/               # 11 OWASP guidelines
+│   ├── data_validation/            # 7 OWASP guidelines
+│   ├── api_security/               # 6 OWASP guidelines
+│   ├── cloud_security/             # 5 OWASP guidelines
+│   ├── infrastructure_security/    # 5 OWASP guidelines
+│   ├── supply_chain_security/      # 5 OWASP guidelines
+│   ├── mobile_security/            # 2 OWASP guidelines
+│   ├── secrets_management/         # 2 OWASP guidelines
+│   ├── logging/                    # 4 OWASP guidelines
+│   ├── error_handling/             # 1 OWASP guideline
+│   └── secure_development/         # 1 OWASP guideline
+└── ...
 ```
+
+**Total Guidelines**: 101 OWASP Cheat Sheets
 
 ## 📝 Adding New Guidelines
 
@@ -71,7 +96,7 @@ def secure_function():
 
 | Field | Required | Description | Values |
 |-------|----------|-------------|---------|
-| `category` | Yes | Security category | `authentication`, `database`, `api_security`, `cryptography`, `web_security`, `data_validation`, `secrets_management`, `logging`, `error_handling`, `authorization` |
+| `category` | Yes | Security category | `authentication`, `authorization`, `database`, `cryptography`, `web_security`, `data_validation`, `api_security`, `cloud_security`, `infrastructure_security`, `supply_chain_security`, `mobile_security`, `secrets_management`, `logging`, `error_handling`, `secure_development` |
 | `priority` | Yes | Priority level | `critical`, `high`, `medium`, `low` |
 | `tags` | No | Comma-separated tags | Any relevant keywords |
 
@@ -122,18 +147,35 @@ print(requirements.guidelines)
 
 ## 📋 Available Categories
 
-| Category | Description | Common Keywords |
-|----------|-------------|-----------------|
-| `authentication` | User authentication, login, passwords | `auth`, `login`, `password`, `token`, `session` |
-| `authorization` | Access control, permissions, roles | `permission`, `role`, `access`, `admin`, `privilege` |
-| `data_validation` | Input validation, sanitization | `input`, `form`, `data`, `validation`, `sanitize` |
-| `cryptography` | Encryption, hashing, SSL/TLS | `encrypt`, `hash`, `crypto`, `ssl`, `tls`, `certificate` |
-| `api_security` | API endpoints, REST, GraphQL | `api`, `endpoint`, `rest`, `graphql`, `webhook` |
-| `database` | Database security, SQL injection | `database`, `sql`, `query`, `db`, `mongo`, `redis` |
-| `web_security` | Web application security | `web`, `http`, `https`, `cors`, `csrf`, `xss` |
-| `secrets_management` | Secrets, keys, credentials | `secret`, `key`, `credential`, `password`, `token` |
-| `logging` | Security logging, monitoring | `log`, `audit`, `monitor`, `trace` |
-| `error_handling` | Error handling, exception management | `error`, `exception`, `fail`, `handling` |
+### Core Security Categories
+
+| Category | Description | Common Keywords | Guidelines |
+|----------|-------------|-----------------|------------|
+| `authentication` | User authentication, login, passwords, sessions | `auth`, `login`, `password`, `token`, `session`, `oauth`, `jwt`, `mfa` | 17+ |
+| `authorization` | Access control, permissions, roles, RBAC | `permission`, `role`, `access`, `admin`, `privilege`, `rbac` | 7+ |
+| `database` | Database security, SQL injection, NoSQL | `database`, `sql`, `query`, `db`, `mongo`, `redis`, `injection` | 17+ |
+| `cryptography` | Encryption, hashing, SSL/TLS, key management | `encrypt`, `hash`, `crypto`, `ssl`, `tls`, `certificate`, `key` | 11+ |
+| `web_security` | Web app security, XSS, CSRF, CSP | `web`, `http`, `https`, `cors`, `csrf`, `xss`, `csp` | 11+ |
+| `data_validation` | Input validation, sanitization, encoding | `input`, `form`, `data`, `validation`, `sanitize`, `encode` | 7+ |
+| `api_security` | API security, REST, GraphQL, rate limiting | `api`, `endpoint`, `rest`, `graphql`, `webhook`, `rate limit` | 6+ |
+
+### Infrastructure & Cloud
+
+| Category | Description | Common Keywords | Guidelines |
+|----------|-------------|-----------------|------------|
+| `cloud_security` | Cloud platforms, containers, serverless | `aws`, `azure`, `gcp`, `kubernetes`, `docker`, `serverless` | 5 |
+| `infrastructure_security` | Network security, zero trust, SSRF | `network`, `firewall`, `zero trust`, `ssrf`, `segmentation` | 5 |
+| `supply_chain_security` | Dependencies, packages, SBOM | `dependency`, `npm`, `package`, `vulnerability`, `sbom` | 5 |
+
+### Development & Operations
+
+| Category | Description | Common Keywords | Guidelines |
+|----------|-------------|-----------------|------------|
+| `secrets_management` | Secrets storage, key management, CI/CD | `secret`, `key`, `credential`, `vault`, `ci/cd` | 2+ |
+| `logging` | Security logging, monitoring, audit trails | `log`, `audit`, `monitor`, `trace`, `siem` | 4+ |
+| `error_handling` | Secure error handling, exception management | `error`, `exception`, `fail`, `handling` | 1+ |
+| `secure_development` | Secure design, code review, best practices | `secure design`, `code review`, `threat model` | 1+ |
+| `mobile_security` | Mobile app security, Android, iOS | `mobile`, `android`, `ios`, `app security` | 2 |
 
 ## 🎯 Priority Levels
 
