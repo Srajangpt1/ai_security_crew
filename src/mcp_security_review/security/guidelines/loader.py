@@ -28,7 +28,7 @@ class SecurityGuidelinesLoader:
         self._load_all_guidelines()
 
     def _load_all_guidelines(self) -> None:
-        """Load all guidelines from text/markdown files."""
+        """Load all guidelines from text/markdown files, including subdirectories."""
         self._guidelines_cache.clear()
 
         if not self.guidelines_dir.exists():
@@ -37,13 +37,13 @@ class SecurityGuidelinesLoader:
             )
             return
 
-        # Load guidelines from text and markdown files
-        for file_path in self.guidelines_dir.glob("*"):
-            if (
-                file_path.is_file()
-                and file_path.suffix.lower() in [".txt", ".md", ".markdown"]
-                and not file_path.name.lower().startswith("readme")
-            ):
+        # Load guidelines from text and markdown files (recursively search subdirectories)
+        for file_path in self.guidelines_dir.rglob("*.md"):
+            # Skip README files
+            if file_path.name.lower().startswith("readme"):
+                continue
+
+            if file_path.is_file():
                 try:
                     guideline = self._load_guideline_from_file(file_path)
                     if guideline:
@@ -51,7 +51,23 @@ class SecurityGuidelinesLoader:
                 except Exception as e:
                     logger.error(f"Error loading guideline from {file_path}: {e}")
 
-        logger.info(f"Loaded {len(self._guidelines_cache)} guidelines")
+        # Also load .txt and .markdown files
+        for ext in [".txt", ".markdown"]:
+            for file_path in self.guidelines_dir.rglob(f"*{ext}"):
+                if file_path.name.lower().startswith("readme"):
+                    continue
+
+                if file_path.is_file():
+                    try:
+                        guideline = self._load_guideline_from_file(file_path)
+                        if guideline:
+                            self._guidelines_cache.append(guideline)
+                    except Exception as e:
+                        logger.error(f"Error loading guideline from {file_path}: {e}")
+
+        logger.info(
+            f"Loaded {len(self._guidelines_cache)} guidelines from {self.guidelines_dir}"
+        )
 
     def _load_guideline_from_file(self, file_path: Path) -> SecurityGuideline | None:
         """Load a guideline from a text/markdown file."""
