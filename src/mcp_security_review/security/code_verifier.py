@@ -257,51 +257,65 @@ class CodeReviewContextBuilder:
 
         # Add technology-specific checks
         if "python" in technologies:
-            checklist.extend([
-                "No use of eval() or exec() with user input",
-                "No pickle.loads() on untrusted data",
-                "subprocess calls use shell=False",
-            ])
+            checklist.extend(
+                [
+                    "No use of eval() or exec() with user input",
+                    "No pickle.loads() on untrusted data",
+                    "subprocess calls use shell=False",
+                ]
+            )
 
         if "javascript" in technologies or "typescript" in technologies:
-            checklist.extend([
-                "No innerHTML with unsanitized content",
-                "No document.write() usage",
-                "No eval() or new Function() with dynamic content",
-            ])
+            checklist.extend(
+                [
+                    "No innerHTML with unsanitized content",
+                    "No document.write() usage",
+                    "No eval() or new Function() with dynamic content",
+                ]
+            )
 
         if "react" in technologies:
-            checklist.extend([
-                "dangerouslySetInnerHTML is sanitized if used",
-                "User input in JSX is properly escaped",
-            ])
+            checklist.extend(
+                [
+                    "dangerouslySetInnerHTML is sanitized if used",
+                    "User input in JSX is properly escaped",
+                ]
+            )
 
         if "java" in technologies:
-            checklist.extend([
-                "PreparedStatement used instead of Statement for SQL",
-                "No Runtime.exec() with user-controlled input",
-            ])
+            checklist.extend(
+                [
+                    "PreparedStatement used instead of Statement for SQL",
+                    "No Runtime.exec() with user-controlled input",
+                ]
+            )
 
         # Add category-specific checks
         if "authentication" in categories:
-            checklist.extend([
-                "Passwords are hashed with strong algorithms (bcrypt, argon2)",
-                "Password comparison is timing-safe",
-                "Session tokens are securely generated",
-            ])
+            checklist.extend(
+                [
+                    "Passwords are hashed with strong algorithms (bcrypt, argon2)",
+                    "Password comparison is timing-safe",
+                    "Session tokens are securely generated",
+                ]
+            )
 
         if "cryptography" in categories:
-            checklist.extend([
-                "No weak algorithms (MD5, SHA1, DES, RC4)",
-                "Cryptographic keys are not hardcoded",
-                "Using secure random number generator for crypto",
-            ])
+            checklist.extend(
+                [
+                    "No weak algorithms (MD5, SHA1, DES, RC4)",
+                    "Cryptographic keys are not hardcoded",
+                    "Using secure random number generator for crypto",
+                ]
+            )
 
         if "authorization" in categories:
-            checklist.extend([
-                "Access control checks before sensitive operations",
-                "User permissions are validated server-side",
-            ])
+            checklist.extend(
+                [
+                    "Access control checks before sensitive operations",
+                    "User permissions are validated server-side",
+                ]
+            )
 
         return checklist
 
@@ -340,7 +354,9 @@ class CodeReviewContextBuilder:
         prompt_parts.append(
             "Analyze the code below for security vulnerabilities. For each issue found:"
         )
-        prompt_parts.append("1. Identify the vulnerability type and severity (Critical/High/Medium/Low)")
+        prompt_parts.append(
+            "1. Identify the vulnerability type and severity (Critical/High/Medium/Low)"
+        )
         prompt_parts.append("2. Explain why it's a security risk")
         prompt_parts.append("3. Show the problematic code snippet")
         prompt_parts.append("4. Provide a secure code fix")
@@ -375,8 +391,12 @@ class CodeReviewContextBuilder:
         prompt_parts.append("### Expected Response Format")
         prompt_parts.append("")
         prompt_parts.append("Provide your security review with:")
-        prompt_parts.append("1. **Summary:** Overall security assessment (Secure/Needs Attention/Insecure)")
-        prompt_parts.append("2. **Findings:** List of security issues with severity and fixes")
+        prompt_parts.append(
+            "1. **Summary:** Overall assessment (Secure/Needs Attention/Insecure)"
+        )
+        prompt_parts.append(
+            "2. **Findings:** List of security issues with severity and fixes"
+        )
         prompt_parts.append("3. **Checklist Results:** Which items pass/fail")
         prompt_parts.append("4. **Recommendations:** Prioritized list of actions")
 

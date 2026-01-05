@@ -13,7 +13,7 @@ logger = logging.getLogger("mcp-security-review.servers.general")
 
 general_mcp = FastMCP(
     name="General Security MCP",
-    description="Provider-agnostic security tools for lightweight reviews and assessments.",
+    description="Provider-agnostic security tools for reviews and assessments.",
 )
 
 
@@ -21,35 +21,36 @@ general_mcp = FastMCP(
 async def lightweight_security_review(
     ctx: Context,
     task_description: Annotated[
-        str, Field(description="Description of the coding task or feature to implement")
+        str,
+        Field(description="Description of the coding task or feature to implement"),
     ],
     technologies: Annotated[
         str,
         Field(
-            description="Technologies/frameworks involved (e.g., 'Python, Django, PostgreSQL')",
+            description="Technologies/frameworks involved (e.g., 'Python, Django')",
             default="",
         ),
     ] = "",
-    include_guidelines: Annotated[
+    include_guidelines: Annotated[  # noqa: FBT002
         bool,
         Field(
-            description="Whether to include detailed security guidelines in the response",
+            description="Whether to include detailed security guidelines",
             default=True,
         ),
     ] = True,
-    include_prompt_injection: Annotated[
+    include_prompt_injection: Annotated[  # noqa: FBT002
         bool,
         Field(
-            description="Whether to include formatted prompt injection for code generation",
+            description="Whether to include formatted prompt injection",
             default=True,
         ),
     ] = True,
 ) -> str:
-    """Perform a lightweight security review before coding without requiring a Jira ticket.
+    """Perform a lightweight security review before coding.
 
-    This tool provides immediate security guidance for any coding task, helping developers
-    build security considerations into their work from the start. It's designed for the
-    "vibe coding" workflow where you want quick, actionable security advice before writing code.
+    This tool provides immediate security guidance for any coding task,
+    helping developers build security considerations into their work
+    from the start. Designed for "vibe coding" workflow.
 
     Use this BEFORE starting any coding task to:
     - Identify potential security risks early
@@ -73,7 +74,7 @@ async def lightweight_security_review(
         - Formatted prompt injection for secure code generation
 
     Example:
-        lightweight_security_review("Build user login form with password reset", "React, Node.js, PostgreSQL")
+        lightweight_security_review("Build login form", "React, Node.js")
     """
     try:
         synthetic_ticket = {
@@ -114,7 +115,10 @@ async def lightweight_security_review(
 
         if include_prompt_injection:
             prompt_prefix = " PRE-CODING SECURITY REVIEW:\n\n"
-            prompt_prefix += "⚡ IMPORTANT: Apply these security considerations BEFORE and DURING coding:\n\n"
+            prompt_prefix += (
+                "IMPORTANT: Apply these security considerations "
+                "BEFORE and DURING coding:\n\n"
+            )
             response["assessment"]["prompt_injection"] = (
                 prompt_prefix + requirements.prompt_injection
             )
@@ -128,9 +132,19 @@ async def lightweight_security_review(
 
         return json.dumps(response, indent=2, ensure_ascii=False)
 
-    except Exception as e:
+    except (ValueError, KeyError, TypeError) as e:
         error_message = str(e)
         logger.error(f"Lightweight security review failed: {error_message}")
+
+        fallback_injection = (
+            "SECURITY REQUIREMENTS:\n\n"
+            "Apply basic security practices:\n"
+            "- Input validation\n"
+            "- Output encoding\n"
+            "- Secure authentication\n"
+            "- Error handling\n"
+            "- Logging and monitoring"
+        )
 
         fallback_response = {
             "success": False,
@@ -148,7 +162,7 @@ async def lightweight_security_review(
                     "Log security events appropriately",
                     "Handle errors securely without information disclosure",
                 ],
-                "prompt_injection": "SECURITY REQUIREMENTS:\n\n Apply basic security practices:\n• Input validation\n• Output encoding\n• Secure authentication\n• Error handling\n• Logging and monitoring",
+                "prompt_injection": fallback_injection,
             },
         }
 
@@ -160,21 +174,22 @@ async def verify_code_security(
     ctx: Context,
     code: Annotated[
         str,
-        Field(
-            description="The source code to review for security vulnerabilities."
-        ),
+        Field(description="The source code to review for security vulnerabilities."),
     ],
     file_path: Annotated[
         str,
         Field(
-            description="Optional file path to help identify the programming language (e.g., 'auth.py', 'api.js')",
+            description="Optional file path for language detection (e.g., 'auth.py')",
             default="",
         ),
     ] = "",
     security_context: Annotated[
         str,
         Field(
-            description="Optional JSON string with security requirements from a prior assessment (e.g., from lightweight_security_review or assess_ticket_security). Include 'security_categories', 'risk_level', and 'technologies'.",
+            description=(
+                "Optional JSON with security requirements from prior assessment. "
+                "Include 'security_categories', 'risk_level', and 'technologies'."
+            ),
             default="",
         ),
     ] = "",
@@ -219,11 +234,7 @@ async def verify_code_security(
     4. Checklist results
 
     Example:
-        verify_code_security(
-            code="def login(username, password): ...",
-            file_path="auth.py",
-            security_context='{"security_categories": ["authentication"], "risk_level": "high"}'
-        )
+        verify_code_security(code="def login(): ...", file_path="auth.py")
     """
     try:
         # Parse security context if provided
@@ -249,8 +260,8 @@ async def verify_code_security(
             "success": True,
             "review_type": "ai_powered_security_review",
             "instructions": (
-                "IMPORTANT: You (the AI agent) must now perform the security review. "
-                "Analyze the code below using the provided checklist and focus areas. "
+                "IMPORTANT: You (the AI agent) must now perform the security "
+                "review. Analyze the code using the checklist and focus areas. "
                 "Report all security issues found with severity ratings and fixes."
             ),
             "review_prompt": review_context.review_prompt,
@@ -281,12 +292,12 @@ async def verify_code_security(
                 "security_categories": parsed_context.get("security_categories", []),
                 "technologies": parsed_context.get("technologies", []),
                 "risk_level": parsed_context.get("risk_level", "medium"),
-                "note": "Verify the code meets these previously identified security requirements.",
+                "note": "Verify the code meets these security requirements.",
             }
 
         return json.dumps(response, indent=2, ensure_ascii=False)
 
-    except Exception as e:
+    except (ValueError, KeyError, TypeError) as e:
         error_message = str(e)
         logger.error(f"Failed to build security review context: {error_message}")
 
@@ -297,7 +308,7 @@ async def verify_code_security(
             "error": error_message,
             "instructions": (
                 "Context building failed, but you should still review the code. "
-                "Perform a general security review checking for common vulnerabilities."
+                "Perform a general security review for common vulnerabilities."
             ),
             "fallback_checklist": [
                 "No hardcoded passwords, API keys, or secrets",

@@ -9,15 +9,25 @@ A lightweight MCP server for security reviews across designs, tickets, and docs 
 
 Keep the vibe going while staying secure:
 
-- **Ticket Review** – “I’m working on AUTH-234, give me the security requirements.”
-- **Design Analysis** – “Analyze this architecture doc for third-party trust boundaries and data flow risks.”
-- **Control Check** – “Does this feature meet our logging and monitoring requirements?”
+- **Ticket Review** – "I'm working on AUTH-234, give me the security requirements."
+- **Design Analysis** – "Analyze this architecture doc for third-party trust boundaries and data flow risks."
+- **Control Check** – "Does this feature meet our logging and monitoring requirements?"
+- **Code Verification** – "Review the code you just generated for security vulnerabilities."
 
 **Integration with Code Generation:**
 1. Run security assessment on your ticket or a document
 2. Extract the formatted security requirements
 3. Inject into your AI code generation prompt
 4. Generate secure code that follows best practices
+5. Verify generated code with `verify_code_security`
+
+### Pre-coding and Post-coding Tools
+
+| Tool | When to Use |
+|------|-------------|
+| `lightweight_security_review` | Before coding - get security requirements for a task |
+| `assess_ticket_security` | Before coding - analyze a Jira ticket for security needs |
+| `verify_code_security` | After coding - AI reviews generated code for vulnerabilities |
 
 See [Security Assessment Documentation](docs/security-assessment.md) for detailed usage and examples.
 
