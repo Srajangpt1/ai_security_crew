@@ -28,6 +28,7 @@ from .confluence import confluence_mcp
 from .context import MainAppContext
 from .general import general_mcp
 from .jira import jira_mcp
+from .threat_model import threat_model_mcp
 
 logger = logging.getLogger("mcp-security-review.server.main")
 
@@ -330,6 +331,7 @@ main_mcp = SecurityReviewMCP(name="Security Review MCP", lifespan=main_lifespan)
 main_mcp.mount("general", general_mcp)
 main_mcp.mount("jira", jira_mcp)
 main_mcp.mount("confluence", confluence_mcp)
+main_mcp.mount("threatmodel", threat_model_mcp)
 
 
 @main_mcp.custom_route("/healthz", methods=["GET"], include_in_schema=False)

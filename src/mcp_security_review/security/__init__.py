@@ -9,6 +9,7 @@ from .analyzer import SecurityAnalyzer
 from .assessment import SecurityAssessment, SecurityRequirements
 from .code_verifier import CodeReviewContextBuilder, SecurityReviewContext
 from .guidelines import SecurityGuidelinesLoader
+from .threat_modeling import ThreatModelAnalyzer, ThreatModelOutput, ThreatModelTemplate
 
 __all__ = [
     "SecurityAssessment",
@@ -17,4 +18,7 @@ __all__ = [
     "SecurityGuidelinesLoader",
     "CodeReviewContextBuilder",
     "SecurityReviewContext",
+    "ThreatModelAnalyzer",
+    "ThreatModelOutput",
+    "ThreatModelTemplate",
 ]
