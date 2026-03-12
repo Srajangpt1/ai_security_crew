@@ -29,9 +29,7 @@ async def perform_threat_model(
     ctx: Context,
     title: Annotated[
         str,
-        Field(
-            description="Name of the feature or component to threat model"
-        ),
+        Field(description="Name of the feature or component to threat model"),
     ],
     description: Annotated[
         str,
@@ -189,9 +187,7 @@ async def perform_threat_model(
                 if not isinstance(parsed_previous_models, list):  # type: ignore[unreachable]
                     parsed_previous_models = []
             except json.JSONDecodeError:
-                logger.warning(
-                    "Invalid JSON in previous_models_json, ignoring"
-                )
+                logger.warning("Invalid JSON in previous_models_json, ignoring")
 
         # Build artifacts dict
         artifacts: dict[str, Any] = {}
@@ -337,9 +333,7 @@ async def search_previous_threat_models(
         cql = " AND ".join(cql_parts)
         cql += " ORDER BY lastModified DESC"
 
-        logger.info(
-            f"Searching Confluence for previous threat models: {cql}"
-        )
+        logger.info(f"Searching Confluence for previous threat models: {cql}")
 
         # Search Confluence
         results = confluence.cql(cql, limit=max_results)
@@ -361,18 +355,14 @@ async def search_previous_threat_models(
                         page_id, expand="body.storage"
                     )
                     page_content = (
-                        full_page.get("body", {})
-                        .get("storage", {})
-                        .get("value", "")
+                        full_page.get("body", {}).get("storage", {}).get("value", "")
                     )
                     base_url = full_page.get("_links", {}).get("base", "")
                     web_ui = full_page.get("_links", {}).get("webui", "")
                     if base_url and web_ui:
                         page_url = f"{base_url}{web_ui}"
                 except (ValueError, OSError, KeyError) as e:
-                    logger.warning(
-                        f"Could not fetch page {page_id}: {e}"
-                    )
+                    logger.warning(f"Could not fetch page {page_id}: {e}")
 
             # Truncate content for context efficiency
             if len(page_content) > 3000:
@@ -412,9 +402,7 @@ async def search_previous_threat_models(
         return json.dumps(response, indent=2, ensure_ascii=False)
 
     except (ValueError, ImportError) as e:
-        logger.info(
-            f"Confluence not available for threat model search: {e}"
-        )
+        logger.info(f"Confluence not available for threat model search: {e}")
         return json.dumps(
             {
                 "success": False,
@@ -524,11 +512,7 @@ async def update_threat_model_file(
             try:
                 with open(file_path, encoding="utf-8") as f:
                     existing_content = f.read()
-                markdown_content = (
-                    existing_content.rstrip()
-                    + "\n\n"
-                    + markdown_content
-                )
+                markdown_content = existing_content.rstrip() + "\n\n" + markdown_content
             except FileNotFoundError:
                 pass  # File doesn't exist yet, will create it
 
@@ -537,15 +521,11 @@ async def update_threat_model_file(
 
         # Count stats for response
         threat_count = len(threat_model.threats)
-        ref_count = sum(
-            len(t.references) for t in threat_model.threats
-        )
+        ref_count = sum(len(t.references) for t in threat_model.threats)
         mitigated_count = sum(
             1 for t in threat_model.threats if t.status == "mitigated"
         )
-        open_count = sum(
-            1 for t in threat_model.threats if t.status == "open"
-        )
+        open_count = sum(1 for t in threat_model.threats if t.status == "open")
 
         response: dict[str, Any] = {
             "success": True,

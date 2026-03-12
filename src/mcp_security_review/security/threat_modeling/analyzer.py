@@ -87,17 +87,11 @@ class ThreatModelAnalyzer:
             "artifacts": self._sanitize_artifacts(artifacts),
             "security_signals": {
                 "technologies_detected": security_context.technologies,
-                "security_categories": list(
-                    security_context.security_categories
-                ),
+                "security_categories": list(security_context.security_categories),
                 "risk_level": security_context.risk_level,
-                "sensitive_data_types": list(
-                    security_context.sensitive_data_types
-                ),
+                "sensitive_data_types": list(security_context.sensitive_data_types),
                 "attack_vectors": list(security_context.attack_vectors),
-                "security_keywords_found": list(
-                    security_context.security_keywords
-                ),
+                "security_keywords_found": list(security_context.security_keywords),
             },
             "instructions": (
                 "Analyze the provided artifacts using the security signals "
@@ -159,9 +153,7 @@ class ThreatModelAnalyzer:
             threats.append(
                 ThreatEntry(
                     id=threat_data.get("id", f"TM-{len(threats) + 1}"),
-                    what_can_go_wrong=threat_data.get(
-                        "what_can_go_wrong", ""
-                    ),
+                    what_can_go_wrong=threat_data.get("what_can_go_wrong", ""),
                     impact=threat_data.get("impact", ""),
                     likelihood=threat_data.get("likelihood", "medium"),
                     data_affected=threat_data.get("data_affected", []),
@@ -208,9 +200,7 @@ class ThreatModelAnalyzer:
             parts.append(str(artifacts["additional_context"]))
 
         if artifacts.get("tech_stack"):
-            parts.append(
-                "Technologies: " + ", ".join(artifacts["tech_stack"])
-            )
+            parts.append("Technologies: " + ", ".join(artifacts["tech_stack"]))
 
         if artifacts.get("code_snippets"):
             for snippet in artifacts["code_snippets"]:
@@ -243,9 +233,7 @@ class ThreatModelAnalyzer:
                         )
                     trimmed_snippets.append(
                         {
-                            "file_path": snippet.get(
-                                "file_path", "unknown"
-                            ),
+                            "file_path": snippet.get("file_path", "unknown"),
                             "code": code,
                             "language": snippet.get("language", ""),
                         }

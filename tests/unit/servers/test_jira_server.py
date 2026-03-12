@@ -55,13 +55,11 @@ def mock_jira_fetcher():
         response_data["properties_param"] = properties
         response_data["update_history"] = update_history
         response_data["id"] = MOCK_JIRA_ISSUE_RESPONSE_SIMPLIFIED["id"]
-        response_data["summary"] = MOCK_JIRA_ISSUE_RESPONSE_SIMPLIFIED[
-            "fields"
-        ]["summary"]
+        response_data["summary"] = MOCK_JIRA_ISSUE_RESPONSE_SIMPLIFIED["fields"][
+            "summary"
+        ]
         response_data["status"] = {
-            "name": MOCK_JIRA_ISSUE_RESPONSE_SIMPLIFIED["fields"]["status"][
-                "name"
-            ]
+            "name": MOCK_JIRA_ISSUE_RESPONSE_SIMPLIFIED["fields"]["status"]["name"]
         }
         mock_issue.to_simplified_dict.return_value = response_data
         return mock_issue
@@ -171,9 +169,7 @@ async def jira_client(test_jira_mcp, mock_jira_fetcher, mock_request):
             return_value=mock_request,
         ),
     ):
-        async with Client(
-            transport=FastMCPTransport(test_jira_mcp)
-        ) as client_instance:
+        async with Client(transport=FastMCPTransport(test_jira_mcp)) as client_instance:
             yield client_instance
 
 
@@ -218,9 +214,7 @@ async def test_no_fetcher_get_issue(no_fetcher_client_fixture, mock_request):
     """Test that get_issue fails when Jira client is not configured."""
 
     async def mock_get_fetcher_error(*args, **kwargs):
-        raise ValueError(
-            "Mocked: Jira client (fetcher) not available."
-        )
+        raise ValueError("Mocked: Jira client (fetcher) not available.")
 
     with (
         patch(
@@ -247,12 +241,8 @@ async def test_get_issue_with_user_specific_fetcher_in_state(
     """Test get_issue uses fetcher from request.state if provided."""
     _mock_request_with_fetcher_in_state = MagicMock(spec=Request)
     _mock_request_with_fetcher_in_state.state = MagicMock()
-    _mock_request_with_fetcher_in_state.state.jira_fetcher = (
-        mock_jira_fetcher
-    )
-    _mock_request_with_fetcher_in_state.state.user_atlassian_auth_type = (
-        "oauth"
-    )
+    _mock_request_with_fetcher_in_state.state.jira_fetcher = mock_jira_fetcher
+    _mock_request_with_fetcher_in_state.state.user_atlassian_auth_type = "oauth"
     _mock_request_with_fetcher_in_state.state.user_atlassian_token = (
         "user_specific_token"
     )
@@ -274,9 +264,7 @@ async def test_get_issue_with_user_specific_fetcher_in_state(
             side_effect=AsyncMock(wraps=get_jira_fetcher_real),
         ),
     ):
-        async with Client(
-            transport=FastMCPTransport(test_jira_mcp)
-        ) as client_instance:
+        async with Client(transport=FastMCPTransport(test_jira_mcp)) as client_instance:
             response = await client_instance.call_tool(
                 "jira_get_issue",
                 {

@@ -18,8 +18,7 @@ logger = logging.getLogger(__name__)
 confluence_mcp = FastMCP(
     name="Confluence MCP Service",
     description=(
-        "Provides security-focused tools for "
-        "Atlassian Confluence integration."
+        "Provides security-focused tools for Atlassian Confluence integration."
     ),
 )
 
@@ -56,8 +55,7 @@ async def search(
         str | None,
         Field(
             description=(
-                "(Optional) Comma-separated list of space keys "
-                "to filter results by."
+                "(Optional) Comma-separated list of space keys to filter results by."
             ),
             default=None,
         ),
@@ -79,29 +77,28 @@ async def search(
     if query and not any(
         x in query
         for x in [
-            "=", "~", ">", "<",
-            " AND ", " OR ", "currentUser()",
+            "=",
+            "~",
+            ">",
+            "<",
+            " AND ",
+            " OR ",
+            "currentUser()",
         ]
     ):
         original_query = query
         try:
             query = f'siteSearch ~ "{original_query}"'
             logger.info(
-                "Converting simple search term to CQL "
-                f"using siteSearch: {query}"
+                f"Converting simple search term to CQL using siteSearch: {query}"
             )
             pages = confluence_fetcher.search(
                 query, limit=limit, spaces_filter=spaces_filter
             )
         except (ValueError, OSError, KeyError) as e:
-            logger.warning(
-                f"siteSearch failed ('{e}'), "
-                "falling back to text search."
-            )
+            logger.warning(f"siteSearch failed ('{e}'), falling back to text search.")
             query = f'text ~ "{original_query}"'
-            logger.info(
-                f"Falling back to text search with CQL: {query}"
-            )
+            logger.info(f"Falling back to text search with CQL: {query}")
             pages = confluence_fetcher.search(
                 query, limit=limit, spaces_filter=spaces_filter
             )
@@ -161,8 +158,7 @@ async def get_page(
         bool,
         Field(
             description=(
-                "Whether to convert page to markdown (true) "
-                "or keep raw HTML (false)."
+                "Whether to convert page to markdown (true) or keep raw HTML (false)."
             ),
             default=True,
         ),
@@ -189,24 +185,16 @@ async def get_page(
     if page_id:
         if title or space_key:
             logger.warning(
-                "page_id was provided; title and space_key "
-                "parameters will be ignored."
+                "page_id was provided; title and space_key parameters will be ignored."
             )
         try:
             page_object = confluence_fetcher.get_page_content(
                 page_id, convert_to_markdown=convert_to_markdown
             )
         except (ValueError, OSError, KeyError) as e:
-            logger.error(
-                f"Error fetching page by ID '{page_id}': {e}"
-            )
+            logger.error(f"Error fetching page by ID '{page_id}': {e}")
             return json.dumps(
-                {
-                    "error": (
-                        f"Failed to retrieve page by ID "
-                        f"'{page_id}': {e}"
-                    )
-                },
+                {"error": (f"Failed to retrieve page by ID '{page_id}': {e}")},
                 indent=2,
                 ensure_ascii=False,
             )
@@ -220,8 +208,7 @@ async def get_page(
             return json.dumps(
                 {
                     "error": (
-                        f"Page with title '{title}' not found "
-                        f"in space '{space_key}'."
+                        f"Page with title '{title}' not found in space '{space_key}'."
                     )
                 },
                 indent=2,
@@ -229,8 +216,7 @@ async def get_page(
             )
     else:
         raise ValueError(
-            "Either 'page_id' OR both 'title' and 'space_key' "
-            "must be provided."
+            "Either 'page_id' OR both 'title' and 'space_key' must be provided."
         )
 
     if not page_object:

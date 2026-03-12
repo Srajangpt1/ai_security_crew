@@ -28,9 +28,7 @@ jira_mcp = FastMCP(
 @jira_mcp.tool(tags={"jira", "read"})
 async def get_issue(
     ctx: Context,
-    issue_key: Annotated[
-        str, Field(description="Jira issue key (e.g., 'PROJ-123')")
-    ],
+    issue_key: Annotated[str, Field(description="Jira issue key (e.g., 'PROJ-123')")],
     fields: Annotated[
         str,
         Field(
@@ -57,8 +55,7 @@ async def get_issue(
         int,
         Field(
             description=(
-                "Maximum number of comments to include "
-                "(0 or null for no comments)"
+                "Maximum number of comments to include (0 or null for no comments)"
             ),
             default=10,
             ge=0,
@@ -69,8 +66,7 @@ async def get_issue(
         str | None,
         Field(
             description=(
-                "(Optional) A comma-separated list of issue "
-                "properties to return"
+                "(Optional) A comma-separated list of issue properties to return"
             ),
             default=None,
         ),
@@ -79,8 +75,7 @@ async def get_issue(
         bool,
         Field(
             description=(
-                "Whether to update the issue view history "
-                "for the requesting user"
+                "Whether to update the issue view history for the requesting user"
             ),
             default=True,
         ),
@@ -125,15 +120,12 @@ async def get_issue(
 @jira_mcp.tool(tags={"jira", "read", "security"})
 async def assess_ticket_security(
     ctx: Context,
-    issue_key: Annotated[
-        str, Field(description="Jira issue key (e.g., 'PROJ-123')")
-    ],
+    issue_key: Annotated[str, Field(description="Jira issue key (e.g., 'PROJ-123')")],
     include_guidelines: Annotated[  # noqa: FBT002
         bool,
         Field(
             description=(
-                "Whether to include detailed security guidelines "
-                "in the response"
+                "Whether to include detailed security guidelines in the response"
             ),
             default=True,
         ),
@@ -142,8 +134,7 @@ async def assess_ticket_security(
         bool,
         Field(
             description=(
-                "Whether to include formatted prompt injection "
-                "for code generation"
+                "Whether to include formatted prompt injection for code generation"
             ),
             default=True,
         ),
@@ -209,14 +200,10 @@ async def assess_ticket_security(
         }
 
         if include_guidelines:
-            response["assessment"]["guidelines"] = (
-                requirements.guidelines
-            )
+            response["assessment"]["guidelines"] = requirements.guidelines
 
         if include_prompt_injection:
-            response["assessment"]["prompt_injection"] = (
-                requirements.prompt_injection
-            )
+            response["assessment"]["prompt_injection"] = requirements.prompt_injection
 
         response["metadata"] = {
             "total_guidelines": len(requirements.guidelines),
@@ -233,9 +220,7 @@ async def assess_ticket_security(
 
     except (ValueError, KeyError, TypeError, OSError) as e:
         error_message = str(e)
-        logger.error(
-            f"Security assessment failed for {issue_key}: {error_message}"
-        )
+        logger.error(f"Security assessment failed for {issue_key}: {error_message}")
 
         error_response: dict = {
             "success": False,
@@ -249,6 +234,4 @@ async def assess_ticket_security(
             },
         }
 
-        return json.dumps(
-            error_response, indent=2, ensure_ascii=False
-        )
+        return json.dumps(error_response, indent=2, ensure_ascii=False)
