@@ -174,7 +174,7 @@ class TestJiraSecurityTool:
         from mcp_security_review.servers.jira import assess_ticket_security
 
         # Make the fetcher raise an exception
-        mock_jira_fetcher.get_issue.side_effect = Exception("Issue not found")
+        mock_jira_fetcher.get_issue.side_effect = ValueError("Issue not found")
 
         with patch(
             "mcp_security_review.servers.jira.get_jira_fetcher",
