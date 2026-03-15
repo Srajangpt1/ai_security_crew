@@ -28,6 +28,7 @@ from .confluence import confluence_mcp
 from .context import MainAppContext
 from .general import general_mcp
 from .jira import jira_mcp
+from .sca import sca_mcp
 from .threat_model import threat_model_mcp
 
 logger = logging.getLogger("mcp-security-review.server.main")
@@ -57,7 +58,8 @@ async def main_lifespan(app: FastMCP[MainAppContext]) -> AsyncIterator[dict]:
                 )
             else:
                 logger.warning(
-                    "Jira URL found, but authentication is not fully configured. Jira tools will be unavailable."
+                    "Jira URL found, but authentication is not fully configured. "
+                    "Jira tools will be unavailable."
                 )
         except Exception as e:
             logger.error(f"Failed to load Jira configuration: {e}", exc_info=True)
@@ -72,7 +74,8 @@ async def main_lifespan(app: FastMCP[MainAppContext]) -> AsyncIterator[dict]:
                 )
             else:
                 logger.warning(
-                    "Confluence URL found, but authentication is not fully configured. Confluence tools will be unavailable."
+                    "Confluence URL found, but authentication is not fully configured. "
+                    "Confluence tools will be unavailable."
                 )
         except Exception as e:
             logger.error(f"Failed to load Confluence configuration: {e}", exc_info=True)
@@ -109,7 +112,7 @@ class SecurityReviewMCP(FastMCP[MainAppContext]):
     """Custom FastMCP server class for security review workflows with tool filtering."""
 
     async def _mcp_list_tools(self) -> list[MCPTool]:
-        # Filter tools based on enabled_tools, read_only mode, and service configuration from the lifespan context.
+        # Filter tools based on enabled_tools, read_only mode, and service config.
         req_context = self._mcp_server.request_context
         if req_context is None or req_context.lifespan_context is None:
             logger.warning(
@@ -134,12 +137,14 @@ class SecurityReviewMCP(FastMCP[MainAppContext]):
             else None
         )
         logger.debug(
-            f"_main_mcp_list_tools: read_only={read_only}, enabled_tools_filter={enabled_tools_filter}"
+            f"_main_mcp_list_tools: read_only={read_only}, "
+            f"enabled_tools_filter={enabled_tools_filter}"
         )
 
         all_tools: dict[str, FastMCPTool] = await self.get_tools()
         logger.debug(
-            f"Aggregated {len(all_tools)} tools before filtering: {list(all_tools.keys())}"
+            f"Aggregated {len(all_tools)} tools before filtering: "
+            f"{list(all_tools.keys())}"
         )
 
         filtered_tools: list[MCPTool] = []
@@ -152,7 +157,8 @@ class SecurityReviewMCP(FastMCP[MainAppContext]):
 
             if tool_obj and read_only and "write" in tool_tags:
                 logger.debug(
-                    f"Excluding tool '{registered_name}' due to read-only mode and 'write' tag"
+                    f"Excluding tool '{registered_name}' due to read-only mode "
+                    f"and 'write' tag"
                 )
                 continue
 
@@ -163,17 +169,20 @@ class SecurityReviewMCP(FastMCP[MainAppContext]):
             if app_lifespan_state:
                 if is_jira_tool and not app_lifespan_state.full_jira_config:
                     logger.debug(
-                        f"Excluding Jira tool '{registered_name}' as Jira configuration/authentication is incomplete."
+                        f"Excluding Jira tool '{registered_name}': "
+                        f"configuration/authentication is incomplete."
                     )
                     service_configured_and_available = False
                 if is_confluence_tool and not app_lifespan_state.full_confluence_config:
                     logger.debug(
-                        f"Excluding Confluence tool '{registered_name}' as Confluence configuration/authentication is incomplete."
+                        f"Excluding Confluence tool '{registered_name}': "
+                        f"configuration/authentication is incomplete."
                     )
                     service_configured_and_available = False
             elif is_jira_tool or is_confluence_tool:
                 logger.warning(
-                    f"Excluding tool '{registered_name}' as application context is unavailable to verify service configuration."
+                    f"Excluding tool '{registered_name}': application context "
+                    f"unavailable to verify service configuration."
                 )
                 service_configured_and_available = False
 
@@ -209,7 +218,7 @@ token_validation_cache: TTLCache[
 
 
 class UserTokenMiddleware(BaseHTTPMiddleware):
-    """Middleware to extract Atlassian user tokens/credentials from Authorization headers."""
+    """Middleware to extract Atlassian user tokens from Authorization headers."""
 
     def __init__(
         self, app: Any, mcp_server_ref: Optional["SecurityReviewMCP"] = None
@@ -218,26 +227,30 @@ class UserTokenMiddleware(BaseHTTPMiddleware):
         self.mcp_server_ref = mcp_server_ref
         if not self.mcp_server_ref:
             logger.warning(
-                "UserTokenMiddleware initialized without mcp_server_ref. Path matching for MCP endpoint might fail if settings are needed."
+                "UserTokenMiddleware initialized without mcp_server_ref. "
+                "Path matching for MCP endpoint might fail if settings are needed."
             )
 
     async def dispatch(
         self, request: Request, call_next: RequestResponseEndpoint
     ) -> JSONResponse:
         logger.debug(
-            f"UserTokenMiddleware.dispatch: ENTERED for request path='{request.url.path}', method='{request.method}'"
+            f"UserTokenMiddleware.dispatch: ENTERED for request "
+            f"path='{request.url.path}', method='{request.method}'"
         )
         mcp_server_instance = self.mcp_server_ref
         if mcp_server_instance is None:
             logger.debug(
-                "UserTokenMiddleware.dispatch: self.mcp_server_ref is None. Skipping MCP auth logic."
+                "UserTokenMiddleware.dispatch: self.mcp_server_ref is None. "
+                "Skipping MCP auth logic."
             )
             return await call_next(request)
 
         mcp_path = mcp_server_instance.settings.streamable_http_path.rstrip("/")
         request_path = request.url.path.rstrip("/")
         logger.debug(
-            f"UserTokenMiddleware.dispatch: Comparing request_path='{request_path}' with mcp_path='{mcp_path}'. Request method='{request.method}'"
+            f"UserTokenMiddleware.dispatch: Comparing request_path='{request_path}' "
+            f"with mcp_path='{mcp_path}'. Request method='{request.method}'"
         )
         if request_path == mcp_path and request.method == "POST":
             auth_header = request.headers.get("Authorization")
@@ -249,26 +262,32 @@ class UserTokenMiddleware(BaseHTTPMiddleware):
                 else auth_header
             )
             logger.debug(
-                f"UserTokenMiddleware: Path='{request.url.path}', AuthHeader='{mask_sensitive(auth_header)}', ParsedToken(masked)='{token_for_log}', CloudId='{cloud_id_header}'"
+                f"UserTokenMiddleware: Path='{request.url.path}', "
+                f"AuthHeader='{mask_sensitive(auth_header)}', "
+                f"ParsedToken(masked)='{token_for_log}', "
+                f"CloudId='{cloud_id_header}'"
             )
 
             # Extract and save cloudId if provided
             if cloud_id_header and cloud_id_header.strip():
                 request.state.user_atlassian_cloud_id = cloud_id_header.strip()
                 logger.debug(
-                    f"UserTokenMiddleware: Extracted cloudId from header: {cloud_id_header.strip()}"
+                    f"UserTokenMiddleware: Extracted cloudId from header: "
+                    f"{cloud_id_header.strip()}"
                 )
             else:
                 request.state.user_atlassian_cloud_id = None
                 logger.debug(
-                    "UserTokenMiddleware: No cloudId header provided, will use global config"
+                    "UserTokenMiddleware: No cloudId header provided, "
+                    "will use global config"
                 )
 
             # Check for mcp-session-id header for debugging
             mcp_session_id = request.headers.get("mcp-session-id")
             if mcp_session_id:
                 logger.debug(
-                    f"UserTokenMiddleware: MCP-Session-ID header found: {mcp_session_id}"
+                    f"UserTokenMiddleware: MCP-Session-ID header found: "
+                    f"{mcp_session_id}"
                 )
             if auth_header and auth_header.startswith("Bearer "):
                 token = auth_header.split(" ", 1)[1].strip()
@@ -278,15 +297,18 @@ class UserTokenMiddleware(BaseHTTPMiddleware):
                         status_code=401,
                     )
                 logger.debug(
-                    f"UserTokenMiddleware.dispatch: Bearer token extracted (masked): ...{mask_sensitive(token, 8)}"
+                    f"UserTokenMiddleware.dispatch: Bearer token extracted "
+                    f"(masked): ...{mask_sensitive(token, 8)}"
                 )
                 request.state.user_atlassian_token = token
                 request.state.user_atlassian_auth_type = "oauth"
                 request.state.user_atlassian_email = None
                 logger.debug(
-                    f"UserTokenMiddleware.dispatch: Set request.state (pre-validation): "
-                    f"auth_type='{getattr(request.state, 'user_atlassian_auth_type', 'N/A')}', "
-                    f"token_present={bool(getattr(request.state, 'user_atlassian_token', None))}"
+                    "UserTokenMiddleware.dispatch: Set request.state "
+                    f"(pre-validation): auth_type='"
+                    f"{getattr(request.state, 'user_atlassian_auth_type', 'N/A')}', "
+                    f"token_present="
+                    f"{bool(getattr(request.state, 'user_atlassian_token', None))}"
                 )
             elif auth_header and auth_header.startswith("Token "):
                 token = auth_header.split(" ", 1)[1].strip()
@@ -296,7 +318,8 @@ class UserTokenMiddleware(BaseHTTPMiddleware):
                         status_code=401,
                     )
                 logger.debug(
-                    f"UserTokenMiddleware.dispatch: PAT (Token scheme) extracted (masked): ...{mask_sensitive(token, 8)}"
+                    f"UserTokenMiddleware.dispatch: PAT (Token scheme) extracted "
+                    f"(masked): ...{mask_sensitive(token, 8)}"
                 )
                 request.state.user_atlassian_token = token
                 request.state.user_atlassian_auth_type = "pat"
@@ -307,31 +330,70 @@ class UserTokenMiddleware(BaseHTTPMiddleware):
                     "UserTokenMiddleware.dispatch: Set request.state for PAT auth."
                 )
             elif auth_header:
+                auth_type = (
+                    auth_header.split(" ", 1)[0]
+                    if " " in auth_header
+                    else "UnknownType"
+                )
                 logger.warning(
-                    f"Unsupported Authorization type for {request.url.path}: {auth_header.split(' ', 1)[0] if ' ' in auth_header else 'UnknownType'}"
+                    f"Unsupported Authorization type for "
+                    f"{request.url.path}: {auth_type}"
                 )
                 return JSONResponse(
                     {
-                        "error": "Unauthorized: Only 'Bearer <OAuthToken>' or 'Token <PAT>' types are supported."
+                        "error": (
+                            "Unauthorized: Only 'Bearer <OAuthToken>' or "
+                            "'Token <PAT>' types are supported."
+                        )
                     },
                     status_code=401,
                 )
             else:
                 logger.debug(
-                    f"No Authorization header provided for {request.url.path}. Will proceed with global/fallback server configuration if applicable."
+                    f"No Authorization header provided for {request.url.path}. "
+                    f"Will proceed with global/fallback server configuration."
                 )
         response = await call_next(request)
         logger.debug(
-            f"UserTokenMiddleware.dispatch: EXITED for request path='{request.url.path}'"
+            f"UserTokenMiddleware.dispatch: EXITED for request "
+            f"path='{request.url.path}'"
         )
         return response
 
 
-main_mcp = SecurityReviewMCP(name="Security Review MCP", lifespan=main_lifespan)
+_AGENT_INSTRUCTIONS = (
+    "# Security Review MCP — Agent Workflow\n\n"
+    "Follow this workflow whenever you write or modify code.\n\n"
+    "## 1. Before you start coding\n"
+    "Call `lightweight_security_review` with a description of what you're building and the tech stack.\n"  # noqa: E501
+    "- Use this for any non-trivial coding task to identify risks and get security guidelines upfront.\n"  # noqa: E501
+    "- If working from a Jira ticket, call `assess_ticket_security` instead.\n"
+    "- For significant new features (auth, file handling, external integrations), also call `perform_threat_model`.\n\n"  # noqa: E501
+    "## 2. When adding or updating dependencies\n"
+    "Run both steps before writing any code that uses the new packages:\n"
+    "1. Call `verify_packages` — confirms packages exist with valid versions. Fix any invalid packages before proceeding.\n"  # noqa: E501
+    "2. Call `scan_dependencies` in parallel with step 3 — scans for CVEs and checks reachability. Act on results:\n"  # noqa: E501
+    "   - `reachable` or `uncertain` → upgrade or avoid the vulnerable function before continuing.\n"  # noqa: E501
+    "   - `not_reachable` / `not_imported` → note it and continue; consider upgrading anyway.\n\n"  # noqa: E501
+    "## 3. After generating code\n"
+    "Call `verify_code_security` with the generated code.\n"
+    "- Run this after every non-trivial code generation before presenting results to the user.\n"  # noqa: E501
+    "- Follow the `review_prompt` in the response to perform the analysis and report findings.\n\n"  # noqa: E501
+    "## 4. Persisting threat models (optional)\n"
+    "After `perform_threat_model`, call `update_threat_model_file` to write `threat-model.md`.\n"  # noqa: E501
+    "Call `search_previous_threat_models` first to avoid duplicating existing models.\n"
+)
+
+main_mcp = SecurityReviewMCP(
+    name="Security Review MCP",
+    lifespan=main_lifespan,
+    instructions=_AGENT_INSTRUCTIONS,
+)
 main_mcp.mount("general", general_mcp)
 main_mcp.mount("jira", jira_mcp)
 main_mcp.mount("confluence", confluence_mcp)
 main_mcp.mount("threatmodel", threat_model_mcp)
+main_mcp.mount("sca", sca_mcp)
 
 
 @main_mcp.custom_route("/healthz", methods=["GET"], include_in_schema=False)
