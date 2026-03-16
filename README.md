@@ -5,6 +5,37 @@
 
 A lightweight MCP server for security reviews built for vibe coding — injects security requirements prior to code generation, scans dependencies for CVEs, and verifies generated code, all without breaking your coding rhythm.
 
+**Jump to installation:**
+- [Claude Code Plugin](#claude-code-plugin) — install 3 security skills globally in Claude Code (no Jira/MCP needed)
+- [MCP Server](#quick-start) — full feature set with Jira, Confluence, CVE scanning, and threat modeling
+- [Claude Code Skills only](#claude-code-skills) — manually add slash commands to a specific project
+
+---
+
+## Claude Code Plugin
+
+Install all three security skills directly into Claude Code — no MCP server, no Jira, no configuration required.
+
+```
+/plugin install Srajangpt1/ai_security_crew
+```
+
+This gives you three commands available in any project:
+
+| Command | When to use |
+|---------|-------------|
+| `/sec-review` | Before coding — get risk level, OWASP guidelines, and a security prompt for AI code generation |
+| `/verify-code` | After coding — review code for vulnerabilities with a checklist and prioritized fixes |
+| `/threat-model` | For new features — identify threats with evidence links, mitigations, and optional `threat-model.md` |
+
+---
+
+## Claude Code Skills
+
+If you prefer to add the skills to a specific project only (instead of globally), clone this repo and the slash commands in `.claude/commands/` are available automatically in Claude Code when working in the project directory.
+
+---
+
 ## Tools
 
 ### Pre-coding
