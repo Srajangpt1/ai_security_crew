@@ -92,8 +92,6 @@ Add to your MCP config (Claude Desktop, Cursor, etc.):
 }
 ```
 
-> **Note for macOS:** GUI apps (Cursor, Claude Desktop) may not inherit your shell PATH. The `PATH` env entry above ensures `docker` is found. Alternatively, run `sudo launchctl config user path "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"` and log out/in to fix it system-wide.
-
 ### Authentication
 
 Supported methods:
