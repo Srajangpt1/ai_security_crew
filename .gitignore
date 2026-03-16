@@ -70,8 +70,12 @@ local/
 # debug
 playground/
 
+# Skill eval workspace (local testing artifacts)
+skills-workspace/
+
 # cursor
 .cursor*
 
-# Claude
-.claude/
+# Claude (ignore personal settings, track shared commands/skills)
+.claude/settings.local.json
+.claude/settings.json
