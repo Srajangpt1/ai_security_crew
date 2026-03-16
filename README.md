@@ -3,56 +3,126 @@
 [![Run Tests](https://github.com/Srajangpt1/ai_security_crew/actions/workflows/tests.yml/badge.svg)](https://github.com/Srajangpt1/ai_security_crew/actions/workflows/tests.yml)
 ![License](https://img.shields.io/github/license/Srajangpt1/ai_security_crew)
 
-A lightweight MCP server for security reviews across designs, tickets, and docs - built for vibe coding, which injects security requirements prior to code generation, automatically. Perfect for when you're in the flow and need to quickly assess security risks, check compliance, or document findings without breaking your coding rhythm. Currently supports Jira and Confluence.
+A lightweight MCP server for security reviews built for vibe coding — injects security requirements prior to code generation, scans dependencies for CVEs, and verifies generated code, all without breaking your coding rhythm.
 
-## Security Review Workflows
+## Tools
 
-Keep the vibe going while staying secure:
-
-- **Ticket Review** – "I'm working on AUTH-234, give me the security requirements."
-- **Design Analysis** – "Analyze this architecture doc for third-party trust boundaries and data flow risks."
-- **Control Check** – "Does this feature meet our logging and monitoring requirements?"
-- **Code Verification** – "Review the code you just generated for security vulnerabilities."
-
-**Integration with Code Generation:**
-1. Run security assessment on your ticket or a document
-2. Extract the formatted security requirements
-3. Inject into your AI code generation prompt
-4. Generate secure code that follows best practices
-5. Verify generated code with `verify_code_security`
-
-### Pre-coding and Post-coding Tools
-
+### Pre-coding
 | Tool | When to Use |
 |------|-------------|
-| `lightweight_security_review` | Before coding - get security requirements for a task |
-| `assess_ticket_security` | Before coding - analyze a Jira ticket for security needs |
-| `verify_code_security` | After coding - AI reviews generated code for vulnerabilities |
+| `lightweight_security_review` | Before any coding task — get security requirements and guidelines for your tech stack |
+| `assess_ticket_security` | Before coding from a Jira ticket — pull security requirements directly from the ticket |
+| `perform_threat_model` | For significant new features — generate a structured threat model (STRIDE, attack surfaces) |
 
-See [Security Assessment Documentation](docs/security-assessment.md) for detailed usage and examples.
+### Dependency security
+| Tool | When to Use |
+|------|-------------|
+| `verify_packages` | When adding packages — confirm they exist with valid versions (catches hallucinated package names) |
+| `scan_dependencies` | When adding packages — scan for CVEs and check reachability in your code |
+
+### Post-coding
+| Tool | When to Use |
+|------|-------------|
+| `verify_code_security` | After generating code — AI-powered security review against OWASP guidelines |
+
+### Threat model persistence
+| Tool | When to Use |
+|------|-------------|
+| `search_previous_threat_models` | Before creating a new threat model — check if one already exists in Confluence |
+| `update_threat_model_file` | After `perform_threat_model` — write the threat model to `threat-model.md` in the repo |
+
+## Agent Workflow
+
+The server automatically sends workflow instructions to any connecting agent (Claude, Cursor, etc.) via the MCP `initialize` handshake. Agents will follow this workflow without additional configuration:
+
+1. **Before coding** — call `lightweight_security_review` (or `assess_ticket_security` for Jira tickets)
+2. **When adding packages** — call `verify_packages`, then `scan_dependencies` with the code that uses them
+3. **After generating code** — call `verify_code_security` and follow the `review_prompt` to report findings
+4. **For significant features** — call `perform_threat_model` and persist with `update_threat_model_file`
+
+## Dependency Scanning
+
+`scan_dependencies` uses [OSV.dev](https://osv.dev) to find CVEs and performs reachability analysis to determine if vulnerable code paths are actually called:
+
+| Status | Meaning |
+|--------|---------|
+| `reachable` | Vulnerable function is called in your code — action required |
+| `not_reachable` | Vulnerable function is not called |
+| `not_imported` | Package is not imported at all |
+| `uncertain` | AI analyzed the code but could not determine reachability |
+| `no_code_provided` | No code snippets were passed to the tool |
+
+Reachability is determined by (in order): OSV function-level symbols → keyword matching against the vuln summary → AI analysis via `ctx.sample()`.
+
+## Quick Start
+
+### 1. Build the image
+
+```bash
+docker build -t mcp-security-review:latest .
+```
+
+### 2. Configure your IDE
+
+Add to your MCP config (Claude Desktop, Cursor, etc.):
+
+```json
+{
+  "mcpServers": {
+    "sec-review": {
+      "command": "docker",
+      "args": [
+        "run", "--rm", "-i",
+        "-e", "JIRA_URL",
+        "-e", "JIRA_USERNAME",
+        "-e", "JIRA_API_TOKEN",
+        "-e", "CONFLUENCE_URL",
+        "-e", "CONFLUENCE_USERNAME",
+        "-e", "CONFLUENCE_API_TOKEN",
+        "mcp-security-review:latest"
+      ],
+      "env": {
+        "PATH": "/usr/local/bin:/usr/bin:/bin",
+        "JIRA_URL": "https://your-domain.atlassian.net",
+        "JIRA_USERNAME": "your-email@example.com",
+        "JIRA_API_TOKEN": "your-token"
+      }
+    }
+  }
+}
+```
+
+> **Note for macOS:** GUI apps (Cursor, Claude Desktop) may not inherit your shell PATH. The `PATH` env entry above ensures `docker` is found. Alternatively, run `sudo launchctl config user path "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"` and log out/in to fix it system-wide.
+
+### Authentication
+
+Supported methods:
+- **API Token** (Jira/Confluence Cloud): `JIRA_API_TOKEN`, `CONFLUENCE_API_TOKEN`
+- **Personal Access Token** (Server/Data Center): `JIRA_PERSONAL_TOKEN`, `CONFLUENCE_PERSONAL_TOKEN`
+- **OAuth 2.0** (Cloud): run `docker run --rm -it mcp-security-review:latest --oauth-setup`
+
+### HTTP Transport
+
+Run as a persistent HTTP service instead of stdio:
+
+```bash
+# Streamable HTTP (recommended)
+docker run --rm -p 8000:8000 mcp-security-review:latest --transport streamable-http
+
+# SSE
+docker run --rm -p 8000:8000 mcp-security-review:latest --transport sse
+```
 
 ## Security Guidelines
 
-- The system includes **101 OWASP Cheat Sheets** providing comprehensive security guidance
-- You can easily add your own organization-specific guidelines
-- Guidelines are automatically loaded and integrated into security assessments
+Includes **101 OWASP Cheat Sheets** loaded automatically into security assessments. Add your own org-specific guidelines:
 
-### Adding Custom Guidelines
-
-**Easy way** - Use the helper script (auto-generates metadata):
 ```bash
 python3 scripts/add_custom_guideline.py
 ```
 
-Just write your guideline content, and the system automatically:
-- ✅ Detects the appropriate category
-- ✅ Assigns priority level
-- ✅ Generates relevant tags
-- ✅ Saves to the correct location
+Or manually create markdown files in `src/mcp_security_review/security/guidelines/docs/`:
 
-See [docs/ADDING_CUSTOM_GUIDELINES.md](docs/ADDING_CUSTOM_GUIDELINES.md) for detailed instructions.
-
-**Manual way** - Create markdown files in `src/mcp_security_review/security/guidelines/docs/` with metadata:
 ```markdown
 category: your_category
 priority: high
@@ -62,72 +132,19 @@ tags: tag1, tag2, tag3
 ...
 ```
 
-## Quick Start Guide
-
-### 1. Authentication Setup
-
-Keep it simple. Use whichever auth your stack already supports:
-
-- API Token (Cloud) or Personal Access Token (Server/DC)
-- OAuth 2.0 (Cloud) when you need delegated, per-user access
-
-For OAuth setup, the image ships with a guided `--oauth-setup` wizard. If you already manage tokens elsewhere, you can pass them via env vars.
-
-### 2. Installation
-
-MCP Security Review can be build locally as container image. This is the recommended way to run the server, especially for IDE integration. Ensure you have Docker installed.
-
-```bash
-# Run from the root of the Project
-docker build -t mcp-security-review .
-```
-
-## IDE / Configuration (Minimal)
-
-Use Docker with either direct env vars or an env file. Typical vars:
-
-- `JIRA_URL`, `JIRA_USERNAME`, `JIRA_API_TOKEN` (or `JIRA_PERSONAL_TOKEN`)
-- `CONFLUENCE_URL`, `CONFLUENCE_USERNAME`, `CONFLUENCE_API_TOKEN` (or `CONFLUENCE_PERSONAL_TOKEN`)
-- `READ_ONLY_MODE` to disable writes
-
-Example (Cloud tokens):
-
-```json
-{
-  "mcpServers": {
-    "mcp-security-review": {
-      "command": "docker",
-      "args": ["run","--rm","-i",
-        "-e","JIRA_URL","-e","JIRA_USERNAME","-e","JIRA_API_TOKEN",
-        "-e","CONFLUENCE_URL","-e","CONFLUENCE_USERNAME","-e","CONFLUENCE_API_TOKEN",
-        "mcp-security-review:latest"
-      ]
-    }
-  }
-}
-```
-
-### 👥 HTTP Transport Configuration
-
-Instead of using `stdio`, you can run the server as a persistent HTTP service using either:
-- `sse` (Server-Sent Events) transport at `/sse` endpoint
-- `streamable-http` transport at `/mcp` endpoint
-
-## Security
-
-- Never share API tokens
-- Keep .env files secure and private
-- See [SECURITY.md](SECURITY.md) for best practices
+See [docs/ADDING_CUSTOM_GUIDELINES.md](docs/ADDING_CUSTOM_GUIDELINES.md) for details.
 
 ## Contributing
 
-We welcome contributions to MCP Security Review! If you'd like to contribute:
-
-1. Check out our [CONTRIBUTING.md](CONTRIBUTING.md) guide for detailed development setup instructions.
+1. Check [CONTRIBUTING.md](CONTRIBUTING.md) for development setup.
 2. Make changes and submit a pull request.
 
-We use pre-commit hooks for code quality and follow semantic versioning for releases.
+Pre-commit hooks enforce code quality (Ruff, Prettier, Pyright). Run `uv run pytest` before submitting.
+
+## Security
+
+Never commit API tokens. See [SECURITY.md](SECURITY.md) for best practices.
 
 ## License
 
-Licensed under MIT - see [LICENSE](LICENSE) file.
+Licensed under MIT — see [LICENSE](LICENSE).
