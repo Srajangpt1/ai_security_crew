@@ -6,8 +6,8 @@
 A lightweight MCP server for security reviews built for vibe coding — injects security requirements prior to code generation, scans dependencies for CVEs, and verifies generated code, all without breaking your coding rhythm.
 
 **Jump to installation:**
+- [MCP Server](#quick-start) — full feature set with Jira, Confluence, CVE scanning (with reachability), and threat modeling
 - [Claude Code Plugin](#claude-code-plugin) — install 3 security skills globally in Claude Code (no Jira/MCP needed)
-- [MCP Server](#quick-start) — full feature set with Jira, Confluence, CVE scanning, and threat modeling
 - [Claude Code Skills only](#claude-code-skills) — manually add slash commands to a specific project
 
 ---
