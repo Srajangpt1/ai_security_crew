@@ -13,8 +13,8 @@ from fastmcp import Context, FastMCP
 from pydantic import Field
 
 from mcp_security_review.providers.sca import (
-    EnvMarkerEvaluator,
     EnvironmentContext,
+    EnvMarkerEvaluator,
     LockfileParser,
     OSVScanner,
     PackageRegistry,
