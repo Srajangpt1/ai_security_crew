@@ -15,10 +15,13 @@ Reference: https://peps.python.org/pep-0508/#environment-markers
 
 from __future__ import annotations
 
+import logging
 import platform
 import re
 import sys
 from dataclasses import dataclass, field
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -62,7 +65,7 @@ class EnvironmentContext:
         python_version: str = "3.11",
         sys_platform: str = "linux",
         platform_machine: str = "x86_64",
-    ) -> "EnvironmentContext":
+    ) -> EnvironmentContext:
         """Create an environment context representing a typical Linux container."""
         major, minor = python_version.split(".")[:2]
         return cls(
@@ -190,8 +193,8 @@ class EnvMarkerEvaluator:
                             active=True,
                             reason=f"Active with extra='{extra_val}'",
                         )
-                except Exception as e:  # noqa: BLE001
-                    pass
+                except Exception:  # noqa: BLE001, S110
+                    logger.debug("Marker eval failed for extra=%r", extra_val)
             return MarkerEvalResult(
                 marker=marker,
                 active=False,
@@ -203,10 +206,11 @@ class EnvMarkerEvaluator:
             reason = self._explain(marker, env_dict, result)
             return MarkerEvalResult(marker=marker, active=result, reason=reason)
         except Exception as e:  # noqa: BLE001
+            reason = f"Could not evaluate marker: {e} — assuming active (conservative)"
             return MarkerEvalResult(
                 marker=marker,
                 active=True,  # conservative: assume active if we can't evaluate
-                reason=f"Could not evaluate marker: {e} — assuming active (conservative)",
+                reason=reason,
                 uncertain=True,
             )
 
@@ -322,8 +326,10 @@ class EnvMarkerEvaluator:
                 lhs = expr[:idx].strip()
                 rhs = expr[idx + len(op):].strip().strip("\"'")
                 lhs_val = env.get(lhs, lhs.strip("\"'"))
-                return self._compare(lhs_val, op, rhs, lhs in self._VERSION_VARS)
-        raise ValueError(f"Cannot parse marker comparison: {expr!r}")
+                version_compare = lhs in self._VERSION_VARS
+                return self._compare(lhs_val, op, rhs, version_compare)
+        msg = f"Cannot parse marker comparison: {expr!r}"
+        raise ValueError(msg)
 
     def _find_op(self, expr: str, op: str) -> int:
         """Find operator position, ignoring quoted strings."""
@@ -359,7 +365,7 @@ class EnvMarkerEvaluator:
         lhs: str,
         op: str,
         rhs: str,
-        is_version: bool,
+        is_version: bool,  # noqa: FBT001
     ) -> bool:
         """Perform the actual comparison."""
         if op == "in":
@@ -385,7 +391,8 @@ class EnvMarkerEvaluator:
                     return lhs_v >= rhs_v
                 if op == "~=":
                     # Compatible release: >= rhs, == rhs.*
-                    return lhs_v >= rhs_v and lhs_v[: len(rhs_v) - 1] == rhs_v[: len(rhs_v) - 1]
+                    prefix = len(rhs_v) - 1
+                    return lhs_v >= rhs_v and lhs_v[:prefix] == rhs_v[:prefix]
             except (ValueError, IndexError):
                 pass  # Fall through to string comparison
 
@@ -405,7 +412,7 @@ class EnvMarkerEvaluator:
             return lhs_s >= rhs_s
         return False
 
-    def _explain(self, marker: str, env: dict[str, str], result: bool) -> str:
+    def _explain(self, marker: str, env: dict[str, str], result: bool) -> str:  # noqa: FBT001
         """Generate a human-readable explanation of the evaluation."""
         status = "active" if result else "not active"
         # Extract the key variable for a simple one-liner

@@ -40,7 +40,8 @@ class ReachabilityStatus:
     AI_ANALYSIS_REQUIRED = "ai_analysis_required"
     NO_CODE_PROVIDED = "no_code_provided"
     UNCERTAIN = "uncertain"  # AI analyzed but could not definitively determine
-    DYNAMIC_IMPORT = "dynamic_import"  # Package loaded via dynamic import — static analysis cannot confirm
+    # Package loaded via dynamic import — static analysis cannot confirm
+    DYNAMIC_IMPORT = "dynamic_import"
 
 
 @dataclass
@@ -472,7 +473,8 @@ class OSVScanner:
                     status=ReachabilityStatus.DYNAMIC_IMPORT,
                     evidence=(
                         f"{package_name} appears to be loaded dynamically — "
-                        f"static analysis cannot confirm reachability. {import_evidence}"
+                        "static analysis cannot confirm reachability. "
+                        f"{import_evidence}"
                     ),
                     reachability_prompt=prompt,
                 )
@@ -557,7 +559,9 @@ class OSVScanner:
                         return True, f"Imported: {m.group().strip()}"
 
             # Dynamic import patterns for Python
-            dyn_evidence = self._find_dynamic_import(package_name, ecosystem, code, alt_names)
+            dyn_evidence = self._find_dynamic_import(
+                package_name, ecosystem, code, alt_names
+            )
             if dyn_evidence:
                 return True, dyn_evidence
 
@@ -576,7 +580,9 @@ class OSVScanner:
                         return True, f"Imported: {m.group().strip()}"
 
             # Dynamic import patterns for JS/TS
-            dyn_evidence = self._find_dynamic_import(package_name, ecosystem, code, alt_names)
+            dyn_evidence = self._find_dynamic_import(
+                package_name, ecosystem, code, alt_names
+            )
             if dyn_evidence:
                 return True, dyn_evidence
 
@@ -623,7 +629,8 @@ class OSVScanner:
                     code,
                 )
                 if m:
-                    return f"DYNAMIC: importlib.import_module('{name}') — {m.group().strip()}"
+                    matched = m.group().strip()
+                    return f"DYNAMIC: importlib.import_module('{name}') — {matched}"
 
                 # __import__("pkg")
                 m = re.search(

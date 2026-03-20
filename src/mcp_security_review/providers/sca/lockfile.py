@@ -361,12 +361,12 @@ class LockfileParser:
         for pkg_path, pkg_data in packages.items():
             if not pkg_path:  # root package
                 continue
-            # Extract package name from path: "node_modules/foo" or "node_modules/@scope/foo"
+            # Extract package name from path:
+            # "node_modules/foo" or "node_modules/@scope/foo"
             name = _npm_path_to_name(pkg_path)
             version = pkg_data.get("version", "")
             if not version:
                 continue
-            is_dev = pkg_data.get("dev", False)
             is_optional = pkg_data.get("optional", False)
             resolved = pkg_data.get("resolved", "")
             source = None
@@ -395,7 +395,9 @@ class LockfileParser:
         # Fallback to v1 "dependencies" dict
         if not deps and "dependencies" in data:
             warnings.append("Falling back to v1 'dependencies' format")
-            cls._parse_npm_v1_deps(data.get("dependencies", {}), deps, warnings, depth=0)
+            cls._parse_npm_v1_deps(
+                data.get("dependencies", {}), deps, warnings, depth=0
+            )
 
         return deps, warnings
 
@@ -501,7 +503,8 @@ class LockfileParser:
                 resolved_m = re.match(r'\s+resolved\s+"([^"]+)"', line)
                 if resolved_m:
                     resolved = resolved_m.group(1)
-                    if "registry.yarnpkg.com" not in resolved and "registry.npmjs.org" not in resolved:
+                    known = ("registry.yarnpkg.com", "registry.npmjs.org")
+                    if not any(r in resolved for r in known):
                         for name in current_names:
                             warnings.append(
                                 f"{name} resolved from non-registry source: {resolved}"
@@ -600,7 +603,10 @@ class LockfileParser:
 
 
 def _normalize_pkg_name(name: str) -> str:
-    """Normalize package name per PEP 503 (lowercase, dashes/underscores/dots -> dash)."""
+    """Normalize package name per PEP 503.
+
+    Lowercases and collapses dashes/underscores/dots to a single dash.
+    """
     return re.sub(r"[-_.]+", "-", name).lower()
 
 
